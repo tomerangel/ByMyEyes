@@ -13,11 +13,14 @@ export default class Page extends React.Component {
     this.state = {
       fname: "",
       //lname:"",
+      
       phone: "",
-      // email:"",
+      name:"",
+      isLod:false,
       barcode: "",
       barcodeData: "",
       image: "empty",
+      key:null,
       imageDownloadUrl: "empty",
       isUploading: false
     }
@@ -31,11 +34,30 @@ export default class Page extends React.Component {
     });
   }
   componentWillMount() {
+    //let key = this.props.navigation.getParam("key", "");
     this.getAllContact();
   }
+  getNumber = () => {
+    let number = this.state.name;
+    let numm=this.state.barcodeData
+    alert('1' + `${number}`);
+    alert('2' + `${numm}`);
+    // if (number == item) {
+    //   alert(`is equal been scanned!`);
+    //   alert(`${item.fname}`)
+    //   return item.fname
+    // }
+    // alert('1'+`${number}`);
+    //alert('2'+`${item}`);
+    //alert('3 ' + num);
+    //alert('4 ' + item);
+
+    // alert(`has been scanned!`);
+    return 'empty'
+  }
   getAllContact = () => {
+    let barCodeData2 = this.props.navigation.state.params.barcodeData
     let self = this;
-    //TODO: get all contact from firebase
     let contactRef = firebase.database().ref()
     contactRef.on("value", dataSnapsot => {
       if (dataSnapsot.val()) {
@@ -45,54 +67,57 @@ export default class Page extends React.Component {
           contactResult[key]["key"] = value
         })
         self.setState({
+          fname: contactResult.fname,
           data: contactResult.sort((a, b) => {
-            var nameA = a.fname.toUpperCase()
-            var nameB = b.fname.toUpperCase()
-            if (nameA < nameB) {
-              return -1
+            let nameA = a.barcode
+            const nameB = barCodeData2
+            const name = a.fname
+            console.log(`${nameA} What numers issssssss`);
+            if (nameA == nameB) {
+             // alert(`${name} ........`)
+              console.log(`${nameA == nameB}is Equqlqlqlql`);
+              return <Text>asd</Text>
             }
-            if (nameA < nameB) {
-              return 1
-            }
-            return 0
           }),
-          isListEmpty: false
         })
-      } else {
-        self.setState({ isListEmpty: true })
       }
-      self.setState({ isLoading: false })
     })
-    //TODO:
-    // sort array by fname and set it to data state
-
-
   }
 
-
-  render() {
+  _renderItem = ({ item }) => {
     let d = this.props.navigation.state.params.barcodeData
+    alert('1' + `${d}`);
+    alert('2' + `${item.barcode}`);
+    //alert('3 ' + num);
+    if (item.barcode == d) {
+    return  <Text>{item.fname}</Text>
+    } else {
+      return <Text></Text>;
+    }
+  }
+  render() {
+
+    //   let d = this.props.navigation.state.params.barcodeData
+    //let t=this.getNumber()
+    //alert(`${t} how?`)
+    // let d = this.props.navigation.state.params.barcodeData
 
     return (
-     
-        <FlatList
-   
-          data={this.state.data}
-          renderItem={({ item }) => {
-            return (
-              <View style={styles.container}>
-       
-        <Text style={styles.button}> {d}== {item.barcode}   </Text>
-     
-        <Text style={styles.button}> This is a Product</Text>
 
+
+      <View>
+
+
+        <Text>{this.state.contactKey}</Text>
+
+        <FlatList
+          data={this.state.data}
+          renderItem={this._renderItem}
+        />
       </View>
-    );
-  }    }
-    />
     )
-}
-  
+  }
+
 }
 const styles = StyleSheet.create({
   container: {

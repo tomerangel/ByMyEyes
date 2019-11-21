@@ -17,7 +17,7 @@ import uuid from 'uuid'
 import { Form, Item, Input, Label, Button } from "native-base";
 
 import * as  ImagePicker from "expo-image-picker";
-import { Header } from "react-navigation";
+//import { Header } from "react-navigation";
 
 //TODO: add firebase
 import * as firebase from 'firebase'
@@ -68,7 +68,7 @@ export default class AddNewContact extends Component {
         barcode: this.state.barcode,
         //imageUrl:this.state.imageUrl,
       }
-      await dbReference.push(contact, error => {
+      await dbRefexrence.push(contact, error => {
         if (!error) {
           return this.props.navigation.goBack();
         }
