@@ -89,7 +89,7 @@ export default class Page extends React.Component {
   render() {
     return (
       <View>
-        <Text>{this.state.len}</Text>
+        <Text style={styles.button}>{this.state.len}</Text>
       </View>
     )
   }
