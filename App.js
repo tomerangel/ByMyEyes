@@ -10,7 +10,6 @@ import LoadingScreen from './screens/LoadingScreen'
 import SignupScreen from './screens/SignupScreen'
 import SigninScreen from './screens/SigninScreen'
 import Barcode from './screens/Barcode'
-import Voice from './screens/VoiceButton'
 import Page from './screens/Page'
 //TODO: import firebase
 import * as firebase from 'firebase'
@@ -30,8 +29,7 @@ const MainNavigator = createStackNavigator(
     Add: { screen: AddNewContact },
     Page: { screen: Page },
     View: { screen: ViewContact },
-    Edit: { screen: EditContact },
-    // Voice:{screen:Voice},
+    Edit: { screen: EditContact }
   },
   {
     defaultNavigationOptions: {

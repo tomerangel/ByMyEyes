@@ -85,18 +85,7 @@ export default class HomeScree extends React.Component {
             />
              <Text>Add Product</Text>
           </TouchableOpacity>
-          {/* <Button
-          
-           // style={styles.floatButton}
-            
-            onPress={() => {
-             // this.props.navigation.navigate("Voice")
-            }}
-          >
-           
-             <Text>Voice</Text>
-          </Button>
-        */}
+       
               </View>
         <TouchableOpacity
           style={styles.icon}
