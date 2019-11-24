@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native";
 import * as firebase from 'firebase'
-import { Form, Item, Input, Label, Button } from 'native-base'
+import { Form, Item, Input, Label, Button, Card } from 'native-base'
 export default class Page extends React.Component {
   static navigationOption = {
     title: "Result"
@@ -10,14 +10,12 @@ export default class Page extends React.Component {
     super(props)
     this.state = {
       fname: "",
-      //lname:"",
-
       phone: "",
       name: "",
       isLod: false,
       barcode: "",
       barcodeData: "",
-      len: "",
+      len: "empty",
       image: "empty",
       key: null,
       imageDownloadUrl: "empty",
@@ -73,12 +71,10 @@ export default class Page extends React.Component {
         console.log(`${nameB} this is from Camera`)
         //console.log(`${nameA} What numers issssssss`);
         if (nameA == nameB) {
-          console.log(`${name} ........`)
-          this.setState({ len: name });
-
+          //console.log(`${name} ........`)
+         // this.setState({  len: 'empty' });
+         this.setState({len:name });
           return name
-        }else{
-          this.setState({ len: 'empty' });
         }
       })
     
@@ -87,9 +83,22 @@ export default class Page extends React.Component {
 
 
   render() {
+    let d = this.props.navigation.state.params.barcodeData
+
     return (
-      <View>
-        <Text style={styles.button}>{this.state.len}</Text>
+      <View style={styles.container}>
+        <View style={styles.cardTitle}>
+          <Text
+           full
+           
+           style={styles.title}>Result:</Text>
+        </View>
+        <Card style={styles.listItem}>
+          <Text style={styles.b}>Product description:</Text>
+        <View style={styles.cardTitle}>
+         <Text style={styles.button}>{this.state.len} </Text>
+          </View>
+          </Card>
       </View>
     )
   }
@@ -105,14 +114,46 @@ const styles = StyleSheet.create({
     margin: 10
   },
   button: {
-
+    textAlign: 'left',
     //backgroundColor: "#B83227",
     color: "black",
     fontWeight: 'bold',
-    fontSize: 20
+    fontSize: 40
   },
+  b:{
+    marginTop:30,
+    fontSize:20,
+    textAlign: 'left',
 
+  },
+  title:{
+    color: "black",
+    fontWeight: 'bold',
+    fontSize: 50
+  },
   cardTitle: {
     textAlign: 'left',
+  },
+  listItem: {
+    flexDirection: "row",
+    padding: 50,
+    color:"red",
+    borderWidth:100,
+    
+    borderColor:"red"
+  },
+  contactIcon: {
+    width: 60,
+    height: 60,
+    borderRadius: 100
+  },
+  infoContainer: {
+    flexDirection: "column"
+  },
+  infoText: {
+    fontSize: 16,
+    fontWeight: "400",
+    paddingLeft: 10,
+    paddingTop: 2
   },
 })  
