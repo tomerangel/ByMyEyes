@@ -79,7 +79,7 @@ export default class SigninScreen extends React.Component {
               )
             }}
           ><Text style={styles.buttonText}>Sign in</Text></Button>
-    
+
         </Form>
         <View style={styles.footer}>
           <Text>OR</Text>
@@ -87,7 +87,7 @@ export default class SigninScreen extends React.Component {
             onPress={() => {
               this.props.navigation.navigate("SignUp")
             }}>
-            <Text >Create a new Account ?</Text>
+            <Text>Create a new Account ?</Text>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>

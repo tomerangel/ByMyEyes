@@ -72,40 +72,93 @@ export default class Page extends React.Component {
         //console.log(`${nameA} What numers issssssss`);
         if (nameA == nameB) {
           //console.log(`${name} ........`)
-         // this.setState({  len: 'empty' });
-         this.setState({len:name });
+          // this.setState({  len: 'empty' });
+          this.setState({ len: name });
           return name
         }
       })
-    
+
     })
   }
+  editContact = key => {
+    //navigate to edit screen with passing key
+    this.props.navigation.navigate("Edit", {
+      key: key
+    });
+  };
 
 
   render() {
     let d = this.props.navigation.state.params.barcodeData
+    if(this.state.len=='empty'){
+      return (
+        <View style={styles.containe}>
+          <View style={styles.cardTitle}>
+            <Text
+              full
 
-    return (
-      <View style={styles.container}>
-        <View style={styles.cardTitle}>
-          <Text
-           full
-           
-           style={styles.title}>Result:</Text>
-        </View>
-        <Card style={styles.listItem}>
-          <Text style={styles.b}>Product description:</Text>
-        <View style={styles.cardTitle}>
-         <Text style={styles.button}>{this.state.len} </Text>
+              style={styles.title}>Result:</Text>
           </View>
+          <Card style={styles.listItem}>
+            <Text style={styles.b}>Product description:</Text>
+            <View style={styles.cardTitle}>
+              <Text style={styles.button}>{this.state.len} </Text>
+            </View>
           </Card>
-      </View>
-    )
+          
+       
+                  <View style={styles.container4}>
+
+                    <TouchableOpacity style={[styles.container2]}
+                      onPress={() => {
+                        this.props.navigation.navigate("Add")
+                      }}
+                    >
+                      <Text style={styles.caption}>Add Product</Text>
+                    </TouchableOpacity>
+                  </View>
+
+                </View>
+
+      )
+                    }
+                    else{
+                      return(
+                        <View style={styles.containe}>
+                        <View style={styles.cardTitle}>
+                          <Text
+                            full
+              
+                            style={styles.title}>Result:</Text>
+                        </View>
+                        <Card style={styles.listItem}>
+                          <Text style={styles.b}>Product description:</Text>
+                          <View style={styles.cardTitle}>
+                            <Text style={styles.button}>{this.state.len} </Text>
+                          </View>
+                        </Card>
+                        
+                     
+                                <View style={styles.container4}>
+              
+                                  <TouchableOpacity style={[styles.container2]}
+                                    onPress={() => {
+                                      this.editContact(this.state.key);
+                                    }}
+                                  >
+                                    <Text style={styles.caption}>Edit Product</Text>
+                                  </TouchableOpacity>
+                                </View>
+              
+                              </View>
+              
+                      );
+                    }
   }
 
 }
 const styles = StyleSheet.create({
-  container: {
+  containe: {
     flex: 1,
     backgroundColor: "#fff",
     margin: 10
@@ -118,15 +171,15 @@ const styles = StyleSheet.create({
     //backgroundColor: "#B83227",
     color: "black",
     fontWeight: 'bold',
-    fontSize: 40
+    fontSize: 25
   },
-  b:{
-    marginTop:30,
-    fontSize:20,
+  b: {
+    marginTop: 30,
+    fontSize: 20,
     textAlign: 'left',
 
   },
-  title:{
+  title: {
     color: "black",
     fontWeight: 'bold',
     fontSize: 50
@@ -137,10 +190,10 @@ const styles = StyleSheet.create({
   listItem: {
     flexDirection: "row",
     padding: 50,
-    color:"red",
-    borderWidth:100,
-    
-    borderColor:"red"
+    color: "red",
+    borderWidth: 100,
+
+    borderColor: "red"
   },
   contactIcon: {
     width: 60,
@@ -156,4 +209,57 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingTop: 2
   },
+  con: {
+    width: 420,
+    height: 250
+  },
+  container4: {
+    width: 420,
+    height: 250,
+    justifyContent: "center",
+  },
+  container2: {
+    backgroundColor: "#3F51B5",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingRight: 16,
+    paddingLeft: 16,
+    elevation: 2,
+    minWidth: 88,
+    borderRadius: 2,
+    shadowOffset: {
+      height: 1,
+      width: 0
+    },
+    shadowColor: "#000",
+    shadowOpacity: 0.35,
+    shadowRadius: 5
+  },
+  caption: {
+    color: "#fff",
+    fontSize: 50,
+    //fontFamily: "roboto-regular"
+  },
+  container: {
+    flex: 1
+  },
+  container3: {
+    width: 420,
+    height: 250,
+    justifyContent: "center"
+  },
+  group: {
+    width: 420,
+    height: 220,
+    justifyContent: "center",
+    marginTop: 492,
+    alignSelf: "center"
+  },
+  materialButtonViolet: {
+    width: 360,
+    height: 360
+  }
+
+
 })  
