@@ -1,11 +1,14 @@
 import React from "react";
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native";
+import Constants from 'expo-constants';
+import * as Speech from 'expo-speech';
 import * as firebase from 'firebase'
 import { Form, Item, Input, Label, Button, Card } from 'native-base'
 export default class Page extends React.Component {
   static navigationOption = {
     title: "Result"
   }
+
   constructor(props) {
     super(props)
     this.state = {
@@ -19,9 +22,14 @@ export default class Page extends React.Component {
       image: "empty",
       key: null,
       imageDownloadUrl: "empty",
-      isUploading: false
+      isUploading: false,
+      //thingToSay:"empty"
     }
     this.nameOfFunc = this.nameOfFunc.bind(this)
+  }
+  speak= len => {
+     let thingToSay=len
+    Speech.speak(thingToSay);
   }
   componentDidMount() {
 
@@ -74,6 +82,7 @@ export default class Page extends React.Component {
           //console.log(`${name} ........`)
           // this.setState({  len: 'empty' });
           this.setState({ len: name });
+          this.setState({thingToSay:name})
           return name
         }
       })
@@ -90,7 +99,38 @@ export default class Page extends React.Component {
 
   render() {
     let d = this.props.navigation.state.params.barcodeData
-    if(this.state.len=='empty'){
+    if (this.state.len == 'empty') {
+      return (
+        <View style={styles.containe}>
+          <View style={styles.cardTitle}>
+            <Text
+              full
+              style={styles.title}>Result:</Text>
+          </View>
+          <Card style={styles.listItem}>
+            <Text style={styles.b}>Product description:</Text>
+            <View style={styles.cardTitle}>
+              <Text style={styles.button}>{this.state.len} </Text>
+            </View>
+          </Card>
+
+
+          <View style={styles.container4}>
+
+            <TouchableOpacity style={[styles.container2]}
+              onPress={() => {
+                this.props.navigation.navigate("Add")
+              }}
+            >
+              <Text style={styles.caption}>Add Product</Text>
+            </TouchableOpacity>
+          </View>
+
+        </View>
+
+      )
+    }
+    else {
       return (
         <View style={styles.containe}>
           <View style={styles.cardTitle}>
@@ -103,57 +143,24 @@ export default class Page extends React.Component {
             <Text style={styles.b}>Product description:</Text>
             <View style={styles.cardTitle}>
               <Text style={styles.button}>{this.state.len} </Text>
+              <Button title="Press to hear some words" onPress={this.speak(this.state.len)} />
             </View>
           </Card>
-          
-       
-                  <View style={styles.container4}>
+          <View style={styles.container4}>
 
-                    <TouchableOpacity style={[styles.container2]}
-                      onPress={() => {
-                        this.props.navigation.navigate("Add")
-                      }}
-                    >
-                      <Text style={styles.caption}>Add Product</Text>
-                    </TouchableOpacity>
-                  </View>
+            <TouchableOpacity style={[styles.container2]}
+              onPress={() => {
+                this.editContact(this.state.key);
+              }}
+            >
+              <Text style={styles.caption}>Edit Product</Text>
+            </TouchableOpacity>
+          </View>
 
-                </View>
+        </View>
 
-      )
-                    }
-                    else{
-                      return(
-                        <View style={styles.containe}>
-                        <View style={styles.cardTitle}>
-                          <Text
-                            full
-              
-                            style={styles.title}>Result:</Text>
-                        </View>
-                        <Card style={styles.listItem}>
-                          <Text style={styles.b}>Product description:</Text>
-                          <View style={styles.cardTitle}>
-                            <Text style={styles.button}>{this.state.len} </Text>
-                          </View>
-                        </Card>
-                        
-                     
-                                <View style={styles.container4}>
-              
-                                  <TouchableOpacity style={[styles.container2]}
-                                    onPress={() => {
-                                      this.editContact(this.state.key);
-                                    }}
-                                  >
-                                    <Text style={styles.caption}>Edit Product</Text>
-                                  </TouchableOpacity>
-                                </View>
-              
-                              </View>
-              
-                      );
-                    }
+      );
+    }
   }
 
 }
