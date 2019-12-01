@@ -58,7 +58,7 @@ export default class SigninScreen extends React.Component {
             />
           </Item>
           <Item floatingLabel>
-            <Label>password</Label>
+            <Label>Password</Label>
             <Input
 
               secureTextEntry={true}

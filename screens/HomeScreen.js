@@ -125,7 +125,7 @@ export default class HomeScreen extends React.Component {
                 }}
               >
                 <Card style={styles.listItem}>
-                  <View>
+                  {/* <View>
                     <Image
                       style={styles.contactIcon}
                       source={
@@ -134,12 +134,12 @@ export default class HomeScreen extends React.Component {
                           : { uri: item.imageUrl }
                       }
                     />
-                  </View>
+                  </View> */}
                   <View style={styles.infoContainer}>
                     <Text style={styles.infoText}>
-                      {item.fname} {item.lname}
+                      {item.fname} 
                     </Text>
-                    <Text style={styles.infoText}>{item.phone}</Text>
+                    {/* <Text style={styles.infoText}></Text> */}
                   </View>
                 </Card>
               </TouchableOpacity>
@@ -181,8 +181,8 @@ const styles = StyleSheet.create({
     flexDirection: "column"
   },
   infoText: {
-    fontSize: 16,
-    fontWeight: "400",
+    fontSize: 30,
+    fontWeight:"bold",
     paddingLeft: 10,
     paddingTop: 2
   },

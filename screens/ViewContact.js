@@ -20,7 +20,7 @@ import Barcode from 'react-native-barcode-builder';
 import * as firebase from 'firebase'
 export default class ViewContact extends Component {
   static navigationOptions = {
-    title: "View Contact"
+    title: "View Product"
   };
 
   constructor(props) {
@@ -172,7 +172,7 @@ export default class ViewContact extends Component {
     return (
       <ScrollView style={styles.container}>
         <View style={styles.contactIconContainer}>
-          <Image
+          {/* <Image
             style={styles.contactIcon}
             source={
               this.state.imageUrl === "empty"
@@ -181,7 +181,8 @@ export default class ViewContact extends Component {
                   uri: this.state.imageUrl
                 }
             }
-          />
+          /> */}
+          <Image   style={styles.contactIcon} />
           <View style={styles.nameContainer}>
             <Text style={styles.name}>
               {this.state.fname}
@@ -226,6 +227,7 @@ export default class ViewContact extends Component {
             >
               <Entypo name="phone" size={50} color="#B83227" />
             </TouchableOpacity>
+            <Text style={styles.actionText}>Phone</Text>
           </CardItem>
         </Card>
 
@@ -267,8 +269,8 @@ const styles = StyleSheet.create({
   },
   contactIcon: {
     // to create a square box both height and width should be same
-    height: Dimensions.get("window").width,
-    width: Dimensions.get("window").width
+    height: 130,//Dimensions.get("window").width,
+    width: 20//Dimensions.get("window").width
   },
   nameContainer: {
     width: "100%",

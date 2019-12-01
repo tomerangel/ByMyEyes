@@ -10,7 +10,11 @@ import LoadingScreen from './screens/LoadingScreen'
 import SignupScreen from './screens/SignupScreen'
 import SigninScreen from './screens/SigninScreen'
 import Barcode from './screens/Barcode'
-import Voice from './screens/VoiceButton'
+import Button from './src/screens/Untitled'
+import Button2 from './src/components/MaterialButtonViolet'
+import Button3 from './src/components/MaterialButtonPink'
+import Button4 from './src/components/MaterialButtonViolet1'
+//import Unti from './screens/Untitled'
 import Page from './screens/Page'
 //TODO: import firebase
 import * as firebase from 'firebase'
@@ -31,6 +35,11 @@ const MainNavigator = createStackNavigator(
     Page: { screen: Page },
     View: { screen: ViewContact },
     Edit: { screen: EditContact },
+    Button:{screen:Button},
+    Button2:{screen:Button2},
+    Button3:{screen:Button3},
+    Button4:{screen:Button4},
+    //Unti:{screen:Unti}
     // Voice:{screen:Voice},
   },
   {
