@@ -82,7 +82,7 @@ export default class Page extends React.Component {
           //console.log(`${name} ........`)
           // this.setState({  len: 'empty' });
           this.setState({ len: name });
-          this.setState({thingToSay:name})
+         // this.setState({thingToSay:name})
           return name
         }
       })

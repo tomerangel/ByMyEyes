@@ -8,7 +8,7 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 
 
 
-const flashModes = {
+const flashModeOrder = {
   off: 'on',
   on: 'auto',
   auto: 'torch',
@@ -25,8 +25,9 @@ export default class Barcode extends React.Component {
     this.state = {
       hasCameraPermission: null,
       barcodeData: "",
+      type: Camera.Constants.Type.back,
       barcodeType: "",
-      flash: "off", // on, off, auto, torch
+      flashMode: "on", // on, off, auto, torch
       isFlashLightOn:Camera.Constants.FlashMode.off
 
     }
@@ -44,7 +45,19 @@ export default class Barcode extends React.Component {
       flash: flashModes[this.state.flash],
     });
   }
-  
+  onFlash = () => {
+    const { flashMode } = this.state;
+    this.setState({
+      flashMode: flashModeOrder[flashMode],
+    });
+  };
+  onFlip = () => {
+    this.setState({
+      type: this.state.type === Camera.Constants.Type.back
+        ? Camera.Constants.Type.front
+        : Camera.Constants.Type.back,
+    });
+  };
   getPermissionsAsync = async () => {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
     this.setState({ hasCameraPermission: status === 'granted' });
@@ -76,7 +89,7 @@ flashLight=()=>{
           justifyContent: 'flex-end',
         }}>
         <Camera
-         flashMode={this.state.flashMode}
+         autoFocus={Camera.Constants.AutoFocus.on}
           onBarCodeScanned={scanned ? undefined : this.handleBarCodeScanned}
           
           
@@ -84,19 +97,16 @@ flashLight=()=>{
         />
         <Text>Bar code{this.state.barcodeData}</Text>
         <View style={styles.actionContainer}>
-        
+       
         <TouchableOpacity
         style={styles.iconHolder}
-        onPress={this.toggleFlash.bind(this)}>
-
-        
+        onPress={this.onFlash}
+        >
           <FontAwesome
           name="flash"
           size={35}
           style={styles.icon}
           />
-
-          
         </TouchableOpacity>
 
       </View>
