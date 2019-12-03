@@ -47,9 +47,6 @@ export default class ViewContact extends Component {
   getContact = async key => {
     let self = this
     let contactRef = firebase.database().ref().child(key)
-
-
-
     await contactRef.on("value", dataSnapsot => {
       if (dataSnapsot.val()) {
         contactValue = dataSnapsot.val();

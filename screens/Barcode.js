@@ -5,6 +5,7 @@ import {FontAwesome} from "@expo/vector-icons"
 import * as Permissions from 'expo-permissions';
 import { Camera } from 'expo-camera';
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import * as Speech from 'expo-speech'
 
 
 
@@ -36,8 +37,13 @@ export default class Barcode extends React.Component {
     hasCameraPermission: null,
     scanned: false,
   };
-
+  speak(){
+    var thing='this is Camera BarCode.'
+    Speech.speak(thing)
+    Speech.speak('you can scan barcode')
+  }
   async componentDidMount() {
+    this.speak();
     this.getPermissionsAsync();
   }
   toggleFlash() {
@@ -117,8 +123,6 @@ flashLight=()=>{
 
 
   handleBarCodeScanned = ({ type, data }) => {
-    // alert(`${data} has been scanned!`);
-   
     this.props.navigation.replace("Page", { barcodeData: data })
   };
 

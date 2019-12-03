@@ -1,12 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity,Switch } from 'react-native';
 import { Button } from 'native-base';
 import { FontAwesome, Entypo } from "@expo/vector-icons"
 import * as firebase from 'firebase';
 import Constants from 'expo-constants';
-
-
+import * as Speech from 'expo-speech';
 export default class HomeScree extends React.Component {
+  s={isSwitchOn:true}
   static navigationOptions = {
     // set screen header name
     title: "Home"
@@ -18,21 +18,21 @@ export default class HomeScree extends React.Component {
       email: "",
     }
   }
-
-
   componentWillMount() {
     firebase.auth().onAuthStateChanged(authenticate => {
       if (authenticate) {
+      
         this.setState({
           email: authenticate.email,
           name: authenticate.displayName
         })
+        this.speak();
       } else {
         this.props.navigation.replace("SignIn")
+        
       }
     })
   }
-
   signOuUser = () => {
     firebase
       .auth()
@@ -42,7 +42,12 @@ export default class HomeScree extends React.Component {
         alert(error.message)
       })
   }
-
+  speak(){
+    var thing='this is Home Page Welcome.'
+    Speech.speak(thing)
+    Speech.speak('you have 3 choose, left Camera,Right Products,and down SignOut ')
+  }
+  
   render() {
     return (
       <View style={styles.container}>
@@ -50,11 +55,17 @@ export default class HomeScree extends React.Component {
           <Image
             style={{ width: 260, height: 240 }}
             source={require('../assets/default.png')}
+            
           />
 
         </View>
         <View style={styles.fixToText2} >
-          
+          <Switch
+        onValueChange={isSwitchOn=>this.setState({isSwitchOn})}
+        value={this.state.isSwitchOn}
+        
+          ><Text>Tap To Speech</Text>
+          </Switch>
           <TouchableOpacity
             style={styles.fixToText}
             onPress={() => {
@@ -65,14 +76,11 @@ export default class HomeScree extends React.Component {
               name="camera"
               color="#0000FF"
               size={50}
-             // style={styles.icon}
+            // style={styles.icon}
             />
             <Text>Camera</Text>
           </TouchableOpacity>
           <TouchableOpacity
-          
-           // style={styles.floatButton}
-            
             onPress={() => {
               this.props.navigation.navigate("Home")
             }}
@@ -81,27 +89,24 @@ export default class HomeScree extends React.Component {
               name="plus"
               size={45}
               color="blue"
-             
             />
-             <Text>Add Product</Text>
+            <Text>Add Product</Text>
           </TouchableOpacity>
-          
-        
-              </View>
+        </View>
         <TouchableOpacity
           style={styles.icon}
           onPress={() => {
             this.signOuUser();
           }}
         >
-           <FontAwesome
-              name="sign-out"
-              color="#0000FF"
-              size={50}
-              
-            />
+          <FontAwesome
+            name="sign-out"
+            color="#0000FF"
+            size={50}
+
+          />
           <Text >SignOut</Text></TouchableOpacity>
-          
+
       </View>
     );
   }
@@ -123,27 +128,27 @@ const styles = StyleSheet.create({
     //justifyContent:'flex-start'
 
   },
-  fixToText2:{
+  fixToText2: {
     //flex:1,
-    
+
     //justifyContent:'space-between',
     flexDirection: 'row',
   },
   fixToText: {
-    
-    marginRight:220
-   // marginHorizontal: 100,
+
+    marginRight: 220
+    // marginHorizontal: 100,
     //alignItems: "center",
   },
   floatButton: {
-   // borderWidth: 1,
+    // borderWidth: 1,
     //borderColor: "rgba(0,0,0,0.2)",
     //alignItems: "center",
     //justifyContent: "center",
     //position: "absolute",
     //width: 60,
-    marginLeft:220,
-   // bottom: 10,
+    marginLeft: 220,
+    // bottom: 10,
     //right: 130,
     //height: 60,
     backgroundColor: "#0000FF",
@@ -164,14 +169,14 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "black",
     //marginEnd:150,
-    fontSize:14,
+    fontSize: 14,
   },
 
 
   icon: {
     //flex:1,
     //justifyContent:"space-between",
-    marginBottom:100,
+    marginBottom: 100,
     //marginEnd:200
     //color:"#fff"
     //borderColor:'black',
@@ -183,7 +188,7 @@ const styles = StyleSheet.create({
     //height: 60,
     // alignItems:"flex-start"
   },
-  
+
 
 
 });

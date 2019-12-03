@@ -15,7 +15,7 @@ import {
 //TODO: Read about UUID
 import uuid from 'uuid'
 import { Form, Item, Input, Label, Button } from "native-base";
-
+import * as Speech from 'expo-speech';
 import * as  ImagePicker from "expo-image-picker";
 //import { Header } from "react-navigation";
 
@@ -88,6 +88,14 @@ export default class AddNewContact extends Component {
       this.setState({ image: result.uri })
     }
   };
+  componentWillMount(){
+    this.speak();
+  }
+  speak(){
+    var thing='this is NewProduct Page Welcome.'
+    Speech.speak(thing)
+    Speech.speak('you need to fill the details :product description ,phone number and barcode number')
+  }
 
   //TODO: upload image to firebase
   uploadImageAsync = async (uri, storageRef) => {

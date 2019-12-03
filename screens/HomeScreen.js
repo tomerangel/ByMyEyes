@@ -13,7 +13,7 @@ import {
 import { Card } from "native-base";
 //import Entypo icons from @expo
 import { Entypo } from "@expo/vector-icons";
-
+import * as Speech from 'expo-speech'
 //TODO: add firebase
 import * as firebase from 'firebase'
 
@@ -35,7 +35,14 @@ export default class HomeScreen extends React.Component {
   }
   // lifecycle method
   componentWillMount() {
+    this.speak();
     this.getAllContact();
+    
+  }
+  speak(){
+    var thing='this is Products Page Welcome.'
+    Speech.speak(thing)
+    Speech.speak('you have 2 options, Click the product you want , or you can add product right down ')
   }
   // getAllContact method
   getAllContact = () => {
