@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity, Text } from "react-native";
 
 function MaterialButtonPink(props) {
   return (
-    <TouchableOpacity
-      style={[styles.container, props.style]}
-    ></TouchableOpacity>
+    <TouchableOpacity style={[styles.container, props.style]}>
+      <Text style={styles.caption}>Product</Text>
+    </TouchableOpacity>
   );
 }
 
@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     elevation: 2,
     minWidth: 88,
+    borderRadius: 2,
     shadowOffset: {
       height: 1,
       width: 0
@@ -26,6 +27,11 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOpacity: 0.35,
     shadowRadius: 5
+  },
+  caption: {
+    color: "#fff",
+    fontSize: 40,
+    fontFamily: "roboto-regular"
   }
 });
 

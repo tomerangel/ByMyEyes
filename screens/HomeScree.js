@@ -16,6 +16,7 @@ export default class HomeScree extends React.Component {
     this.state = {
       name: "",
       email: "",
+      switch1Value: false,
     }
   }
   componentWillMount() {
@@ -26,11 +27,12 @@ export default class HomeScree extends React.Component {
           email: authenticate.email,
           name: authenticate.displayName
         })
-        this.speak();
+       
       } else {
         this.props.navigation.replace("SignIn")
         
       }
+      this.speak();
     })
   }
   signOuUser = () => {
@@ -47,148 +49,140 @@ export default class HomeScree extends React.Component {
     Speech.speak(thing)
     Speech.speak('you have 3 choose, left Camera,Right Products,and down SignOut ')
   }
+ 
   
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.logoContainer}>
-          <Image
-            style={{ width: 260, height: 240 }}
-            source={require('../assets/default.png')}
-            
-          />
-
+      <View style={styles.materialButtonVioletStack}>
+      <Image
+                style={{ width: 280, height: 200,paddingRight: 50,left:70, alignItems: "center", }}
+                source={require('../assets/default.png')}
+              />
+        <View style={styles.materialButtonPink}>
+          
+          <View style={styles.container1}>
+            <View style={styles.materialButtonPink1}>
+              <TouchableOpacity style={styles.container2}
+               onPress={()=>{
+                this.props.navigation.navigate("Home")
+              }}
+              >
+                <Text style={styles.caption2}>Products</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.container3}
+              onPress={()=>{
+                this.props.navigation.navigate("Barcode")
+              }}
+              >
+                <Text style={styles.caption2}>Camera</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.container4}
+              onPress={()=>{
+                this.signOuUser()
+              }}
+              >
+                <Text style={styles.caption2}>SignOut</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
-        <View style={styles.fixToText2} >
-          <Switch
-        onValueChange={isSwitchOn=>this.setState({isSwitchOn})}
-        value={this.state.isSwitchOn}
-        
-          ><Text>Tap To Speech</Text>
-          </Switch>
-          <TouchableOpacity
-            style={styles.fixToText}
-            onPress={() => {
-              this.props.navigation.navigate("Barcode")
-            }}
-          >
-            <FontAwesome
-              name="camera"
-              color="#0000FF"
-              size={50}
-            // style={styles.icon}
-            />
-            <Text>Camera</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              this.props.navigation.navigate("Home")
-            }}
-          >
-            <FontAwesome
-              name="plus"
-              size={45}
-              color="blue"
-            />
-            <Text>Add Product</Text>
-          </TouchableOpacity>
-        </View>
-        <TouchableOpacity
-          style={styles.icon}
-          onPress={() => {
-            this.signOuUser();
-          }}
-        >
-          <FontAwesome
-            name="sign-out"
-            color="#0000FF"
-            size={50}
-
-          />
-          <Text >SignOut</Text></TouchableOpacity>
-
       </View>
+    </View>
     );
   }
 
 }
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#fff",
+    flex: 1
+  },
+  container1: {
+    // width: 360,
+    // height: 124
+  },
+  materialButtonPink1: {
+    //width: 460,
+    //height: 254
+  },
+
+  materialButtonPink: {
+    //top: 130,
+    //left: 0,
+    width: 420,
+    height: 124,
+    position: "absolute",
+    marginTop: 300
+  },
+  materialButtonVioletStack: {
+    //width: 360,
+    //height: 1000,
+    
+    //paddingRight:30
+  },
+  caption2: {
+    //width: 0,
+    height: 124,
+    color: "#fff",
+    fontWeight: 'bold',
+    fontSize: 40,
+    
+    //fontFamily: "roboto-regular"
+  },
+
+  container2: {
+    backgroundColor: "#a6c9ed",
+    flexDirection: "row",
     alignItems: "center",
-    //marginTop: Constants.statusBarHeight,
-    marginHorizontal: 16,
-    // margin: 20
+    justifyContent: "center",
+    paddingRight: 16,
+    paddingLeft: 16,
+    //elevation: 2,
+    //minWidth: 88,
+    borderRadius: 2,
+    shadowOffset: {
+      height: 1,
+      width: 0
+    },
+    shadowColor: "#000",
+    shadowOpacity: 0.35,
+    shadowRadius: 5
   },
-  containerr: {
-    //flexDirection:'row',
-    borderColor: 'black',
-    //borderWidth:1,
-    //justifyContent:'flex-start'
-
-  },
-  fixToText2: {
-    //flex:1,
-
-    //justifyContent:'space-between',
-    flexDirection: 'row',
-  },
-  fixToText: {
-
-    marginRight: 220
-    // marginHorizontal: 100,
-    //alignItems: "center",
-  },
-  floatButton: {
-    // borderWidth: 1,
-    //borderColor: "rgba(0,0,0,0.2)",
-    //alignItems: "center",
-    //justifyContent: "center",
-    //position: "absolute",
-    //width: 60,
-    marginLeft: 220,
-    // bottom: 10,
-    //right: 130,
-    //height: 60,
-    backgroundColor: "#0000FF",
-    //borderRadius: 300
-  },
-
-  logoContainer: {
+  container3: {
+    backgroundColor: "#599cde",
+    flexDirection: "row",
     alignItems: "center",
-    //marginTop: 100,
-    marginBottom: 100
+    justifyContent: "center",
+    paddingRight: 16,
+    paddingLeft: 16,
+    //elevation: 2,
+    //minWidth: 88,
+    borderRadius: 2,
+    shadowOffset: {
+      height: 1,
+      width: 0
+    },
+    shadowColor: "#000",
+    shadowOpacity: 0.35,
+    shadowRadius: 5
   },
-  userDetails: {},
-
-  button: {
-    marginTop: 20,
-    backgroundColor: "#00BFFF"
+  container4: {
+    backgroundColor: "#0d6ecf",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingRight: 16,
+    paddingLeft: 16,
+    //elevation: 2,
+    //minWidth: 88,
+    borderRadius: 2,
+    shadowOffset: {
+      height: 1,
+      width: 0
+    },
+    shadowColor: "#000",
+    shadowOpacity: 0.35,
+    shadowRadius: 5
   },
-  buttonText: {
-    color: "black",
-    //marginEnd:150,
-    fontSize: 14,
-  },
-
-
-  icon: {
-    //flex:1,
-    //justifyContent:"space-between",
-    marginBottom: 100,
-    //marginEnd:200
-    //color:"#fff"
-    //borderColor:'black',
-    //borderWidth:1,
-
-    //width: 60,
-    //bottom: 10,
-    //left: 130,
-    //height: 60,
-    // alignItems:"flex-start"
-  },
-
-
 
 });

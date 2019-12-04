@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, FlatList, TouchableOpacity ,ActivityIndicator} from "react-native";
 import Constants from 'expo-constants';
 import * as Speech from 'expo-speech';
 import * as firebase from 'firebase'
@@ -20,6 +20,7 @@ export default class Page extends React.Component {
       barcodeData: "",
       len: "empty",
       image: "empty",
+      isLoading: true,
       key: null,
       imageDownloadUrl: "empty",
       isUploading: false,
@@ -89,7 +90,7 @@ export default class Page extends React.Component {
         if (nameA == nameB) {
           //console.log(`${name} ........`)
           // this.setState({  len: 'empty' });
-          this.setState({ len: name });
+          this.setState({ len: name,isLoading: false });
          // this.setState({thingToSay:name})
           return name
         }
@@ -107,6 +108,23 @@ export default class Page extends React.Component {
 
   render() {
     let d = this.props.navigation.state.params.barcodeData
+
+    if (this.state.isLoading) {
+      return (
+        <View
+          style={{
+            flex: 1,
+            alignContent: "center",
+            justifyContent: "center"
+          }}
+        >
+          <ActivityIndicator size="large" color="#B83227" />
+          <Text style={{ textAlign: "center" }}>
+          loading please wait..
+          </Text>
+        </View>
+      );
+    }
     if (this.state.len == 'empty') {
       return (
         <View style={styles.containe}>

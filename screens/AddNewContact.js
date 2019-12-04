@@ -170,7 +170,7 @@ export default class AddNewContact extends Component {
 
             <Form>
               <Item style={styles.inputItem} floatingLabel>
-                <Label>תיאור המוצר</Label>
+                <Label>Product description</Label>
                 <Input
                   autoCorrect={false}
                   autoCapitalize="none"
@@ -180,7 +180,7 @@ export default class AddNewContact extends Component {
               </Item>
 
               <Item style={styles.inputItem} floatingLabel>
-                <Label>מס פלאפון</Label>
+                <Label>Phone number</Label>
                 <Input
                   autoCorrect={false}
                   autoCapitalize="none"

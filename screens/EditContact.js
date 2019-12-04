@@ -196,7 +196,7 @@ export default class EditContact extends Component {
             </TouchableOpacity>
             <Form>
               <Item style={styles.inputItem} floatingLabel>
-                <Label>First Name</Label>
+                <Label>Product description</Label>
                 <Input
                   autoCorrect={false}
                   autoCapitalize="none"
@@ -210,7 +210,7 @@ export default class EditContact extends Component {
               </Item>
 
               <Item style={styles.inputItem} floatingLabel>
-                <Label>Phone</Label>
+                <Label>Phone number</Label>
                 <Input
                   autoCorrect={false}
                   autoCapitalize="none"

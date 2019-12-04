@@ -13,15 +13,17 @@ import Barcode from './screens/Barcode'
 import Button from './src/screens/Untitled'
 import Button2 from './src/components/MaterialButtonViolet'
 import Button3 from './src/components/MaterialButtonPink'
-import Button4 from './src/components/MaterialButtonViolet1'
+//import Button4 from './src/components/MaterialButtonViolet1'
 //import Unti from './screens/Untitled'
 import Page from './screens/Page'
+
 //TODO: import firebase
 import * as firebase from 'firebase'
 
 // set up react navigation
 import { createStackNavigator } from 'react-navigation-stack';
 import {  createAppContainer } from "react-navigation";
+
 
 const MainNavigator = createStackNavigator(
   {
@@ -38,15 +40,16 @@ const MainNavigator = createStackNavigator(
     Button:{screen:Button},
     Button2:{screen:Button2},
     Button3:{screen:Button3},
-    Button4:{screen:Button4},
+    //Button4:{screen:Button4},
     //Unti:{screen:Unti}
     // Voice:{screen:Voice},
   },
   {
+   
     defaultNavigationOptions: {
       headerTintColor: "#fff",
       headerStyle: {
-        backgroundColor: "#0000FF"
+        backgroundColor: "#4169E1"
       },
       headerTitleStyle: {
         color: "#fff"
