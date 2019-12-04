@@ -13,7 +13,7 @@ const flashModeOrder = {
   off: 'on',
   on: 'auto',
   auto: 'torch',
-  torch: 'off',
+
 };
 
 export default class Barcode extends React.Component {
@@ -46,6 +46,7 @@ export default class Barcode extends React.Component {
     this.speak();
     this.getPermissionsAsync();
   }
+  
   toggleFlash() {
     this.setState({
       flash: flashModes[this.state.flash],
@@ -105,6 +106,7 @@ flashLight=()=>{
         <View style={styles.actionContainer}>
        
         <TouchableOpacity
+        
         style={styles.iconHolder}
         onPress={this.onFlash}
         >

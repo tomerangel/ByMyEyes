@@ -37,10 +37,10 @@ export default class HomeScreen extends React.Component {
   componentWillMount() {
     this.speak();
     this.getAllContact();
-    
+
   }
-  speak(){
-    var thing='this is Products Page Welcome.'
+  speak() {
+    var thing = 'this is Products Page Welcome.'
     Speech.speak(thing)
     Speech.speak('you have 2 options, Click the product you want , or you can add product right down ')
   }
@@ -132,19 +132,9 @@ export default class HomeScreen extends React.Component {
                 }}
               >
                 <Card style={styles.listItem}>
-                  {/* <View>
-                    <Image
-                      style={styles.contactIcon}
-                      source={
-                        item.imageUrl === "empty"
-                          ? require("../assets/person.png")
-                          : { uri: item.imageUrl }
-                      }
-                    />
-                  </View> */}
                   <View style={styles.infoContainer}>
                     <Text style={styles.infoText}>
-                      {item.fname} 
+                      {item.fname}
                     </Text>
                     {/* <Text style={styles.infoText}></Text> */}
                   </View>
@@ -153,7 +143,6 @@ export default class HomeScreen extends React.Component {
             );
           }}
         />
-
         <TouchableOpacity
           onPress={() => {
             // add icon
@@ -189,7 +178,7 @@ const styles = StyleSheet.create({
   },
   infoText: {
     fontSize: 30,
-    fontWeight:"bold",
+    fontWeight: "bold",
     paddingLeft: 10,
     paddingTop: 2
   },

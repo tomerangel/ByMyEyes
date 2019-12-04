@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Keyboard, Image, KeyboardAvoidingView } from 'react-native';
 import * as firebase from 'firebase';
 import { Form, Item, Input, Label, Button } from 'native-base'
-
+import * as Speech from 'expo-speech'
 
 
 export default class SigninScreen extends React.Component {
@@ -16,9 +16,15 @@ export default class SigninScreen extends React.Component {
       email: "",
       password: "",
     }
+    this.speak();
   }
 
-
+  speak(){
+    var thing='ברוך הבא לכניסה יש להזין פרטים ,אחרת אתה יכול להירשם'
+    Speech.speak(thing, { language: "he-IW" })
+    //Speech.speak('you have 3 choose, left Camera,Right Products,and down SignOut ',{ language: "pt-BR" })
+  }
+ 
 
 
   signinUser = (email, password) => {

@@ -25,7 +25,7 @@ import * as firebase from 'firebase'
 export default class AddNewContact extends Component {
   static navigationOptions = {
     // set screen header title
-    title: "Add Contact"
+    title: "Add Product"
   };
   //TODO: create constructor with state: fname, lname, phone, email, address, image, imageDownloadUrl, isUploading
   constructor(props) {

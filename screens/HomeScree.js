@@ -7,6 +7,7 @@ import Constants from 'expo-constants';
 import * as Speech from 'expo-speech';
 export default class HomeScree extends React.Component {
   s={isSwitchOn:true}
+
   static navigationOptions = {
     // set screen header name
     title: "Home"
@@ -18,6 +19,7 @@ export default class HomeScree extends React.Component {
       email: "",
       switch1Value: false,
     }
+    this.speak();
   }
   componentWillMount() {
     firebase.auth().onAuthStateChanged(authenticate => {
@@ -32,7 +34,7 @@ export default class HomeScree extends React.Component {
         this.props.navigation.replace("SignIn")
         
       }
-      this.speak();
+      
     })
   }
   signOuUser = () => {
@@ -45,9 +47,9 @@ export default class HomeScree extends React.Component {
       })
   }
   speak(){
-    var thing='this is Home Page Welcome.'
-    Speech.speak(thing)
-    Speech.speak('you have 3 choose, left Camera,Right Products,and down SignOut ')
+    var thing='ברוך הבא לעמוד בית. יש לְךָ 3 אפשרויות, לבחירה'
+    Speech.speak(thing, { language: "he-IW" })
+    //Speech.speak('you have 3 choose, left Camera,Right Products,and down SignOut ',{ language: "pt-BR" })
   }
  
   

@@ -207,22 +207,14 @@ export default class ViewContact extends Component {
           </Card>
         </View>
         <Card style={styles.actionContainer}>
-          <CardItem style={styles.actionButton} bordered>
-            <TouchableOpacity
-              onPress={() => {
-                this.smsAction(this.state.phone);
-              }}
-            >
-              <Entypo name="message" size={50} color="#B83227" />
-            </TouchableOpacity>
-          </CardItem>
+         
           <CardItem style={styles.actionButton} bordered>
             <TouchableOpacity
               onPress={() => {
                 this.callAction(this.state.phone);
               }}
             >
-              <Entypo name="phone" size={50} color="#B83227" />
+              <Entypo name="phone" size={50} color="#335cd6" />
             </TouchableOpacity>
             <Text style={styles.actionText}>Phone</Text>
           </CardItem>
@@ -235,7 +227,7 @@ export default class ViewContact extends Component {
                 this.editContact(this.state.key);
               }}
             >
-              <Entypo name="edit" size={30} color="#B83227" />
+              <Entypo name="edit" size={30} color="#335cd6" />
               <Text style={styles.actionText}>Edit</Text>
             </TouchableOpacity>
           </CardItem>
@@ -245,7 +237,7 @@ export default class ViewContact extends Component {
                 this.deleteContact(this.state.key);
               }}
             >
-              <Entypo name="trash" size={30} color="#B83227" />
+              <Entypo name="trash" size={30} color="#335cd6" />
               <Text style={styles.actionText}>Delete</Text>
             </TouchableOpacity>
           </CardItem>
@@ -296,7 +288,7 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   actionText: {
-    color: "#B83227",
+    color: "#0033cc",
     fontWeight: "900"
   }
 });
