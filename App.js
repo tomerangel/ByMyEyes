@@ -57,9 +57,7 @@ const MainNavigator = createStackNavigator(
     }
   }
 );
-
 const App = createAppContainer(MainNavigator);
-
 //TODO: Initialize Firebase
 var firebaseConfig = {
   apiKey: "AIzaSyDhuzs-h0KJllvKT3RnusuRfMP0Nt3Ml0o",
@@ -73,12 +71,4 @@ var firebaseConfig = {
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-//FirebaseTODO create firebase real-time database with rules
-
-// {
-//   "rules": {
-//     ".read": true,
-//     ".write": true
-//   }
-// }
 export default App;

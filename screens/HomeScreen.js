@@ -41,8 +41,8 @@ export default class HomeScreen extends React.Component {
   }
   speak() {
     var thing = 'this is Products Page Welcome.'
-    Speech.speak(thing)
-    Speech.speak('you have 2 options, Click the product you want , or you can add product right down ')
+   // Speech.speak(thing)
+    Speech.speak('יש לך 2 אפשרויות,לצפות במוצר או להוסיף מוצר חדש ', { language: "he-IW" })
   }
   // getAllContact method
   getAllContact = () => {
@@ -105,6 +105,7 @@ export default class HomeScreen extends React.Component {
           <Text style={{ textAlign: "center" }}>No Contacts please Add</Text>
           <TouchableOpacity
             onPress={() => {
+              Speech.stop()
               // add icon
               //navigate to Add Contact screen
               this.props.navigation.navigate("Add");
@@ -125,6 +126,7 @@ export default class HomeScreen extends React.Component {
             return (
               <TouchableOpacity
                 onPress={() => {
+                  Speech.stop()
                   //navigate to view contact screen with passing key
                   this.props.navigation.navigate("View", {
                     key: item.key
@@ -148,6 +150,7 @@ export default class HomeScreen extends React.Component {
             // add icon
             //navigate to Add Contact screen
             //this.props.navigation.navigate("View")
+            Speech.stop()
             this.props.navigation.navigate("Add")
           }}
           style={styles.floatButton}

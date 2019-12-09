@@ -92,9 +92,9 @@ export default class AddNewContact extends Component {
     this.speak();
   }
   speak(){
-    var thing='this is NewProduct Page Welcome.'
-    Speech.speak(thing)
-    Speech.speak('you need to fill the details :product description ,phone number and barcode number')
+   // var thing='this is NewProduct Page Welcome.'
+   // Speech.speak(thing)
+    Speech.speak( ' .בעמוד זה תצטרך למלא. את הפרטי המוצר', { language: "he-IW" })
   }
 
   //TODO: upload image to firebase

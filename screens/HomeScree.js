@@ -47,7 +47,7 @@ export default class HomeScree extends React.Component {
       })
   }
   speak(){
-    var thing='ברוך הבא לעמוד בית. יש לְךָ 3 אפשרויות, לבחירה'
+    var thing='ברוך הבא לעמוד בית. יש לְךָ 3 אפשרויות'
     Speech.speak(thing, { language: "he-IW" })
     //Speech.speak('you have 3 choose, left Camera,Right Products,and down SignOut ',{ language: "pt-BR" })
   }
@@ -67,6 +67,7 @@ export default class HomeScree extends React.Component {
             <View style={styles.materialButtonPink1}>
               <TouchableOpacity style={styles.container2}
                onPress={()=>{
+                Speech.stop()
                 this.props.navigation.navigate("Home")
               }}
               >
@@ -74,6 +75,7 @@ export default class HomeScree extends React.Component {
               </TouchableOpacity>
               <TouchableOpacity style={styles.container3}
               onPress={()=>{
+                Speech.stop()
                 this.props.navigation.navigate("Barcode")
               }}
               >
@@ -81,6 +83,7 @@ export default class HomeScree extends React.Component {
               </TouchableOpacity>
               <TouchableOpacity style={styles.container4}
               onPress={()=>{
+                Speech.stop()
                 this.signOuUser()
               }}
               >
