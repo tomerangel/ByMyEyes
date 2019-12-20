@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 // import needed Components
 import {
   StyleSheet,
@@ -7,28 +7,32 @@ import {
   View,
   FlatList,
   Image,
+  Keyboard,
+  TextInput,
   ActivityIndicator
 } from "react-native";
 // install native-base and import card from it
 import { Card } from "native-base";
 //import Entypo icons from @expo
+import {SearchBar} from  'react-native-elements'
 import { Entypo } from "@expo/vector-icons";
 import * as Speech from 'expo-speech'
 //TODO: add firebase
 import * as firebase from 'firebase'
+import Icon from 'react-native-vector-icons'
+import * as Animate from 'react-native-animatable'
 
-export default class HomeScreen extends React.Component {
-  static navigationOptions = {
-    // set screen header name
-    title: "Products"
-  };
+ class HomeScreen extends Component {
+ 
   //TODO: add constructor with state: data[], isLoading, isListEmpty
 
   constructor(props) {
     super(props);
     // set empty array to state
     this.state = {
+      search: '',
       data: [],
+      searchBarFocused: false,
       isLoading: true,
       isListEmpty: false
     };
@@ -39,10 +43,39 @@ export default class HomeScreen extends React.Component {
     this.getAllContact();
 
   }
+  componentDidMount() {
+    this.keyboardDidShow = Keyboard.addListener(
+      'keyboardDidShow',
+      this.keyboardDidShow
+    );
+    this.keyboardWillShow = Keyboard.addListener(
+      'keyboardWillShow',
+      this.keyboardWillShow
+    );
+    this.keyboardWillHide = Keyboard.addListener(
+      'keyboardWillHide',
+      this.keyboardWillHide
+    );
+  }
+
   speak() {
     var thing = 'this is Products Page Welcome.'
    // Speech.speak(thing)
     Speech.speak('יש לך 2 אפשרויות,לצפות במוצר או להוסיף מוצר חדש ', { language: "he-IW" })
+  }
+  updateSearch = search => {
+    this.setState({ search });
+  };
+  keyboardDidShow = () => {
+    this.setState({ searchBarFocused: true })
+  }
+
+  keyboardWillShow = () => {
+    this.setState({ searchBarFocused: true })
+  }
+
+  keyboardWillHide = () => {
+    this.setState({ searchBarFocused: false })
   }
   // getAllContact method
   getAllContact = () => {
@@ -77,10 +110,7 @@ export default class HomeScreen extends React.Component {
     })
     //TODO:
     // sort array by fname and set it to data state
-
-
   }
-
   // render method
   render() {
     // if its loading show ActivityIndicator
@@ -91,7 +121,7 @@ export default class HomeScreen extends React.Component {
         >
           <ActivityIndicator size="large" color="#B83227" />
           <Text style={{ textAlign: "center" }}>
-            Contacts loading please wait..
+            המוצרים בטעינה רק שניה ...
           </Text>
         </View>
       );
@@ -102,7 +132,7 @@ export default class HomeScreen extends React.Component {
           style={{ flex: 1, alignContent: "center", justifyContent: "center" }}
         >
           <Entypo style={{ alignSelf: "center" }} name="plus" size={35} />
-          <Text style={{ textAlign: "center" }}>No Contacts please Add</Text>
+          <Text style={{ textAlign: "center" }}>אין מוצרים במערכת תוכל להוסיף </Text>
           <TouchableOpacity
             onPress={() => {
               Speech.stop()
@@ -119,8 +149,20 @@ export default class HomeScreen extends React.Component {
     }
     // return list of contacts
     return (
+
       <View style={styles.container}>
+      
+      <View style={styles.container}>
+      <SearchBar
+      round
+      searchIcon={{ size: 24 }}
+      
+      placeholder="Search Here"
+      //onChangeText={this.getAllContact()}
+      value={this.state.search}
+    />
         <FlatList
+          style={{ backgroundColor: this.state.searchBarFocused ? 'rgba(0,0,0,0.3)' : 'white' }}
           data={this.state.data}
           renderItem={({ item }) => {
             return (
@@ -144,6 +186,7 @@ export default class HomeScreen extends React.Component {
               </TouchableOpacity>
             );
           }}
+          
         />
         <TouchableOpacity
           onPress={() => {
@@ -158,9 +201,11 @@ export default class HomeScreen extends React.Component {
           <Entypo name="plus" size={30} color="#fff" />
         </TouchableOpacity>
       </View>
+      </View>
     );
   }
 }
+export default HomeScreen;
 // styles
 const styles = StyleSheet.create({
   container: {

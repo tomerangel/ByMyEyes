@@ -3,11 +3,9 @@ import { StyleSheet, Text, View, TouchableOpacity, Keyboard, Image, KeyboardAvoi
 import * as firebase from 'firebase';
 import { Form, Item, Input, Label, Button } from 'native-base'
 import * as Speech from 'expo-speech'
-
-
 export default class SigninScreen extends React.Component {
   static navigationOptions = {
-    title: "SignIn",
+    title: "התחברות",
     header: null
   }
   constructor(props) {
@@ -18,15 +16,11 @@ export default class SigninScreen extends React.Component {
     }
     this.speak();
   }
-
   speak(){
     var thing='ברוך הבא לכניסה יש להזין פרטים ,אחרת אתה יכול להירשם'
     Speech.speak(thing, { language: "he-IW" })
     //Speech.speak('you have 3 choose, left Camera,Right Products,and down SignOut ',{ language: "pt-BR" })
   }
- 
-
-
   signinUser = (email, password) => {
     firebase
       .auth()
@@ -84,16 +78,16 @@ export default class SigninScreen extends React.Component {
                 this.state.password
               )
             }}
-          ><Text style={styles.buttonText}>Sign in</Text></Button>
+          ><Text style={styles.buttonText}>להתחבר</Text></Button>
 
         </Form>
         <View style={styles.footer}>
-          <Text>OR</Text>
+          <Text>או</Text>
           <TouchableOpacity
             onPress={() => {
               this.props.navigation.navigate("SignUp")
             }}>
-            <Text>Create a new Account ?</Text>
+            <Text>ליצור חשבון חדש?...</Text>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>

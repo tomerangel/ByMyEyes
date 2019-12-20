@@ -4,7 +4,7 @@ import * as  firebase from 'firebase';
 import { Form, Input, Label, Button, Item } from 'native-base'
 export default class SignupScreen extends React.Component {
   static navigationOptions = {
-    title: "SignUp",
+    title: "הרשמה",
     header: null
   }
   constructor(props) {
@@ -54,7 +54,7 @@ export default class SignupScreen extends React.Component {
           </View>
           <Form style={styles.form}>
             <Item floatingLabel>
-              <Label>Name</Label>
+              <Label>שם פרטי</Label>
               <Input
                 autoCorrect={false}
                 autoCapitalize="none"
@@ -63,7 +63,7 @@ export default class SignupScreen extends React.Component {
               />
             </Item>
             <Item floatingLabel>
-              <Label>Email</Label>
+              <Label>אימייל</Label>
               <Input
                 autoCorrect={false}
                 autoCapitalize="none"
@@ -72,7 +72,7 @@ export default class SignupScreen extends React.Component {
               />
             </Item>
             <Item floatingLabel>
-              <Label>password</Label>
+              <Label>סיסמה</Label>
               <Input
                 secureTextEntry={true}
                 autoCorrect={false}
@@ -95,12 +95,12 @@ export default class SignupScreen extends React.Component {
             ><Text style={styles.buttonText}>Sign in</Text></Button>
           </Form>
           <View style={styles.footer}>
-            <Text>OR</Text>
+            <Text>או</Text>
             <TouchableOpacity
               onPress={() => {
                 this.props.navigation.navigate("SignIn")
               }}>
-              <Text style={styles.buttonText}>Already having a account ?</Text>
+              <Text style={styles.buttonText}>יש לך כבר חשבון ?..</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>

@@ -6,7 +6,7 @@ import * as firebase from 'firebase'
 import { Form, Item, Input, Label, Button, Card,CardItem } from 'native-base'
 export default class Page extends React.Component {
   static navigationOption = {
-    title: "Result"
+    title: "תוצאה"
   }
 
   constructor(props) {
@@ -33,7 +33,7 @@ export default class Page extends React.Component {
     Speech.speak(thingToSay, { language: "he-IW" });
   }
   speak2() {
-    let thingToSay = 'The product does not exist, you can click below to add a product'
+    let thingToSay = 'המוצר לא קיים. אתה יכול להוסיף אותו. עם לחיצה על הוספת מוצר'
     Speech.speak(thingToSay, { language: "he-IW" });
   }
   componentDidMount() {
@@ -103,11 +103,15 @@ export default class Page extends React.Component {
       key: key
     });
   };
+  AddPro(){
+    let d2 = this.props.navigation.state.params.barcodeData
+    this.props.navigation.replace("Add", { barcodeData:d2})
 
+  }
 
   render() {
     let d = this.props.navigation.state.params.barcodeData
-
+   // console.log(`${d}`)
     if (this.state.isLoading) {
       return (
         <View
@@ -132,7 +136,7 @@ export default class Page extends React.Component {
           <Card style={styles.listItem}>
             <Text style={styles.b}></Text>
             <View style={styles.cardTitle}>
-              <Text style={styles.button}>{this.speak2()} That Product dont Exists you can add product {this.state.len} </Text>
+              <Text style={styles.button}>{this.speak2()} המוצר לא קיים. אתה יכול להוסיף אותו. עם לחיצה על הוספת מוצר {this.state.len} </Text>
             </View>
           </Card>
 
@@ -140,7 +144,7 @@ export default class Page extends React.Component {
           <View style={styles.container4}>
             <TouchableOpacity style={[styles.container2]}
               onPress={() => {
-                this.props.navigation.navigate("Add")
+                this.AddPro()
               }}
             >
               <Text style={styles.caption}>Add Product</Text>

@@ -2,9 +2,9 @@
 
 //TODO: import four screens
 import HomeScreen from './screens/HomeScreen'
-import AddNewContact from './screens/AddNewContact'
-import EditContact from './screens/EditContact'
-import ViewContact from './screens/ViewContact'
+import AddNewContact from './screens/AddNewProduct'
+import EditContact from './screens/EditProduct'
+import ViewContact from './screens/ViewProduct'
 import HomeScree from './screens/HomeScree'
 import LoadingScreen from './screens/LoadingScreen'
 import SignupScreen from './screens/SignupScreen'
@@ -27,6 +27,7 @@ import {  createAppContainer } from "react-navigation";
 
 const MainNavigator = createStackNavigator(
   {
+    
     Loading:{screen:LoadingScreen},
     SignIn:{screen:SigninScreen},
     SignUp:{screen:SignupScreen},

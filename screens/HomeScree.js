@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity,Switch } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity,Switch ,Slider} from 'react-native';
 import { Button } from 'native-base';
 import { FontAwesome, Entypo } from "@expo/vector-icons"
 import * as firebase from 'firebase';
@@ -10,7 +10,7 @@ export default class HomeScree extends React.Component {
 
   static navigationOptions = {
     // set screen header name
-    title: "Home"
+    title: "עמוד הבית"
   };
   constructor(props) {
     super(props);
@@ -65,13 +65,14 @@ export default class HomeScree extends React.Component {
           
           <View style={styles.container1}>
             <View style={styles.materialButtonPink1}>
+            
               <TouchableOpacity style={styles.container2}
                onPress={()=>{
                 Speech.stop()
                 this.props.navigation.navigate("Home")
               }}
               >
-                <Text style={styles.caption2}>Products</Text>
+                <Text style={styles.caption2}>מוצרים</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.container3}
               onPress={()=>{
@@ -79,7 +80,7 @@ export default class HomeScree extends React.Component {
                 this.props.navigation.navigate("Barcode")
               }}
               >
-                <Text style={styles.caption2}>Camera</Text>
+                <Text style={styles.caption2}>מצלמת ברקוד</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.container4}
               onPress={()=>{
@@ -87,7 +88,7 @@ export default class HomeScree extends React.Component {
                 this.signOuUser()
               }}
               >
-                <Text style={styles.caption2}>SignOut</Text>
+                <Text style={styles.caption2}>יציאה מהמערכת</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -134,6 +135,16 @@ const styles = StyleSheet.create({
     
     //fontFamily: "roboto-regular"
   },
+  caption22: {
+    //width: 0,
+    //height: 124,
+    color: "black",
+    fontWeight: 'bold',
+    fontSize: 13,
+    
+    //fontFamily: "roboto-regular"
+  },
+
 
   container2: {
     backgroundColor: "#a6c9ed",
@@ -149,6 +160,22 @@ const styles = StyleSheet.create({
       height: 1,
       width: 0
     },
+    shadowColor: "#000",
+    shadowOpacity: 0.35,
+    shadowRadius: 5
+  },
+  container22: {
+    //backgroundColor: "#fff",
+    //flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    //paddingRight: 16,
+    //paddingLeft: 16,
+    //elevation: 2,
+    borderBottomLeftRadius:3,
+    //minWidth: 88,
+    borderRadius: 2,
+    left:160,
     shadowColor: "#000",
     shadowOpacity: 0.35,
     shadowRadius: 5

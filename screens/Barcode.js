@@ -6,19 +6,9 @@ import * as Permissions from 'expo-permissions';
 import { Camera } from 'expo-camera';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import * as Speech from 'expo-speech'
-
-
-
-const flashModeOrder = {
-  off: 'on',
-  on: 'auto',
-  auto: 'torch',
-
-};
-
 export default class Barcode extends React.Component {
   static navigationOptions = {
-    title: "BarCodeScanner",
+    title: "מצלמת ברקוד",
 
   }
   constructor(props) {
@@ -46,39 +36,10 @@ export default class Barcode extends React.Component {
     this.speak();
     this.getPermissionsAsync();
   }
-
-  toggleFlash() {
-    this.setState({
-      flash: flashModes[this.state.flash],
-    });
-  }
-  onFlash = () => {
-    const { flashMode } = this.state;
-    this.setState({
-      flashMode: flashModeOrder[flashMode],
-    });
-  };
-  onFlip = () => {
-    this.setState({
-      type: this.state.type === Camera.Constants.Type.back
-        ? Camera.Constants.Type.front
-        : Camera.Constants.Type.back,
-    });
-  };
   getPermissionsAsync = async () => {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
     this.setState({ hasCameraPermission: status === 'granted' });
-  };
-  //Toggle flash light
-  flashLight = () => {
-    this.setState = ({
-      isFlashLightOn:
-        this.state.isFlashLightOn === Camera.Constants.FlashMode.off
-          ? Camera.Constants.FlashMode.on
-          : Camera.Constants.FlashMode.off
-    })
   }
-
   render() {
     const { hasCameraPermission, scanned } = this.state;
 
@@ -100,22 +61,21 @@ export default class Barcode extends React.Component {
           onBarCodeScanned={scanned ? undefined : this.handleBarCodeScanned}
           style={StyleSheet.absoluteFillObject}
         />
-        <Text>Bar code{this.state.barcodeData}</Text>
+       
         <View style={styles.actionContainer}>
+       
         </View>
       </View>
 
     );
   }
-
-
   handleBarCodeScanned = ({ type, data }) => {
+    Speech.stop()
     this.props.navigation.replace("Page", { barcodeData: data })
   };
 
 }
 const styles = StyleSheet.create({
-
   actionContainer: {
     flex: 1,
     flexDirection: "row",
