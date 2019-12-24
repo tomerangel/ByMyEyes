@@ -1,12 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity,Switch ,Slider} from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Switch, Slider } from 'react-native';
 import { Button } from 'native-base';
 import { FontAwesome, Entypo } from "@expo/vector-icons"
 import * as firebase from 'firebase';
 import Constants from 'expo-constants';
 import * as Speech from 'expo-speech';
 export default class HomeScree extends React.Component {
-  s={isSwitchOn:true}
+  // s={isSwitchOn:true}
+  _isMounted = false;
 
   static navigationOptions = {
     // set screen header name
@@ -21,21 +22,24 @@ export default class HomeScree extends React.Component {
     }
     this.speak();
   }
-  componentWillMount() {
+  async componentDidMount() {
+    this._isMounted = true;
+
     firebase.auth().onAuthStateChanged(authenticate => {
       if (authenticate) {
-      
-        this.setState({
-          email: authenticate.email,
-          name: authenticate.displayName
-        })
-       
+        if (this._isMounted) {
+          this.setState({
+            email: authenticate.email,
+            name: authenticate.displayName
+          })
+        }
       } else {
         this.props.navigation.replace("SignIn")
-        
       }
-      
     })
+  }
+  componentWillUnmount() {
+    this._isMounted = false;
   }
   signOuUser = () => {
     firebase
@@ -46,55 +50,55 @@ export default class HomeScree extends React.Component {
         alert(error.message)
       })
   }
-  speak(){
-    var thing='ברוך הבא לעמוד בית. יש לְךָ 3 אפשרויות'
+  speak() {
+    var thing = 'ברוך הבא לעמוד בית. יש לְךָ 3 אפשרויות'
     Speech.speak(thing, { language: "he-IW" })
     //Speech.speak('you have 3 choose, left Camera,Right Products,and down SignOut ',{ language: "pt-BR" })
   }
- 
-  
+
+
   render() {
     return (
       <View style={styles.container}>
-      <View style={styles.materialButtonVioletStack}>
-      <Image
-                style={{ width: 280, height: 200,paddingRight: 50,left:70, alignItems: "center", }}
-                source={require('../assets/default.png')}
-              />
-        <View style={styles.materialButtonPink}>
-          
-          <View style={styles.container1}>
-            <View style={styles.materialButtonPink1}>
-            
-              <TouchableOpacity style={styles.container2}
-               onPress={()=>{
-                Speech.stop()
-                this.props.navigation.navigate("Home")
-              }}
-              >
-                <Text style={styles.caption2}>מוצרים</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.container3}
-              onPress={()=>{
-                Speech.stop()
-                this.props.navigation.navigate("Barcode")
-              }}
-              >
-                <Text style={styles.caption2}>מצלמת ברקוד</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.container4}
-              onPress={()=>{
-                Speech.stop()
-                this.signOuUser()
-              }}
-              >
-                <Text style={styles.caption2}>יציאה מהמערכת</Text>
-              </TouchableOpacity>
+        <View style={styles.materialButtonVioletStack}>
+          <Image
+            style={{ width: 280, height: 200, paddingRight: 50, left: 70, alignItems: "center", }}
+            source={require('../assets/default.png')}
+          />
+          <View style={styles.materialButtonPink}>
+
+            <View style={styles.container1}>
+              <View style={styles.materialButtonPink1}>
+
+                <TouchableOpacity style={styles.container2}
+                  onPress={() => {
+                    Speech.stop()
+                    this.props.navigation.navigate("Home")
+                  }}
+                >
+                  <Text style={styles.caption2}>מוצרים</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.container3}
+                  onPress={() => {
+                    Speech.stop()
+                    this.props.navigation.navigate("Barcode")
+                  }}
+                >
+                  <Text style={styles.caption2}>מצלמת ברקוד</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.container4}
+                  onPress={() => {
+                    Speech.stop()
+                    this.signOuUser()
+                  }}
+                >
+                  <Text style={styles.caption2}>יציאה מהמערכת</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </View>
       </View>
-    </View>
     );
   }
 
@@ -123,7 +127,7 @@ const styles = StyleSheet.create({
   materialButtonVioletStack: {
     //width: 360,
     //height: 1000,
-    
+
     //paddingRight:30
   },
   caption2: {
@@ -132,7 +136,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: 'bold',
     fontSize: 40,
-    
+
     //fontFamily: "roboto-regular"
   },
   caption22: {
@@ -141,7 +145,7 @@ const styles = StyleSheet.create({
     color: "black",
     fontWeight: 'bold',
     fontSize: 13,
-    
+
     //fontFamily: "roboto-regular"
   },
 
@@ -172,10 +176,10 @@ const styles = StyleSheet.create({
     //paddingRight: 16,
     //paddingLeft: 16,
     //elevation: 2,
-    borderBottomLeftRadius:3,
+    borderBottomLeftRadius: 3,
     //minWidth: 88,
     borderRadius: 2,
-    left:160,
+    left: 160,
     shadowColor: "#000",
     shadowOpacity: 0.35,
     shadowRadius: 5

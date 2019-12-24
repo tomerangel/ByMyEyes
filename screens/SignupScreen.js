@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, KeyboardAvoidingView, TouchableOpacity, ScrollView } from 'react-native';
 import * as  firebase from 'firebase';
+import * as Speech from 'expo-speech'
 import { Form, Input, Label, Button, Item } from 'native-base'
 export default class SignupScreen extends React.Component {
   static navigationOptions = {
@@ -14,11 +15,13 @@ export default class SignupScreen extends React.Component {
       password: "",
       name: ""
     }
+    this.speak();
   }
-
-
-
-
+  speak(){
+    var thing='ברוך הבא להרשמה יש להזין שם פרטי. איימיל. וסיסמה.'
+    Speech.speak(thing, { language: "he-IW" })
+    //Speech.speak('you have 3 choose, left Camera,Right Products,and down SignOut ',{ language: "pt-BR" })
+  }
   signupUser = (name, email, password) => {
     firebase
       .auth()
@@ -86,6 +89,7 @@ export default class SignupScreen extends React.Component {
               full
               rounded
               onPress={() => {
+                Speech.stop()
                 this.signupUser(
                   this.state.name,
                   this.state.email,
@@ -98,6 +102,7 @@ export default class SignupScreen extends React.Component {
             <Text>או</Text>
             <TouchableOpacity
               onPress={() => {
+                Speech.stop()
                 this.props.navigation.navigate("SignIn")
               }}>
               <Text style={styles.buttonText}>יש לך כבר חשבון ?..</Text>

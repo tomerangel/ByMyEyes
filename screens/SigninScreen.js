@@ -13,6 +13,7 @@ export default class SigninScreen extends React.Component {
     this.state = {
       email: "",
       password: "",
+    
     }
     this.speak();
   }
@@ -25,7 +26,7 @@ export default class SigninScreen extends React.Component {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then(() => {
+      .then((authenticate) => {
         this.props.navigation.replace("Hom")
       })
       .catch(error => {
@@ -73,6 +74,7 @@ export default class SigninScreen extends React.Component {
             full
             rounded
             onPress={() => {
+              Speech.stop()
               this.signinUser(
                 this.state.email,
                 this.state.password
@@ -85,6 +87,7 @@ export default class SigninScreen extends React.Component {
           <Text>או</Text>
           <TouchableOpacity
             onPress={() => {
+              Speech.stop()
               this.props.navigation.navigate("SignUp")
             }}>
             <Text>ליצור חשבון חדש?...</Text>
