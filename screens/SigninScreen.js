@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Keyboard, Image, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Keyboard, Image, KeyboardAvoidingView,ScrollView } from 'react-native';
 import * as firebase from 'firebase';
 import { Form, Item, Input, Label, Button } from 'native-base'
 import * as Speech from 'expo-speech'
@@ -36,6 +36,7 @@ export default class SigninScreen extends React.Component {
 
   render() {
     return (
+      <ScrollView>
       <KeyboardAvoidingView
         style={styles.container}
         behavior="position"
@@ -94,6 +95,7 @@ export default class SigninScreen extends React.Component {
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
+      </ScrollView>
     );
   }
 }

@@ -9,9 +9,10 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   ActivityIndicator,
+  
   Image
 } from "react-native";
-
+import { FontAwesome, Entypo } from "@expo/vector-icons"
 //TODO: Read about UUID
 import uuid from 'uuid'
 import { Form, Item, Input, Label, Button } from "native-base";
@@ -199,13 +200,23 @@ export default class AddNewProduct extends Component {
              
                   autoCorrect={false}
                   autoCapitalize="none"
-                 
                   keyboardType="number-pad"
                   onChangeText={barcode => this.setState({ barcode })}
                 />
+                <TouchableOpacity
+                style={styles}
+                  onPress={() => this
+                  }
+                  style={styles.iconHolder}
+                >
+                  <FontAwesome
+                    name="camera"
+                    size={35}
+                    style={styles.icon}
+                  />
+                </TouchableOpacity>
               </Item>
             </Form>
-
             <Button
               style={styles.button}
               full

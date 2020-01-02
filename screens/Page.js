@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator }
 import Constants from 'expo-constants';
 import * as Speech from 'expo-speech';
 import * as firebase from 'firebase'
-import { Form, Item, Input, Label, Button, Card,CardItem } from 'native-base'
+import { Form, Item, Input, Label, Button, Card, CardItem } from 'native-base'
 export default class Page extends React.Component {
   static navigationOption = {
     title: "תוצאה"
@@ -91,10 +91,10 @@ export default class Page extends React.Component {
           // this.setState({thingToSay:name})
           return name
         }
-        
-        
+
+
       })
-      this.setState({isLoading:false})
+      this.setState({ isLoading: false })
     })
   }
   editContact = key => {
@@ -103,15 +103,15 @@ export default class Page extends React.Component {
       key: key
     });
   };
-  AddPro(){
+  AddPro() {
     let d2 = this.props.navigation.state.params.barcodeData
-    this.props.navigation.replace("Add", { barcodeData:d2})
+    this.props.navigation.replace("Add", { barcodeData: d2 })
 
   }
 
   render() {
     let d = this.props.navigation.state.params.barcodeData
-   // console.log(`${d}`)
+    // console.log(`${d}`)
     if (this.state.isLoading) {
       return (
         <View
@@ -185,8 +185,8 @@ export default class Page extends React.Component {
           </Card>
           <Card style={styles.listItem2}>
             <View style={styles.cardTitle}>
-            <CardItem bordered>
-              <Text style={styles.button2}>Special allergies:
+              <CardItem bordered>
+                <Text style={styles.button2}>Special allergies:
                 </Text>
               </CardItem>
               <CardItem bordered>
@@ -217,11 +217,11 @@ export default class Page extends React.Component {
   }
 
 }
-const styles = StyleSheet.create({
+  const styles = StyleSheet.create({
   containe: {
     flex: 1,
     backgroundColor: "#fff",
-   // margin: 10
+    // margin: 10
   },
   inputItem: {
     margin: 10
@@ -273,17 +273,17 @@ const styles = StyleSheet.create({
   listItem: {
     //flexDirection: "row",
     //padding: 50,
-   // color: "#335cd6",
+    // color: "#335cd6",
     //borderWidth: 100,
-    justifyContent:"flex-start",
+    justifyContent: "flex-start",
     borderColor: "#335cd6"
   },
   listItem2: {
     //flexDirection: "row",
     //padding: 50,
-   // color: "#335cd6",
+    // color: "#335cd6",
     //borderWidth: 100,
-    justifyContent:"flex-start",
+    justifyContent: "flex-start",
     borderColor: "red"
   },
   contactIcon: {
@@ -334,7 +334,7 @@ const styles = StyleSheet.create({
     width: 430,
     height: 200,
     justifyContent: "center",
-    marginEnd:20,
+    marginEnd: 20,
     //marginTop: 80,
     //paddingRight: 16,
     //paddingLeft: 19,
@@ -356,7 +356,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
- 
+
   group: {
     width: 420,
     height: 220,
