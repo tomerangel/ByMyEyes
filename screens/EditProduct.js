@@ -14,6 +14,8 @@ import {
 } from "react-native";
 
 //TODO: Add UUID
+import RNPickerSelect from 'react-native-picker-select';
+
 
 import { ImagePicker } from "expo";
 
@@ -32,6 +34,76 @@ export default class EditContact extends Component {
     super(props);
     // set state
     this.state = {
+      mark: "",
+      // items: [
+      //   {
+      //     label: 'תקין-ירוק',
+      //     value: 'תקין-ירוק',
+      //   },
+      //     {
+      //         label: 'סוכר ברמה גוובה',
+      //         value: 'סוכר ברמה גוובה',
+      //     },
+      //     {
+      //         label: 'נתרן ברמה גוובה',
+      //         value: 'נתרן ברמה גוובה',
+      //     },
+      //     {
+      //         label: 'שומן רווי ברמה גוובה',
+      //         value: 'שומן רווי ברמה גוובה',
+      //     },
+      // ],
+      allergy:"",
+      // allergys:[
+      //   {
+      //     label: 'אין',
+      //     value: 'אין',
+      //   },
+      //   {
+      //     label: 'חלב',
+      //     value: 'חלב',
+      //   },
+      //   {
+      //     label: 'סויה',
+      //     value: 'סויה',
+      //   },
+      //   {
+      //     label: 'ביצים',
+      //     value: 'ביצים',
+      //   },
+      //   {
+      //     label: 'חיטה',
+      //     value: 'חיטה',
+      //   },
+      //   {
+      //     label: 'דגים',
+      //     value: 'דגים',
+      //   },
+      //   {
+      //     label: 'בוטנים',
+      //     value: 'בוטנים',
+      //   },
+      //   {
+      //     label: 'שומשום',
+      //     value: 'שומשום',
+      //   },
+      //   {
+      //     label: 'שקדים',
+      //     value: 'שקדים',
+      //   },
+      //   {
+      //     label: 'קווי',
+      //     value: 'קויי',
+      //   },
+      //   {
+      //     label: 'אגוזים',
+      //     value: 'אגוזים',
+      //   },
+      //   {
+      //     label: 'קשיו',
+      //     value: 'קשיו',
+      //   },
+      // ],
       fname: "",
       // lname: "",
       phone: "",
@@ -53,9 +125,6 @@ export default class EditContact extends Component {
   getContact = async key => {
     let self = this
     let contactRef = firebase.database().ref().child(key)
-
-
-
     await contactRef.on("value", dataSnapsot => {
       if (dataSnapsot.val()) {
         contactValue = dataSnapsot.val();
@@ -78,6 +147,8 @@ export default class EditContact extends Component {
     if (this.state.fname !== "" &&
       // this.state.lname !== "" &&
       this.state.phone !== "" &&
+      //this.state.mark !== "" &&
+      //this.state.allergy !==""&&
       //  this.state.email !== "" &&
       this.state.barcode !== ""
 
@@ -85,17 +156,12 @@ export default class EditContact extends Component {
       this.setState({ isUploading: true })
       const dbRefernce = firebase.database().ref()
       const storageRef = firebase.database().ref()
-      if (this.state.image !== "empty") {
-        const downloadUrl = await this.uploadImageAsync(
-          this.state.image, storageRef
-        )
-        this.setState({ imageDownloadUrl: downloadUrl })
-      }
+    
       var contact = {
         fname: this.state.fname,
-        //lname:this.state.lname,
         phone: this.state.phone,
-        //email:this.state.email,
+       // mark:this.state.mark,
+        //allergy:this.state.allergy,
         barcode: this.state.barcode,
         //imageUrl:this.state.imageUrl,
       }
@@ -108,48 +174,8 @@ export default class EditContact extends Component {
   };
 
   //TODO: pick image from gallery
-  pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      quality: 0.2,
-      base64: true,
-      allowsEditing: true,
-      aspect: [1, 1]
+  
 
-    })
-    if (!result.cancelled) {
-      this.setState({ image: result.uri })
-    }
-  };
-
-  //TODO: upload to firebase
-  uploadImageAsync = async (uri, storageRef) => {
-    const parts = uri.split(".")
-    const fileExtenstion = parts[parts.length - 1]
-
-    const blob = await new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest()
-      xhr.onload = function () {
-        resolve(xhr.response)
-      }
-      xhr.onerror = function (e) {
-        console.log(e)
-        reject(new TypeError("Network request failed"))
-      }
-      xhr.responseType = "blob"
-      xhr.open("GET", uri, true)
-      xhr.send(null);
-
-    })
-
-    const ref = storageRef
-      .child("ContactImages")
-      .child(uuid.v4() + "." + fileExtenstion)
-    const snapshot = await ref.put(blob)
-
-    blob.close()
-    return await snapshot.ref.getDownloadUR();
-
-  }
 
   // render method
   render() {
@@ -230,6 +256,7 @@ export default class EditContact extends Component {
                   value={this.state.barcode}
                 />
               </Item>
+              
             </Form>
 
             <Button

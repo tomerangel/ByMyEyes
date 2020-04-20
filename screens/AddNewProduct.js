@@ -13,6 +13,8 @@ import {
   Image
 } from "react-native";
 import { FontAwesome, Entypo } from "@expo/vector-icons"
+import RNPickerSelect from 'react-native-picker-select';
+
 //TODO: Read about UUID
 import uuid from 'uuid'
 import { Form, Item, Input, Label, Button } from "native-base";
@@ -32,13 +34,87 @@ export default class AddNewProduct extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      mark: "",
+      items: [
+        {
+          label: 'תקין-ירוק',
+          value: 'תקין-ירוק',
+        },
+          {
+              label: 'סוכר ברמה גוובה',
+              value: 'סוכר ברמה גוובה',
+          },
+          {
+              label: 'נתרן ברמה גוובה',
+              value: 'נתרן ברמה גוובה',
+          },
+          {
+              label: 'שומן רווי ברמה גוובה',
+              value: 'שומן רווי ברמה גוובה',
+          },
+      ],
+      allergy:"",
+      allergys:[
+        {
+          label: 'אין',
+          value: 'אין',
+        },
+        {
+          label: 'חלב',
+          value: 'חלב',
+        },
+        {
+          label: 'סויה',
+          value: 'סויה',
+        },
+        {
+          label: 'ביצים',
+          value: 'ביצים',
+        },
+        {
+          label: 'חיטה',
+          value: 'חיטה',
+        },
+        {
+          label: 'דגים',
+          value: 'דגים',
+        },
+        {
+          label: 'בוטנים',
+          value: 'בוטנים',
+        },
+        {
+          label: 'שומשום',
+          value: 'שומשום',
+        },
+        {
+          label: 'שקדים',
+          value: 'שקדים',
+        },
+        {
+          label: 'קווי',
+          value: 'קויי',
+        },
+        {
+          label: 'אגוזים',
+          value: 'אגוזים',
+        },
+        {
+          label: 'קשיו',
+          value: 'קשיו',
+        },
+      ],
       fname: "",
       //lname:"",
-      phone: "",
+     
       // email:"",
       barcode: "",
       barcodeData:"",
-      
+      Calories:"",
+      Sodium :"",
+      Proteins:"",
+      Carbohydrates:"",
+      Fats:"",
       image: "empty",
       imageDownloadUrl: "empty",
       isUploading: false
@@ -50,9 +126,15 @@ export default class AddNewProduct extends Component {
     if (
       this.state.fname !== "" &&
       //this.state.lname !== "" &&
-      this.state.phone !== "" &&
+      this.state.Calories !== "" &&
+     this.state.Sodium !== ""&&
+      this.state.Proteins !== "" &&
+      this.state.Carbohydrates !== "" &&
+      this.state.Fats !== "" &&
+      this.state.mark !== "" &&
+      this.state.allergy !==""&&
       //this.state.email !== "" &&
-      this.state.barcode !== ""
+      this.state.barcode !== "" 
 
     ) {
       this.setState({ isUploading: true });
@@ -64,10 +146,15 @@ export default class AddNewProduct extends Component {
       }
 
       var contact = {
+
         fname: this.state.fname,
-        // lname:this.state.lname,
-        phone: this.state.phone,
-        //  email:this.state.email,
+        Calories: this.state.Calories,
+        Proteins:this.state.Proteins ,
+        Carbohydrates:this.state.Carbohydrates,
+        Fats: this.state.Fats ,
+        mark:this.state.mark,
+        allergy:this.state.allergy,
+        Sodium:this.state.Sodium,
         barcode: this.state.barcode,
         //imageUrl:this.state.imageUrl,
       }
@@ -79,18 +166,14 @@ export default class AddNewProduct extends Component {
 
     }
   };
-  //TODO: pick image from gallery
-  pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      quality: 0.2,
-      base64: true,
-      allowsEditing: true,
-      aspect: [1, 1]
-    })
-    if (!result.cancelled) {
-      this.setState({ image: result.uri })
-    }
-  };
+  
+  componentDidMount(){
+    setTimeout(() => {
+      this.setState({
+        mark: 'standard',
+      });
+  }, 1000);
+  }
   componentWillMount(){
     this.speak();
   }
@@ -100,32 +183,6 @@ export default class AddNewProduct extends Component {
     Speech.speak( ' .בעמוד זה תצטרך למלא. את הפרטי המוצר', { language: "he-IW" })
   }
 
-  //TODO: upload image to firebase
-  uploadImageAsync = async (uri, storageRef) => {
-    const parts = uri.split(".");
-    const fileExtenstion = parts[parts.length - 1]
-    //create blog
-    const blob = await new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest()
-      xhr.onload = function () {
-        resolve(xhr.response)
-      }
-      xhr.onerror = function (e) {
-        console.log(e)
-        reject(new TypeError("Network request failed"))
-      }
-      xhr.responseType = "blob"
-      xhr.open("GET", uri, true)
-      xhr.send(null)
-    })
-    const ref = storageRef
-      .child("ContactImages")
-      .child(uuid.v4() + "." + fileExtenstion)
-    const snapshot = await ref.put(blob)
-
-    blob.close()
-    return await snapshot.ref.getDownloadUR();
-  };
 
   //render method
   render() {
@@ -156,23 +213,6 @@ export default class AddNewProduct extends Component {
           }}
         >
           <ScrollView style={styles.container}>
-            <TouchableOpacity
-              onPress={() => {
-                this.pickImage();
-              }}
-            >
-              <Image
-                source={
-                  this.state.image === "empty"
-                    ? require("../assets/person.png")
-                    : {
-                      uri: this.state.image
-                    }
-                }
-                style={styles.imagePicker}
-              />
-            </TouchableOpacity>
-
             <Form>
               <Item style={styles.inputItem} floatingLabel>
                 <Label>תיאור המוצר</Label>
@@ -183,17 +223,51 @@ export default class AddNewProduct extends Component {
                   onChangeText={fname => this.setState({ fname })}
                 />
               </Item>
-
               <Item style={styles.inputItem} floatingLabel>
-                <Label>מס' פלאפון</Label>
+                <Label>קלוריות</Label>
                 <Input
                   autoCorrect={false}
                   autoCapitalize="none"
                   keyboardType="number-pad"
-                  onChangeText={phone => this.setState({ phone })}
+                  onChangeText={Calories => this.setState({ Calories })}
                 />
               </Item>
-
+              <Item style={styles.inputItem} floatingLabel>
+                <Label>חלבונים</Label>
+                <Input
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  keyboardType="number-pad"
+                  onChangeText={Proteins => this.setState({ Proteins })}
+                />
+              </Item>
+              <Item style={styles.inputItem} floatingLabel>
+                <Label>פחמימות</Label>
+                <Input
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  keyboardType="number-pad"
+                  onChangeText={Carbohydrates => this.setState({ Carbohydrates })}
+                />
+              </Item>
+              <Item style={styles.inputItem} floatingLabel>
+                <Label>שומנים</Label>
+                <Input
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  keyboardType="number-pad"
+                  onChangeText={Fats => this.setState({ Fats })}
+                />
+              </Item>
+              <Item style={styles.inputItem} floatingLabel>
+                <Label>נתרן</Label>
+                <Input
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  keyboardType="number-pad"
+                  onChangeText={Sodium => this.setState({ Sodium })}
+                />
+              </Item>
               <Item style={styles.inputItem} floatingLabel>
                 <Label>מס' ברקוד</Label>
                 <Input
@@ -202,21 +276,46 @@ export default class AddNewProduct extends Component {
                   autoCapitalize="none"
                   keyboardType="number-pad"
                   onChangeText={barcode => this.setState({ barcode })}
-                />
-                <TouchableOpacity
-                style={styles}
-                  onPress={() => this
-                  }
-                  style={styles.iconHolder}
-                >
-                  <FontAwesome
-                    name="camera"
-                    size={35}
-                    style={styles.icon}
-                  />
-                </TouchableOpacity>
+                />   
               </Item>
+
+              <Text>תבחר סימון משרד הבריאות</Text>
+                <RNPickerSelect
+                    placeholder={{
+                        label: 'Choose...',
+                        value: null,
+                    }}
+                    items={this.state.items}
+                    onValueChange={(value) => {
+                        this.setState({
+                            mark: value,
+                        });
+                    }}
+                    style={styles.pickerSelectStyles }
+                    value={this.state.mark}
+                    />
+            
+
+
+              
+            
+            
             </Form>
+            <Text>מכיל אלרגיה מסוימת ?.</Text>
+                <RNPickerSelect
+                    placeholder={{
+                        label: 'אם המוצר מכיל משהו מכאן תבחר.',
+                        value: null,
+                    }}
+                    items={this.state.allergys}
+                    onValueChange={(value) => {
+                        this.setState({
+                            allergy: value,
+                        });
+                    }}
+                    style={styles.pickerSelectStyles }
+                    value={this.state.allergy}
+                    />
             <Button
               style={styles.button}
               full
@@ -260,5 +359,16 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#fff",
     fontWeight: "bold"
+  },
+  pickerSelectStyles:{
+    fontSize: 16,
+        paddingTop: 13,
+        paddingHorizontal: 10,
+        paddingBottom: 12,
+        borderWidth: 1,
+        borderColor: 'gray',
+        borderRadius: 4,
+        backgroundColor: 'white',
+        color: 'black',
   }
 });

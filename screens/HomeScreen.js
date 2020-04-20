@@ -12,7 +12,7 @@ import {
   ActivityIndicator
 } from "react-native";
 // install native-base and import card from it
-import { Card } from "native-base";
+import { Card, Right } from "native-base";
 //import Entypo icons from @expo
 import {SearchBar} from  'react-native-elements'
 import { Entypo } from "@expo/vector-icons";
@@ -43,20 +43,7 @@ import * as Animate from 'react-native-animatable'
     this.getAllContact();
 
   }
-  componentDidMount() {
-    this.keyboardDidShow = Keyboard.addListener(
-      'keyboardDidShow',
-      this.keyboardDidShow
-    );
-    this.keyboardWillShow = Keyboard.addListener(
-      'keyboardWillShow',
-      this.keyboardWillShow
-    );
-    this.keyboardWillHide = Keyboard.addListener(
-      'keyboardWillHide',
-      this.keyboardWillHide
-    );
-  }
+  
 
   speak() {
     var thing = 'this is Products Page Welcome.'
@@ -153,14 +140,14 @@ import * as Animate from 'react-native-animatable'
       <View style={styles.container}>
       
       <View style={styles.container}>
-      <SearchBar
+      {/* <SearchBar
       round
       searchIcon={{ size: 24 }}
       
       placeholder="Search Here"
       //onChangeText={this.getAllContact()}
       value={this.state.search}
-    />
+    /> */}
         <FlatList
           style={{ backgroundColor: this.state.searchBarFocused ? 'rgba(0,0,0,0.3)' : 'white' }}
           data={this.state.data}
@@ -213,6 +200,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff"
   },
   listItem: {
+    textAlign: 'right', 
+    alignSelf: 'stretch',
     flexDirection: "row",
     padding: 20
   },
@@ -222,12 +211,14 @@ const styles = StyleSheet.create({
     borderRadius: 100
   },
   infoContainer: {
-    flexDirection: "column"
+    textAlign:'center',
+    //flexDirection: "column"
   },
   infoText: {
-    fontSize: 30,
+    textAlign:"center",
+    fontSize: 20,
     fontWeight: "bold",
-    paddingLeft: 10,
+    //paddingLeft: 10,
     paddingTop: 2
   },
   floatButton: {

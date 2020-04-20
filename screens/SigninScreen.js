@@ -18,7 +18,7 @@ export default class SigninScreen extends React.Component {
     this.speak();
   }
   speak(){
-    var thing='ברוך הבא לכניסה יש להזין פרטים ,אחרת אתה יכול להירשם'
+    var thing='בָּרוּךְ הַבָּא'
     Speech.speak(thing, { language: "he-IW" })
     //Speech.speak('you have 3 choose, left Camera,Right Products,and down SignOut ',{ language: "pt-BR" })
   }

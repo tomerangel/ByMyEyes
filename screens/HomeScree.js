@@ -51,8 +51,10 @@ export default class HomeScree extends React.Component {
       })
   }
   speak() {
-    var thing = 'ברוך הבא לעמוד בית. יש לְךָ 3 אפשרויות.צפייה במוצרים.מצלמת ברקוד.ויציאה מהמערכת'
+    var thing = 'בָּרוּךְ הַבָּא'
     Speech.speak(thing, { language: "he-IW" })
+    var thing2 = 'לַסְּרִיקָה לָחַץ עַל הַכַּפְתּוֹר הָאֶמְצָעִי'
+    Speech.speak(thing2, { language: "he-IW" })
     //Speech.speak('you have 3 choose, left Camera,Right Products,and down SignOut ',{ language: "pt-BR" })
   }
 
@@ -80,8 +82,8 @@ export default class HomeScree extends React.Component {
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.container3}
                   onPress={() => {
-                    // Speech.stop()
-                    // this.props.navigation.navigate("Barcode")
+                    Speech.stop()
+                    this.props.navigation.navigate("Barcode")
                   }}
                 >
                   <Text style={styles.caption2}>מצלמת ברקוד</Text>
