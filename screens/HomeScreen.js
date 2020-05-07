@@ -23,7 +23,7 @@ import Icon from 'react-native-vector-icons'
 import * as Animate from 'react-native-animatable'
 
  class HomeScreen extends Component {
- 
+  _isMounted = false;
   //TODO: add constructor with state: data[], isLoading, isListEmpty
 
   constructor(props) {
@@ -37,13 +37,18 @@ import * as Animate from 'react-native-animatable'
       isListEmpty: false
     };
   }
+
   // lifecycle method
-  componentWillMount() {
+  componentDidMount() {
+    this._isMounted = true;
+    if (this._isMounted) {
     this.speak();
     this.getAllContact();
-
+    }
   }
-  
+  componentWillUnmount(){
+    this._isMounted = false;
+  }
 
   speak() {
     var thing = 'this is Products Page Welcome.'
@@ -125,7 +130,7 @@ import * as Animate from 'react-native-animatable'
               Speech.stop()
               // add icon
               //navigate to Add Contact screen
-              this.props.navigation.navigate("Add");
+              this.props.navigation.navigate("barcodeProduct");
             }}
             style={styles.floatButton}
           >
@@ -181,7 +186,7 @@ import * as Animate from 'react-native-animatable'
             //navigate to Add Contact screen
             //this.props.navigation.navigate("View")
             Speech.stop()
-            this.props.navigation.navigate("Add")
+            this.props.navigation.navigate("barcodeProduct")
           }}
           style={styles.floatButton}
         >

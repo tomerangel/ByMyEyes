@@ -19,6 +19,7 @@ import Barcode from 'react-native-barcode-builder';
 //TODO: add firebase
 import * as firebase from 'firebase'
 export default class ViewProduct extends Component {
+ 
   static navigationOptions = {
     title: "פרטי המוצר"
   };
@@ -40,7 +41,8 @@ export default class ViewProduct extends Component {
       barcode: null,
       imageUrl: null,
       key: null,
-      isLoading: true
+      isLoading: true,
+      tomer:true,
     };
   }
   // lifecycle method
@@ -139,7 +141,7 @@ export default class ViewProduct extends Component {
               .child(key)
             await contactRef.remove(error => {
               if (!error) {
-                this.props.navigation.goBack();
+                return this.props.navigation.replace("Home");
               }
             })
           }
@@ -159,7 +161,7 @@ export default class ViewProduct extends Component {
 
   // render method
   render() {
-    //console.log(`${name} ${n} ${n2}  this is from Camera`)
+  
     console.log(`${this.state.mark}  that`)
       if (this.state.isLoading) {
         return (
@@ -205,7 +207,7 @@ export default class ViewProduct extends Component {
             </Card>
             <Card>
               <CardItem bordered>
-                <Text style={styles.infoText,{textAlign: 'right'}}>אלרגיה מסוימת</Text>
+                <Text style={styles.infoText}>אלרגיה מסוימת</Text>
               </CardItem>
               <CardItem bordered>
                 <Text style={styles.infoText}>{this.state.allergy}</Text>
@@ -215,8 +217,8 @@ export default class ViewProduct extends Component {
               <CardItem bordered>
                 <Text style={styles.infoText}>סימון משרד הבריאות</Text>
               </CardItem>
-              <CardItem bordered style={styles.infoText3}>
-                <Text style={styles.infoText2}>{this.state.mark}</Text>
+              <CardItem bordered style={(this.state.mark=="תקין-ירוק") ? styles.infoText3 : styles.infoText4}>
+                <Text style={styles.infoText}>{this.state.mark}</Text>
               </CardItem>
             </Card>
             <Card>
@@ -258,12 +260,14 @@ export default class ViewProduct extends Component {
 }
 // styles
 const styles = StyleSheet.create({
+  
   container: {
     flex: 1,
     textAlign: "center",
     backgroundColor: "#fff"
   },
   contactIconContainer: {
+
     textAlign: "center",
     alignItems: "center",
     justifyContent: "center"
@@ -301,9 +305,6 @@ const styles = StyleSheet.create({
   },
   infoText2: {
     backgroundColor:"green",
-    textAlign: "center",
-    fontSize: 18,
-    fontWeight: "300"
   },
   actionContainer: {
     textAlign: "center",

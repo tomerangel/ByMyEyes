@@ -10,6 +10,7 @@ import LoadingScreen from './screens/LoadingScreen'
 import SignupScreen from './screens/SignupScreen'
 import SigninScreen from './screens/SigninScreen'
 import Barcode from './screens/Barcode'
+import barcodeProduct from './screens/barcodeProduct'
 import Button from './src/screens/Untitled'
 import Button2 from './src/components/MaterialButtonViolet'
 import Button3 from './src/components/MaterialButtonPink'
@@ -38,9 +39,7 @@ const MainNavigator = createStackNavigator(
     Page: { screen: Page },
     View: { screen: ViewContact },
     Edit: { screen: EditContact },
-    Button:{screen:Button},
-    Button2:{screen:Button2},
-    Button3:{screen:Button3},
+    barcodeProduct:{screen:barcodeProduct},
     //Button4:{screen:Button4},
     //Unti:{screen:Unti}
     // Voice:{screen:Voice},

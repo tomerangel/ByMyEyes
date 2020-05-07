@@ -9,7 +9,7 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   ActivityIndicator,
-  
+
   Image
 } from "react-native";
 import { FontAwesome, Entypo } from "@expo/vector-icons"
@@ -26,6 +26,8 @@ import * as  ImagePicker from "expo-image-picker";
 import * as firebase from 'firebase'
 
 export default class AddNewProduct extends Component {
+  _isMounted = false;
+
   static navigationOptions = {
     // set screen header title
     title: "הוספת מוצר"
@@ -40,21 +42,21 @@ export default class AddNewProduct extends Component {
           label: 'תקין-ירוק',
           value: 'תקין-ירוק',
         },
-          {
-              label: 'סוכר ברמה גוובה',
-              value: 'סוכר ברמה גוובה',
-          },
-          {
-              label: 'נתרן ברמה גוובה',
-              value: 'נתרן ברמה גוובה',
-          },
-          {
-              label: 'שומן רווי ברמה גוובה',
-              value: 'שומן רווי ברמה גוובה',
-          },
+        {
+          label: 'סוכר ברמה גוובה',
+          value: 'סוכר ברמה גוובה',
+        },
+        {
+          label: 'נתרן ברמה גוובה',
+          value: 'נתרן ברמה גוובה',
+        },
+        {
+          label: 'שומן רווי ברמה גוובה',
+          value: 'שומן רווי ברמה גוובה',
+        },
       ],
-      allergy:"",
-      allergys:[
+      allergy: "",
+      allergys: [
         {
           label: 'אין',
           value: 'אין',
@@ -105,89 +107,159 @@ export default class AddNewProduct extends Component {
         },
       ],
       fname: "",
-      //lname:"",
-     
-      // email:"",
+      key:"",
       barcode: "",
-      barcodeData:"",
-      Calories:"",
-      Sodium :"",
-      Proteins:"",
-      Carbohydrates:"",
-      Fats:"",
-      image: "empty",
-      imageDownloadUrl: "empty",
-      isUploading: false
+      barcodeData: "",
+      Calories: "",
+      Sodium: "",
+      Proteins: "",
+      Carbohydrates: "",
+      Fats: "",
+      isUploading: false,
+      boolspeak: true,
+      booladdProduct:false,
     }
+    
   }
   //TODO: savecontact method
   saveContact = async () => {
+
     // create and save contact to firebase
     if (
       this.state.fname !== "" &&
-      //this.state.lname !== "" &&
       this.state.Calories !== "" &&
-     this.state.Sodium !== ""&&
+      this.state.Sodium !== "" &&
       this.state.Proteins !== "" &&
       this.state.Carbohydrates !== "" &&
       this.state.Fats !== "" &&
       this.state.mark !== "" &&
-      this.state.allergy !==""&&
-      //this.state.email !== "" &&
-      this.state.barcode !== "" 
+      this.state.allergy !== "" &&
+      this.state.barcode !== ""
 
     ) {
       this.setState({ isUploading: true });
       const dbRefexrence = firebase.database().ref();
       const storageRef = firebase.storage().ref();
-      if (this.state.image !== "empty") {
-        const downloadUrl = await this.uploadImageAsync(this.state.image, storageRef)
-        this.setState({ imageDownloadUrl: downloadUrl })
-      }
 
       var contact = {
 
         fname: this.state.fname,
         Calories: this.state.Calories,
-        Proteins:this.state.Proteins ,
-        Carbohydrates:this.state.Carbohydrates,
-        Fats: this.state.Fats ,
-        mark:this.state.mark,
-        allergy:this.state.allergy,
-        Sodium:this.state.Sodium,
+        Proteins: this.state.Proteins,
+        Carbohydrates: this.state.Carbohydrates,
+        Fats: this.state.Fats,
+        mark: this.state.mark,
+        allergy: this.state.allergy,
+        Sodium: this.state.Sodium,
         barcode: this.state.barcode,
         //imageUrl:this.state.imageUrl,
       }
       await dbRefexrence.push(contact, error => {
         if (!error) {
-          return this.props.navigation.goBack();
+          //this.state.booladdProduct=true;
+          return this.props.navigation.replace("Home");
         }
       })
-
+    } else {
+      alert("שכחת למלא אחד מהמוצרים.")
     }
   };
+  componentDidMount() {
+    this._isMounted = true;
+    let d = this.props.navigation.state.params.barcodeData
+    console.log(d)
+    if (this._isMounted) {
+    this.setState({
+        barcode: d
+      })
+      this.getContact();
+    }
+    if (this.state.boolspeak) {
+      this.speak()
+    }
+    else{
+      alert("המוצר כבר קיים במערכת תוכלו לבדוק בצפייה במוצרים")
+      this.speak2();
+    }
+
+  }
+  componentWillUnmount(){
+  this._isMounted = false;
   
-  componentDidMount(){
-    setTimeout(() => {
-      this.setState({
-        mark: 'standard',
-      });
-  }, 1000);
-  }
-  componentWillMount(){
-    this.speak();
-  }
-  speak(){
-   // var thing='this is NewProduct Page Welcome.'
-   // Speech.speak(thing)
-    Speech.speak( ' .בעמוד זה תצטרך למלא. את הפרטי המוצר', { language: "he-IW" })
-  }
+}
+
+getContact = async () => {
+  let self = this
+  let barCodeData2 = this.props.navigation.state.params.barcodeData
+  let ref = firebase.database().ref()
+  ref.on("value", dataSnapsot => {
+    let contactResult = Object.values(dataSnapsot.val())
+    //contactValue = dataSnapsot.val();
+    contactResult.forEach((a) => {
+      let nameA = a.barcode
+      const nameB = barCodeData2
+      const name = a.fname;
+      if (nameA == nameB) {
+        this.state.boolspeak = false;
+        return this.props.navigation.replace("Home");
+      }
+    })
+  })
+};
 
 
+
+
+  // nameOfFunc = (key) => {
+  //   let ref = firebase.database().ref()
+  //   let barCodeData2 = this.props.navigation.state.params.barcodeData
+  //   ref.on("value", dataSnapsot => {
+  //     let contactResult = Object.values(dataSnapsot.val())
+  //     //fname: contactResult,
+      
+  //     contactResult.forEach((a) => {
+  //       let nameA = a.barcode
+  //       const nameB = barCodeData2
+  //       const name = a.fname
+  //       console.log(`${nameA} this is from database`)
+  //       console.log(`${nameB} this is from Camera`)
+  //       if (nameA == nameB) {
+  //         this.state.boolspeak = false;
+  //         //this.state.booladdProduct= true;
+  //         return this.props.navigation.replace("Home");
+  //       }
+  //     })
+    
+  //   if (this.state.boolspeak) {
+  //     this.speak()
+  //   }
+  //   else{
+  //     alert("המוצר כבר קיים במערכת תוכלו לבדוק בצפייה במוצרים")
+  //     this.speak2();
+  //   }
+  //   })
+  
+  
+       
+    
+  
+
+  // }
+  speak2() {
+    // var thing='this is NewProduct Page Welcome.'
+    // Speech.speak(thing)
+    Speech.speak('המוצר כבר קיים במערכת', { language: "he-IW" })
+  }
+  speak() {
+    // var thing='this is NewProduct Page Welcome.'
+    // Speech.speak(thing)
+    Speech.speak(' .בעמוד זה תצטרך למלא. את הפרטי המוצר', { language: "he-IW" })
+  }
   //render method
   render() {
-    //let d = this.props.navigation.state.params.barcodeData
-   
+    // if (this.state.tomer){
+    let d = this.props.navigation.state.params.barcodeData
+    
     if (this.state.isUploading) {
       return (
         <View
@@ -215,7 +287,7 @@ export default class AddNewProduct extends Component {
           <ScrollView style={styles.container}>
             <Form>
               <Item style={styles.inputItem} floatingLabel>
-                <Label style={{textAlign: 'right'}}>תיאור המוצר</Label>
+                <Label style={{ textAlign: 'right' }}>תיאור המוצר</Label>
                 <Input
                   autoCorrect={false}
                   autoCapitalize="none"
@@ -224,7 +296,7 @@ export default class AddNewProduct extends Component {
                 />
               </Item>
               <Item style={styles.inputItem} floatingLabel>
-                <Label style={{textAlign: 'right'}}>קלוריות</Label>
+                <Label style={{ textAlign: 'right' }}>קלוריות</Label>
                 <Input
                   autoCorrect={false}
                   autoCapitalize="none"
@@ -233,7 +305,7 @@ export default class AddNewProduct extends Component {
                 />
               </Item>
               <Item style={styles.inputItem} floatingLabel>
-                <Label style={{textAlign: 'right'}}>חלבונים</Label>
+                <Label style={{ textAlign: 'right' }}>חלבונים</Label>
                 <Input
                   autoCorrect={false}
                   autoCapitalize="none"
@@ -242,7 +314,7 @@ export default class AddNewProduct extends Component {
                 />
               </Item>
               <Item style={styles.inputItem} floatingLabel>
-                <Label style={{textAlign: 'right'}}>פחמימות</Label>
+                <Label style={{ textAlign: 'right' }}>פחמימות</Label>
                 <Input
                   autoCorrect={false}
                   autoCapitalize="none"
@@ -251,7 +323,7 @@ export default class AddNewProduct extends Component {
                 />
               </Item>
               <Item style={styles.inputItem} floatingLabel>
-                <Label style={{textAlign: 'right'}}>שומנים</Label>
+                <Label style={{ textAlign: 'right' }}>שומנים</Label>
                 <Input
                   autoCorrect={false}
                   autoCapitalize="none"
@@ -260,7 +332,7 @@ export default class AddNewProduct extends Component {
                 />
               </Item>
               <Item style={styles.inputItem} floatingLabel>
-                <Label style={{textAlign: 'right'}}>נתרן</Label>
+                <Label style={{ textAlign: 'right' }}>נתרן</Label>
                 <Input
                   autoCorrect={false}
                   autoCapitalize="none"
@@ -268,49 +340,38 @@ export default class AddNewProduct extends Component {
                   onChangeText={Sodium => this.setState({ Sodium })}
                 />
               </Item>
-              <Item style={styles.inputItem} floatingLabel>
-                <Label style={{textAlign: 'right'}}>מס' ברקוד</Label>
-                <Input
-             
-                  autoCorrect={false}
-                  autoCapitalize="none"
-                  keyboardType="number-pad"
-                  onChangeText={barcode => this.setState({ barcode })}
-                />   
-              </Item>
-
-              <Text style={{textAlign: 'right'}}>תבחר סימון משרד הבריאות</Text>
-                <RNPickerSelect
-                    placeholder={{
-                        label: 'Choose...',
-                        value: null,
-                    }}
-                    items={this.state.items}
-                    onValueChange={(value) => {
-                        this.setState({
-                            mark: value,
-                        });
-                    }}
-                    style={{ ...pickerStyles }}
-                    value={this.state.mark}
-                    />
-
             </Form>
-            <Text style={{textAlign: 'right'}}>מכיל אלרגיה מסוימת ?.</Text>
-                <RNPickerSelect
-                    placeholder={{
-                        label: 'אם המוצר מכיל משהו מכאן תבחר.',
-                        value: null,
-                    }}
-                    items={this.state.allergys}
-                    onValueChange={(value) => {
-                        this.setState({
-                            allergy: value,
-                        });
-                    }}
-                    style={{ ...pickerStyles }}
-                    value={this.state.allergy}
-                    />
+            <Text style={{ textAlign: 'right' }}>תבחר סימון משרד הבריאות</Text>
+            <RNPickerSelect
+              placeholder={{
+                label: 'Choose...',
+                value: null,
+              }}
+              items={this.state.items}
+              onValueChange={(value) => {
+                this.setState({
+                  mark: value,
+                });
+              }}
+              style={{ ...pickerStyles }}
+              value={this.state.mark}
+            />
+            <Text style={{ textAlign: 'right' }}>מכיל אלרגיה מסוימת ?.</Text>
+            <RNPickerSelect
+              placeholder={{
+                label: 'אם המוצר מכיל משהו מכאן תבחר.',
+                value: null,
+              }}
+              items={this.state.allergys}
+              onValueChange={(value) => {
+                this.setState({
+                  // barcode: d,
+                  allergy: value,
+                });
+              }}
+              style={{ ...pickerStyles }}
+              value={this.state.allergy}
+            />
             <Button
               style={styles.button}
               full
@@ -355,16 +416,16 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold"
   },
-  pickerSelectStyles:{
+  pickerSelectStyles: {
     fontSize: 16,
-        paddingTop: 13,
-        paddingHorizontal: 10,
-        paddingBottom: 12,
-        borderWidth: 1,
-        borderColor: 'gray',
-        borderRadius: 4,
-        backgroundColor: 'white',
-        color: 'black',
+    paddingTop: 13,
+    paddingHorizontal: 10,
+    paddingBottom: 12,
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 4,
+    backgroundColor: 'white',
+    color: 'black',
   }
 });
 const pickerStyles = StyleSheet.create({
@@ -377,7 +438,7 @@ const pickerStyles = StyleSheet.create({
     flex: 1
   },
   inputIOSContainer: {
-     flex: 1,
+    flex: 1,
     margin: 5,
     padding: 10,
     flexDirection: 'row',

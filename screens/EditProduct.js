@@ -12,114 +12,115 @@ import {
   ActivityIndicator,
   ScrollView
 } from "react-native";
-
 //TODO: Add UUID
 import RNPickerSelect from 'react-native-picker-select';
-
-
 import { ImagePicker } from "expo";
-
 import { Form, Item, Input, Label, Button } from "native-base";
-
 import { Header } from "react-navigation";
-
-//TODO: add firebase
+//TODO:add firebase
 import * as firebase from 'firebase'
 export default class EditContact extends Component {
+
   static navigationOptions = {
     title: "Edit Product"
   };
-
   constructor(props) {
     super(props);
     // set state
     this.state = {
-      mark: "",
-      // items: [
-      //   {
-      //     label: 'תקין-ירוק',
-      //     value: 'תקין-ירוק',
-      //   },
-      //     {
-      //         label: 'סוכר ברמה גוובה',
-      //         value: 'סוכר ברמה גוובה',
-      //     },
-      //     {
-      //         label: 'נתרן ברמה גוובה',
-      //         value: 'נתרן ברמה גוובה',
-      //     },
-      //     {
-      //         label: 'שומן רווי ברמה גוובה',
-      //         value: 'שומן רווי ברמה גוובה',
-      //     },
-      // ],
       allergy:"",
-      // allergys:[
-      //   {
-      //     label: 'אין',
-      //     value: 'אין',
-      //   },
-      //   {
-      //     label: 'חלב',
-      //     value: 'חלב',
-      //   },
-      //   {
-      //     label: 'סויה',
-      //     value: 'סויה',
-      //   },
-      //   {
-      //     label: 'ביצים',
-      //     value: 'ביצים',
-      //   },
-      //   {
-      //     label: 'חיטה',
-      //     value: 'חיטה',
-      //   },
-      //   {
-      //     label: 'דגים',
-      //     value: 'דגים',
-      //   },
-      //   {
-      //     label: 'בוטנים',
-      //     value: 'בוטנים',
-      //   },
-      //   {
-      //     label: 'שומשום',
-      //     value: 'שומשום',
-      //   },
-      //   {
-      //     label: 'שקדים',
-      //     value: 'שקדים',
-      //   },
-      //   {
-      //     label: 'קווי',
-      //     value: 'קויי',
-      //   },
-      //   {
-      //     label: 'אגוזים',
-      //     value: 'אגוזים',
-      //   },
-      //   {
-      //     label: 'קשיו',
-      //     value: 'קשיו',
-      //   },
-      // ],
       fname: "",
-      // lname: "",
-      phone: "",
-      //email: "",
       barcode: "",
-      image: "empty",
-      imageDownloadUrl: "empty",
+      mark: "",
+      items: [
+        {
+          label: 'תקין-ירוק',
+          value: 'תקין-ירוק',
+        },
+          {
+              label: 'סוכר ברמה גוובה',
+              value: 'סוכר ברמה גוובה',
+          },
+          {
+              label: 'נתרן ברמה גוובה',
+              value: 'נתרן ברמה גוובה',
+          },
+          {
+              label: 'שומן רווי ברמה גוובה',
+              value: 'שומן רווי ברמה גוובה',
+          },
+      ],
+      allergys:[
+        {
+          label: 'אין',
+          value: 'אין',
+        },
+        {
+          label: 'חלב',
+          value: 'חלב',
+        },
+        {
+          label: 'סויה',
+          value: 'סויה',
+        },
+        {
+          label: 'ביצים',
+          value: 'ביצים',
+        },
+        {
+          label: 'חיטה',
+          value: 'חיטה',
+        },
+        {
+          label: 'דגים',
+          value: 'דגים',
+        },
+        {
+          label: 'בוטנים',
+          value: 'בוטנים',
+        },
+        {
+          label: 'שומשום',
+          value: 'שומשום',
+        },
+        {
+          label: 'שקדים',
+          value: 'שקדים',
+        },
+        {
+          label: 'קווי',
+          value: 'קויי',
+        },
+        {
+          label: 'אגוזים',
+          value: 'אגוזים',
+        },
+        {
+          label: 'קשיו',
+          value: 'קשיו',
+        },
+      ],
+      barcodeData:"",
+      Calories:"",
+      Sodium :"",
+      Proteins:"",
+      Carbohydrates:"",
+      Fats:"",
       isUploading: false,
       isLoading: true,
-      key: ""
+      key: "",
+      isMounted: false
     };
   }
-
   componentDidMount() {
+    
+    this.setState({isMounted: true})
     var key = this.props.navigation.getParam("key", "");
     this.getContact(key);
+    
+  }
+  componentWillUnmount() {
+    this.state.isMounted = false
   }
   //TODO: getContact  method
   getContact = async key => {
@@ -130,9 +131,13 @@ export default class EditContact extends Component {
         contactValue = dataSnapsot.val();
         self.setState({
           fname: contactValue.fname,
-          //   lname:contactValue.lname,
-          phone: contactValue.phone,
-          // email:contactValue.email,
+          Calories:contactValue.Calories,
+          Sodium:contactValue.Sodium,
+          Proteins:contactValue.Proteins,
+          Carbohydrates:contactValue.Carbohydrates,
+          Fats:contactValue.Fats,
+          mark:contactValue.mark,
+          allergy:contactValue.allergy,
           barcode: contactValue.barcode,
           imageUrl: contactValue.imageUrl,
           key: key,
@@ -141,17 +146,17 @@ export default class EditContact extends Component {
       }
     })
   };
-
   //TODO: update contact method
   updateContact = async key => {
     if (this.state.fname !== "" &&
-      // this.state.lname !== "" &&
-      this.state.phone !== "" &&
-      //this.state.mark !== "" &&
-      //this.state.allergy !==""&&
-      //  this.state.email !== "" &&
+      this.state.Calories!== ""&&
+      this.state.Sodium!== ""&&
+      this.state.Proteins!== ""&&
+      this.state.Carbohydrates!== ""&&
+      this.state.Fats!== ""&&
+      this.state.mark !== "" &&
+      this.state.allergy !==""&&
       this.state.barcode !== ""
-
     ) {
       this.setState({ isUploading: true })
       const dbRefernce = firebase.database().ref()
@@ -159,11 +164,15 @@ export default class EditContact extends Component {
     
       var contact = {
         fname: this.state.fname,
-        phone: this.state.phone,
-       // mark:this.state.mark,
-        //allergy:this.state.allergy,
+        Calories: this.state.Calories,
+        Sodium: this.state.Sodium,
+        Proteins: this.state.Proteins,
+        Carbohydrates: this.state.Carbohydrates,
+        Fats:this.state.Fats,
+        mark:this.state.mark,
+        allergy:this.state.allergy,
         barcode: this.state.barcode,
-        //imageUrl:this.state.imageUrl,
+       
       }
       await dbRefernce.child(key).set(contact, error => {
         if (!error) {
@@ -172,11 +181,6 @@ export default class EditContact extends Component {
       })
     }
   };
-
-  //TODO: pick image from gallery
-  
-
-
   // render method
   render() {
     if (this.state.isUploading) {
@@ -204,7 +208,7 @@ export default class EditContact extends Component {
           }}
         >
           <ScrollView style={styles.container}>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={() => {
                 this.pickImage();
               }}
@@ -219,7 +223,7 @@ export default class EditContact extends Component {
                 }
                 style={styles.imagePicker}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <Form>
               <Item style={styles.inputItem} floatingLabel>
                 <Label>תיאור המוצר</Label>
@@ -234,31 +238,116 @@ export default class EditContact extends Component {
                   }
                 />
               </Item>
-
               <Item style={styles.inputItem} floatingLabel>
-                <Label>מס' פלאפון</Label>
+                <Label style={{textAlign: 'right'}}>קלוריות</Label>
                 <Input
                   autoCorrect={false}
                   autoCapitalize="none"
                   keyboardType="number-pad"
-                  onChangeText={phone => this.setState({ phone })}
-                  value={this.state.phone}
+                  onChangeText={Calories => this.setState({ Calories })}
+                  value={
+                    // set current contact value to input box
+                    this.state.Calories
+                  }
                 />
               </Item>
 
               <Item style={styles.inputItem} floatingLabel>
-                <Label>ברקוד</Label>
+                <Label style={{textAlign: 'right'}}>חלבונים</Label>
                 <Input
                   autoCorrect={false}
                   autoCapitalize="none"
-                  keyboardType="default"
-                  onChangeText={barcode => this.setState({ barcode })}
-                  value={this.state.barcode}
+                  keyboardType="number-pad"
+                  onChangeText={Proteins => this.setState({ Proteins })}
+                  value={
+                    // set current contact value to input box
+                    this.state.Proteins
+                  }
                 />
               </Item>
-              
-            </Form>
+              <Item style={styles.inputItem} floatingLabel>
+                <Label style={{textAlign: 'right'}}>פחמימות</Label>
+                <Input
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  keyboardType="number-pad"
+                  onChangeText={Carbohydrates => this.setState({ Carbohydrates })}
+                  value={
+                    // set current contact value to input box
+                    this.state.Carbohydrates
+                  }
+                />
+              </Item>
+              <Item style={styles.inputItem} floatingLabel>
+                <Label style={{textAlign: 'right'}}>שומנים</Label>
+                <Input
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  keyboardType="number-pad"
+                  onChangeText={Fats => this.setState({ Fats })}
+                  value={
+                    // set current contact value to input box
+                    this.state.Fats
+                  }
+                />
+              </Item>
+              <Item style={styles.inputItem} floatingLabel>
+                <Label style={{textAlign: 'right'}}>נתרן</Label>
+                <Input
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  keyboardType="number-pad"
+                  onChangeText={Sodium => this.setState({ Sodium })}
+                  value={
+                    // set current contact value to input box
+                    this.state.Sodium
+                  }
+                />
+              </Item>
+              <Item style={styles.inputItem} floatingLabel>
+                <Label style={{textAlign: 'right'}}>מס' ברקוד</Label>
+                <Input
+             
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  keyboardType="number-pad"
+                  onChangeText={barcode => this.setState({ barcode })}
+                  value={this.state.barcode}
+                />   
+              </Item>
+              <Text style={{textAlign: 'right'}}>תבחר סימון משרד הבריאות</Text>
+                <RNPickerSelect
+                    placeholder={{
+                        label: this.state.mark,
+                        value: this.state.mark,
+                    }}
+                    items={this.state.items}
+                    onValueChange={(value) => {
+                        this.setState({
+                            mark: value,
+                        });
+                    }}
+                    style={{ ...pickerStyles }}
+                    value={this.state.mark}
+                    />
 
+            <Text style={{textAlign: 'right'}}>מכיל אלרגיה מסוימת ?.</Text>
+                <RNPickerSelect
+                    placeholder={{
+                        label: this.state.allergy,
+                        value: this.state.allergy,
+                    }}
+                    items={this.state.allergys}
+                    onValueChange={(value) => {
+                        this.setState({
+                            allergy: value,
+                        });
+                    }}
+                    style={{ ...pickerStyles }}
+                    value={this.state.allergy}
+                    />
+
+            </Form>
             <Button
               style={styles.button}
               full
@@ -303,3 +392,38 @@ const styles = StyleSheet.create({
     fontWeight: "bold"
   }
 });
+const pickerStyles = StyleSheet.create({
+  inputIOS: {
+    flex: 1,
+    fontSize: 17,
+    color: 'black',
+  },
+  viewContainer: {
+    flex: 1
+  },
+  inputIOSContainer: {
+     flex: 1,
+    margin: 5,
+    padding: 10,
+    flexDirection: 'row',
+    backgroundColor: '#bbb',
+  },
+  icon: {
+    
+    flexDirection: 'column',
+    position: 'relative',
+    top: 0,
+    right: 5,
+    flexGrow: 0,
+    width: 6,
+    alignSelf: 'center',
+    borderTopWidth: 6,
+    borderTopColor: '#212733',
+    borderRightWidth: 6,
+    borderLeftWidth: 6,
+  },
+  done: {
+    color: '#212733'
+  },
+});
+

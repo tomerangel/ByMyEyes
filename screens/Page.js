@@ -1,9 +1,11 @@
 import React from "react";
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator } from "react-native";
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator,ScrollView } from "react-native";
 import Constants from 'expo-constants';
 import * as Speech from 'expo-speech';
 import * as firebase from 'firebase'
 import { Form, Item, Input, Label, Button, Card, CardItem } from 'native-base'
+import Barcode from 'react-native-barcode-builder';
+import { Entypo } from "@expo/vector-icons";
 export default class Page extends React.Component {
   
   static navigationOption = {
@@ -53,20 +55,14 @@ export default class Page extends React.Component {
             email: authenticate.email,
             allergy_user: authenticate.displayName,
           })
-         
-        
       } else {
         this.props.navigation.replace("SignIn")
       }
     })
-  
     let key = this.props.navigation.getParam("key", "");
     this.getContact(key);
     this.nameOfFunc();
- 
   }
- 
- 
   getContact = async key => {
     let self = this
     let barCodeData2 = this.props.navigation.state.params.barcodeData
@@ -140,21 +136,6 @@ export default class Page extends React.Component {
      
       this.setState({ isLoading: false })
     })
-    // console.log(this.state.allergy)
-    // console.log("the diff")
-    // console.log(this.state.allergy_user)
-    
-  }
-  editContact = key => {
-    //navigate to edit screen with passing key
-    this.props.navigation.navigate("Edit", {
-      key: key
-    });
-  };
-  AddPro() {
-    let d2 = this.props.navigation.state.params.barcodeData
-    this.props.navigation.replace("Add", { barcodeData: d2 })
-
   }
   CheckSpeicalAllregy=(allergy ,allergy_user) => {
     if((allergy)!=(allergy_user)){
@@ -165,16 +146,11 @@ export default class Page extends React.Component {
       let thingToSay ='תזהר המוצר הזה מכיל את האלרגיה שאתה רגיש'
       Speech.speak(thingToSay, { language: "he-IW" });
     }
-
   }
-
   render() {
-   
     console.log(this.state.allergy_user)
     console.log(this.state.allergy)
     let d = this.props.navigation.state.params.barcodeData
-  
-    if (this.state.mark == 'תקין-ירוק') {
       if (this.state.isLoading) {
         return (
           <View
@@ -220,179 +196,122 @@ export default class Page extends React.Component {
       else {
         this.CheckSpeicalAllregy(this.state.allergy,this.state.allergy_user)
         return (
-          <View style={styles.containe}>
-            <View style={styles.cardTitle}>
-              <Text
-                full
-                style={styles.title}>המוצר:{this.state.fname}{this.speak(this.state.len)} </Text>
-            </View>
-            <Card style={styles.listItem2}>
-              <View style={styles.cardTitle}>
-                <CardItem bordered>
-                  <Text style={styles.button3}>המוצר מכיל אלרגיות מיוחדות:
-                </Text>
-                </CardItem>
-                <CardItem bordered>
-                  <Text style={styles.button}>{this.state.allergy}
-                  </Text>
-                </CardItem>
-              </View>
-              <View style={styles.cardTitle}>
-                <CardItem bordered>
-                  <Text style={styles.button3}>סימון משרד הבריאות:
-                </Text>
-                </CardItem>
-                <CardItem bordered style={styles.button4}>
-                  <Text style={styles.button}>{this.state.mark}
-                  </Text>
-                </CardItem>
-              </View>
-              <View style={styles.cardTitle}>
-                <CardItem bordered>
-                  <CardItem style={styles.button3}>
-                  <Text style={styles.button}>קלוריות:{this.state.Calories},נתרן:{this.state.Sodium},פחמימות:{this.state.Carbohydrates},שומן:{this.state.Fats},חלבונים:{this.state.Carbohydrates}
- </Text>
-                  </CardItem>
-                </CardItem>
-                <CardItem bordered style={styles.button}>
-                  <Text style={styles.button}>
-                  </Text>
-                </CardItem>
-              </View>
-            </Card>
-            <View style={{ flex: 1, justifyContent: 'flex-end' }}>
-
-              <TouchableOpacity style={{
-                width: '100%', height: 150, backgroundColor: 'blue',
-                alignItems: 'center', justifyContent: 'center'
-              }}
-
-                onPress={() => {
-                  this.props.navigation.navigate("Barcode")
-                }}
-              >
-                <Text style={{ color: 'white', fontSize: 16 }}>לסרוק שוב</Text>
-              </TouchableOpacity>
-            </View>
-
-
+          <ScrollView style={styles.container}>
+          <View style={styles.contactIconContainer}> 
+              <Text style={styles.name}>
+                {this.state.fname}
+              </Text>
           </View>
-        );
-      }
-    }
-    else {
-      if (this.state.isLoading) {
-        return (
-          <View
-            style={{
-              flex: 1,
-              alignContent: "center",
-              justifyContent: "center"
-            }}
-          >
-            <ActivityIndicator size="large" color="#B83227" />
-            <Text style={{ textAlign: "center" }}>
-              loading please wait..
-            </Text>
-          </View>
-        );
-      }
-      if (this.state.len == 'empty') {
-        return (
-          <View style={styles.containe}>
-            <View style={styles.cardTitle}>
-            </View>
-            <Card style={styles.listItem}>
-              <Text style={styles.b}></Text>
-              <View style={styles.cardTitle}>
-                <Text style={styles.button}>{this.speak2()} המוצר לא קיים. אתה יכול להוסיף אותו. עם לחיצה על הוספת מוצר {this.state.len} </Text>
-              </View>
-            </Card>
-            <View style={styles.container4}>
-
-              <TouchableOpacity style={[styles.container3]}
-                onPress={() => {
-                  this.props.navigation.navigate("Barcode")
-                }}
-              >
-                <Text style={styles.caption2}>Scan Again</Text>
-              </TouchableOpacity>
-            </View>
-
-          </View>
-
-        )
-      }
-      else {
-        this.CheckSpeicalAllregy(this.state.allergy,this.state.allergy_user)
-        return (
-          <View style={styles.containe}>
-            <View style={styles.cardTitle}>
-              <Text
-
-                style={styles.button5}>המוצר:{this.state.fname}{this.speak(this.state.len)} </Text>
-            </View>
-
-            <Card style={styles.listItem2}>
-              <View style={styles.cardTitle}>
-                <CardItem bordered>
-                  <Text style={styles.button3}>סימון תזונתי ל100 גרם:
-                  </Text>
-                </CardItem>
-                <CardItem bordered style={styles.button}>
-                  <Text style={styles.button}>קלוריות:{this.state.Calories},נתרן:{this.state.Sodium},פחמימות:{this.state.Carbohydrates},שומן:{this.state.Fats},חלבונים:{this.state.Carbohydrates}
-                  </Text>
-                </CardItem>
-              </View>
-              <View style={styles.cardTitle}>
-                <CardItem bordered>
-                  <Text style={styles.button3}>המוצר מכיל אלרגיות מיוחדות:
-                  </Text>
-                </CardItem>
-                <CardItem bordered>
-                  <Text style={styles.button}>{this.state.allergy}
-                  </Text>
-                </CardItem>
-              </View>
-              <View style={styles.cardTitle}>
-                <CardItem bordered>
-                  <Text style={styles.button3}>סימון משרד הבריאות:
-                  </Text>
-                </CardItem>
-                <CardItem bordered style={styles.button6}>
-                  <Text style={styles.button}>{this.state.mark}
-                  </Text>
-                </CardItem>
-              </View>
-
+          <View style={styles.infoContainer}>
+            <Card>
+            <CardItem bordered>
+                <Text style={styles.infoText}> קלוריות |</Text>
+                <Text style={styles.infoText}> שומנים |</Text>
+                <Text style={styles.infoText}> פחמימות |</Text>
+                <Text style={styles.infoText}> חלבונים |</Text>
+                <Text style={styles.infoText}>| נתרן |</Text>
+              </CardItem>
+              <CardItem bordered>
+                <Text style={styles.infoText}>|    {this.state.Calories}    |</Text>
+                <Text style={styles.infoText}>     {this.state.Fats}   |</Text>
+                <Text style={styles.infoText}>     {this.state.Carbohydrates}    |</Text>
+                <Text style={styles.infoText}>     {this.state.Proteins}   |</Text>
+                <Text style={styles.infoText}>     {this.state.Sodium}  |</Text>
+              </CardItem>
 
             </Card>
-            <View style={{ flex: 1, justifyContent: 'flex-end' }}>
-
-              <TouchableOpacity style={{
-                width: '100%', height: 150, backgroundColor: 'blue',
-                alignItems: 'center', justifyContent: 'center'
-              }}
-
-                onPress={() => {
-                  this.props.navigation.navigate("Barcode")
-                }}
-              >
-                <Text style={{ color: 'white', fontSize: 16 }}>לסרוק שוב</Text>
-              </TouchableOpacity>
-            </View>
-
+            <Card>
+              <CardItem bordered>
+                <Text style={styles.infoText}>אלרגיה מסוימת</Text>
+              </CardItem>
+              <CardItem bordered>
+                <Text style={styles.infoText}>{this.state.allergy}</Text>
+              </CardItem>
+            </Card>
+            <Card>
+              <CardItem bordered>
+                <Text style={styles.infoText}>סימון משרד הבריאות</Text>
+              </CardItem>
+              <CardItem bordered style={(this.state.mark=="תקין-ירוק") ? styles.infoText3 : styles.infoText4}>
+                <Text style={styles.infoText}>{this.state.mark}</Text>
+              </CardItem>
+            </Card>
+            <Card>
+              <CardItem bordered>
+                <Text style={styles.infoText}>ברקוד</Text>
+              </CardItem>
+              <CardItem bordered>
+                <Barcode value={this.state.barcode} format="CODE128" />
+              </CardItem>
+            </Card>
           </View>
+        
+        </ScrollView>
         );
       }
     }
   }
-}
+
 const styles = StyleSheet.create({
-  containe: {
+  container: {
     flex: 1,
-    backgroundColor: "#fff",
-    // margin: 10
+    textAlign: "center",
+    backgroundColor: "#fff"
+  },
+  contactIconContainer: {
+
+    textAlign: "center",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  contactIcon: {
+    // to create a square box both height and width should be same
+    height: 130,//Dimensions.get("window").width,
+    width: 20//Dimensions.get("window").width
+  },
+  nameContainer: {
+    textAlign: 'right',
+    width: "100%",
+    height: 70,
+    padding: 10,
+    backgroundColor: "rgba(255,255,255,0.5)",
+    justifyContent: "center",
+    position: "absolute",
+    bottom: 0
+  },
+  name: {
+    fontSize: 50,
+    color: "#000",
+    fontWeight: "900"
+  },
+  infoText: {
+    textAlign: 'right',
+    fontSize: 18,
+    fontWeight: "300"
+  },
+  infoText3: {
+    backgroundColor:"green",
+  },
+  infoText4: {
+    backgroundColor:"red",
+  },
+  infoText2: {
+    backgroundColor:"green",
+  },
+  actionContainer: {
+    textAlign: "center",
+    flexDirection: "row"
+  },
+  actionButton: {
+    textAlign: "center",
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  actionText: {
+    textAlign: "center",
+    color: "#0033cc",
+    fontWeight: "900"
   },
   inputItem: {
     margin: 10
@@ -538,7 +457,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
-
   group: {
     width: 420,
     height: 220,
@@ -550,6 +468,4 @@ const styles = StyleSheet.create({
     width: 360,
     height: 360
   }
-
-
 })  

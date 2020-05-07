@@ -7,27 +7,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import { Form, Input, Label, Button, Item } from 'native-base'
 
 
-class Picker extends React.Component {
-  render() {
-    return (
-      <RNPickerSelect
-       
-        placeholder={{
-          label: 'Choose...',
-          value: null,
-         }}
-        
-        items={this.props.items}
-        onValueChange={(value) => {
-          this.setState({
-            name: value,
-          });
-        }}
-         
-      />
-    );
-  }
-}
+
 
 
 export default class SignupScreen extends React.Component {

@@ -52,10 +52,10 @@ export default class HomeScree extends React.Component {
       })
   }
   speak() {
-    var thing = 'בָּרוּךְ הַבָּא'
-    Speech.speak(thing, { language: "he-IW" })
-    var thing2 = 'לַסְּרִיקָה לָחַץ עַל הַכַּפְתּוֹר הָאֶמְצָעִי'
-    Speech.speak(thing2, { language: "he-IW" })
+    var thing = 'welcome to scanner application'
+    Speech.speak(thing)
+    // var thing2 = 'לַסְּרִיקָה לָחַץ עַל הַכַּפְתּוֹר הָאֶמְצָעִי'
+    // Speech.speak(thing2, { language: "he-IW" })
     //Speech.speak('you have 3 choose, left Camera,Right Products,and down SignOut ',{ language: "pt-BR" })
   }
 
