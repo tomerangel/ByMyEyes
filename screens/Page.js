@@ -11,7 +11,6 @@ export default class Page extends React.Component {
   static navigationOption = {
     title: "תוצאה"
   }
-
   constructor(props) {
     super(props)
     this.state = {
@@ -33,11 +32,11 @@ export default class Page extends React.Component {
       image: "empty",
       isLoading: true,
       key: null,
-      imageDownloadUrl: "empty",
+      boolspeak:true,
       isUploading: false,
       //thingToSay:"empty"
     }
-    this.nameOfFunc = this.nameOfFunc.bind(this)
+    
   }
   speak = len => {
     let thingToSay = len
@@ -48,7 +47,6 @@ export default class Page extends React.Component {
     Speech.speak(thingToSay, { language: "he-IW" });
   }
    componentDidMount() {
-  
     firebase.auth().onAuthStateChanged(authenticate => {
       if (authenticate) {
           this.setState({
@@ -61,7 +59,6 @@ export default class Page extends React.Component {
     })
     let key = this.props.navigation.getParam("key", "");
     this.getContact(key);
-    this.nameOfFunc();
   }
   getContact = async key => {
     let self = this
@@ -87,6 +84,7 @@ export default class Page extends React.Component {
 
         if (nameA == nameB) {
           self.setState({
+            boolspeak:false,
             fname: name,
             //  lname:contactValue.lname,
             phone: n,
@@ -100,13 +98,10 @@ export default class Page extends React.Component {
             Carbohydrates: n8,
             Fats: n9,
             Proteins: n10,
+            len:name
           })
-       
-
         }
-
       })
-      
     })
   };
   nameOfFunc = () => {
@@ -124,19 +119,16 @@ export default class Page extends React.Component {
         console.log(`${nameB} this is from Camera`)
         //console.log(`${nameA} What numers issssssss`);
         if (nameA == nameB) {
-          //console.log(`${name} ........`)
-          // this.setState({  len: 'empty' });
+          this.state.boolspeak=false;
           this.setState({ len: name, isLoading: false });
-          // this.setState({thingToSay:name})
           return name
         }
-
-
       })
-     
       this.setState({ isLoading: false })
     })
   }
+  
+  
   CheckSpeicalAllregy=(allergy ,allergy_user) => {
     if((allergy)!=(allergy_user)){
       console.log("is not same")
@@ -199,7 +191,7 @@ export default class Page extends React.Component {
           <ScrollView style={styles.container}>
           <View style={styles.contactIconContainer}> 
               <Text style={styles.name}>
-                {this.state.fname}
+                {this.state.fname}{this.speak(this.state.len)} 
               </Text>
           </View>
           <View style={styles.infoContainer}>
@@ -454,9 +446,7 @@ const styles = StyleSheet.create({
     fontSize: 50,
     //fontFamily: "roboto-regular"
   },
-  container: {
-    flex: 1
-  },
+
   group: {
     width: 420,
     height: 220,
