@@ -161,7 +161,6 @@ export default class ViewProduct extends Component {
   render() {
     //console.log(`${name} ${n} ${n2}  this is from Camera`)
     console.log(`${this.state.mark}  that`)
-    if (this.state.mark == 'תקין-ירוק') {
       if (this.state.isLoading) {
         return (
           <View
@@ -181,39 +180,32 @@ export default class ViewProduct extends Component {
       // else show contact details
       return (
         <ScrollView style={styles.container}>
-          <View style={styles.contactIconContainer}>
-            {/* <Image
-            style={styles.contactIcon}
-            source={
-              this.state.imageUrl === "empty"
-                ? require("../assets/person.png")
-                : {
-                  uri: this.state.imageUrl
-                }
-            }
-          /> */}
-            
-            <View style={styles.nameContainer}>
+          <View style={styles.contactIconContainer}> 
               <Text style={styles.name}>
                 {this.state.fname}
               </Text>
-            </View>
           </View>
           <View style={styles.infoContainer}>
             <Card>
-              <CardItem bordered>
-                <Text style={styles.infoText}>קלוריות</Text>
-                <Text style={styles.infoText}>נתרן</Text>
+            <CardItem bordered>
+                <Text style={styles.infoText}> קלוריות |</Text>
+                <Text style={styles.infoText}> שומנים |</Text>
+                <Text style={styles.infoText}> פחמימות |</Text>
+                <Text style={styles.infoText}> חלבונים |</Text>
+                <Text style={styles.infoText}>| נתרן |</Text>
               </CardItem>
               <CardItem bordered>
-                <Text style={styles.infoText}>{this.state.Calories}</Text>
-                <Text style={styles.infoText}>{this.state.Sodium}</Text>
+                <Text style={styles.infoText}>|    {this.state.Calories}    |</Text>
+                <Text style={styles.infoText}>     {this.state.Fats}   |</Text>
+                <Text style={styles.infoText}>     {this.state.Carbohydrates}    |</Text>
+                <Text style={styles.infoText}>     {this.state.Proteins}   |</Text>
+                <Text style={styles.infoText}>     {this.state.Sodium}  |</Text>
               </CardItem>
 
             </Card>
             <Card>
               <CardItem bordered>
-                <Text style={styles.infoText}>אלרגיה מסוימת</Text>
+                <Text style={styles.infoText,{textAlign: 'right'}}>אלרגיה מסוימת</Text>
               </CardItem>
               <CardItem bordered>
                 <Text style={styles.infoText}>{this.state.allergy}</Text>
@@ -227,31 +219,15 @@ export default class ViewProduct extends Component {
                 <Text style={styles.infoText2}>{this.state.mark}</Text>
               </CardItem>
             </Card>
-
             <Card>
               <CardItem bordered>
                 <Text style={styles.infoText}>ברקוד</Text>
               </CardItem>
               <CardItem bordered>
                 <Barcode value={this.state.barcode} format="CODE128" />
-
               </CardItem>
             </Card>
           </View>
-          <Card style={styles.actionContainer}>
-
-            <CardItem style={styles.actionButton} bordered>
-              <TouchableOpacity
-                onPress={() => {
-                  this.callAction(this.state.phone);
-                }}
-              >
-                <Entypo name="phone" size={50} color="#335cd6" />
-              </TouchableOpacity>
-              <Text style={styles.actionText}>טלפון</Text>
-            </CardItem>
-          </Card>
-
           <Card style={styles.actionContainer}>
             <CardItem style={styles.actionButton} bordered>
               <TouchableOpacity
@@ -263,12 +239,14 @@ export default class ViewProduct extends Component {
                 <Text style={styles.actionText}>לעריכת המוצר</Text>
               </TouchableOpacity>
             </CardItem>
+            </Card>
+            <Card style={styles.actionContainer}>
             <CardItem style={styles.actionButton} bordered>
               <TouchableOpacity
                 onPress={() => {
                   this.deleteContact(this.state.key);
                 }}
-              >
+                >
                 <Entypo name="trash" size={30} color="#335cd6" />
                 <Text style={styles.actionText}>למחיקת המוצר</Text>
               </TouchableOpacity>
@@ -276,132 +254,7 @@ export default class ViewProduct extends Component {
           </Card>
         </ScrollView>
       );
-    }
-    else {
-      // if loading show ActivityIndicator
-      if (this.state.isLoading) {
-        return (
-          <View
-            style={{
-              flex: 1,
-              alignContent: "center",
-              justifyContent: "center"
-            }}
-          >
-            <ActivityIndicator size="large" color="#B83227" />
-            <Text style={{ textAlign: "center" }}>
-              המוצרים בטעינה רק שניה ....
-          </Text>
-          </View>
-        );
-      }
-      // else show contact details
-      return (
-        <ScrollView style={styles.container}>
-          <View style={styles.contactIconContainer}>
-            {/* <Image
-            style={styles.contactIcon}
-            source={
-              this.state.imageUrl === "empty"
-                ? require("../assets/person.png")
-                : {
-                  uri: this.state.imageUrl
-                }
-            }
-          /> */}
-            <Image style={styles.contactIcon} />
-            <View style={styles.nameContainer}>
-              <Text style={styles.name}>
-                {this.state.fname}
-              </Text>
-            </View>
-          </View>
-          <View style={styles.infoContainer}>
-            <Card>
-            <CardItem bordered>
-                <Text style={styles.infoText}> קלוריות |</Text>
-                <Text style={styles.infoText}> שומנים |</Text>
-                <Text style={styles.infoText}> פחמימות |</Text>
-                <Text style={styles.infoText}> חלבונים |</Text>
-                <Text style={styles.infoText}>| נתרן |</Text>
-              </CardItem>
-              <CardItem bordered>
-                <Text style={styles.infoText}>|    {this.state.Calories}    |</Text>
-                <Text style={styles.infoText}>     {this.state.Fats}    |</Text>
-                <Text style={styles.infoText}>      {this.state.Carbohydrates}    |</Text>
-                <Text style={styles.infoText}>      {this.state.Proteins}    |</Text>
-                <Text style={styles.infoText}>       {this.state.Sodium}    |</Text>
-              </CardItem>
-
-
-            </Card>
-            <Card>
-              <CardItem bordered>
-                <Text style={styles.infoText}>אלרגיה מסוימת</Text>
-              </CardItem>
-              <CardItem bordered>
-                <Text style={styles.infoText}>{this.state.allergy}</Text>
-              </CardItem>
-            </Card>
-            <Card>
-              <CardItem bordered>
-                <Text style={styles.infoText}>סימון משרד הבריאות</Text>
-              </CardItem>
-              <CardItem bordered style={styles.infoText4}>
-                <Text style={styles.infoText}>{this.state.mark}</Text>
-              </CardItem>
-            </Card>
-
-            <Card>
-              <CardItem bordered>
-                <Text style={styles.infoText}>ברקוד</Text>
-              </CardItem>
-              <CardItem bordered>
-                <Barcode value={this.state.barcode} format="CODE128" />
-
-              </CardItem>
-            </Card>
-          </View>
-          <Card style={styles.actionContainer}>
-
-            <CardItem style={styles.actionButton} bordered>
-              <TouchableOpacity
-                onPress={() => {
-                  this.callAction(this.state.phone);
-                }}
-              >
-                <Entypo name="phone" size={50} color="#335cd6" />
-              </TouchableOpacity>
-              <Text style={styles.actionText}>טלפון</Text>
-            </CardItem>
-          </Card>
-
-          <Card style={styles.actionContainer}>
-            <CardItem style={styles.actionButton} bordered>
-              <TouchableOpacity
-                onPress={() => {
-                  this.editContact(this.state.key);
-                }}
-              >
-                <Entypo name="edit" size={30} color="#335cd6" />
-                <Text style={styles.actionText}>לעריכת המוצר</Text>
-              </TouchableOpacity>
-            </CardItem>
-            <CardItem style={styles.actionButton} bordered>
-              <TouchableOpacity
-                onPress={() => {
-                  this.deleteContact(this.state.key);
-                }}
-              >
-                <Entypo name="trash" size={30} color="#335cd6" />
-                <Text style={styles.actionText}>למחיקת המוצר</Text>
-              </TouchableOpacity>
-            </CardItem>
-          </Card>
-        </ScrollView>
-      );
-    }
-  }
+    } 
 }
 // styles
 const styles = StyleSheet.create({
@@ -421,7 +274,7 @@ const styles = StyleSheet.create({
     width: 20//Dimensions.get("window").width
   },
   nameContainer: {
-    textAlign: "center",
+    textAlign: 'right',
     width: "100%",
     height: 70,
     padding: 10,
@@ -431,12 +284,12 @@ const styles = StyleSheet.create({
     bottom: 0
   },
   name: {
-    fontSize: 24,
+    fontSize: 50,
     color: "#000",
     fontWeight: "900"
   },
   infoText: {
-    textAlign: "center",
+    textAlign: 'right',
     fontSize: 18,
     fontWeight: "300"
   },

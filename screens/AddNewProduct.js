@@ -215,7 +215,7 @@ export default class AddNewProduct extends Component {
           <ScrollView style={styles.container}>
             <Form>
               <Item style={styles.inputItem} floatingLabel>
-                <Label>תיאור המוצר</Label>
+                <Label style={{textAlign: 'right'}}>תיאור המוצר</Label>
                 <Input
                   autoCorrect={false}
                   autoCapitalize="none"
@@ -224,7 +224,7 @@ export default class AddNewProduct extends Component {
                 />
               </Item>
               <Item style={styles.inputItem} floatingLabel>
-                <Label>קלוריות</Label>
+                <Label style={{textAlign: 'right'}}>קלוריות</Label>
                 <Input
                   autoCorrect={false}
                   autoCapitalize="none"
@@ -233,7 +233,7 @@ export default class AddNewProduct extends Component {
                 />
               </Item>
               <Item style={styles.inputItem} floatingLabel>
-                <Label>חלבונים</Label>
+                <Label style={{textAlign: 'right'}}>חלבונים</Label>
                 <Input
                   autoCorrect={false}
                   autoCapitalize="none"
@@ -242,7 +242,7 @@ export default class AddNewProduct extends Component {
                 />
               </Item>
               <Item style={styles.inputItem} floatingLabel>
-                <Label>פחמימות</Label>
+                <Label style={{textAlign: 'right'}}>פחמימות</Label>
                 <Input
                   autoCorrect={false}
                   autoCapitalize="none"
@@ -251,7 +251,7 @@ export default class AddNewProduct extends Component {
                 />
               </Item>
               <Item style={styles.inputItem} floatingLabel>
-                <Label>שומנים</Label>
+                <Label style={{textAlign: 'right'}}>שומנים</Label>
                 <Input
                   autoCorrect={false}
                   autoCapitalize="none"
@@ -260,7 +260,7 @@ export default class AddNewProduct extends Component {
                 />
               </Item>
               <Item style={styles.inputItem} floatingLabel>
-                <Label>נתרן</Label>
+                <Label style={{textAlign: 'right'}}>נתרן</Label>
                 <Input
                   autoCorrect={false}
                   autoCapitalize="none"
@@ -269,7 +269,7 @@ export default class AddNewProduct extends Component {
                 />
               </Item>
               <Item style={styles.inputItem} floatingLabel>
-                <Label>מס' ברקוד</Label>
+                <Label style={{textAlign: 'right'}}>מס' ברקוד</Label>
                 <Input
              
                   autoCorrect={false}
@@ -279,7 +279,7 @@ export default class AddNewProduct extends Component {
                 />   
               </Item>
 
-              <Text>תבחר סימון משרד הבריאות</Text>
+              <Text style={{textAlign: 'right'}}>תבחר סימון משרד הבריאות</Text>
                 <RNPickerSelect
                     placeholder={{
                         label: 'Choose...',
@@ -291,17 +291,12 @@ export default class AddNewProduct extends Component {
                             mark: value,
                         });
                     }}
-                    style={styles.pickerSelectStyles }
+                    style={{ ...pickerStyles }}
                     value={this.state.mark}
                     />
-            
 
-
-              
-            
-            
             </Form>
-            <Text>מכיל אלרגיה מסוימת ?.</Text>
+            <Text style={{textAlign: 'right'}}>מכיל אלרגיה מסוימת ?.</Text>
                 <RNPickerSelect
                     placeholder={{
                         label: 'אם המוצר מכיל משהו מכאן תבחר.',
@@ -313,7 +308,7 @@ export default class AddNewProduct extends Component {
                             allergy: value,
                         });
                     }}
-                    style={styles.pickerSelectStyles }
+                    style={{ ...pickerStyles }}
                     value={this.state.allergy}
                     />
             <Button
@@ -372,3 +367,37 @@ const styles = StyleSheet.create({
         color: 'black',
   }
 });
+const pickerStyles = StyleSheet.create({
+  inputIOS: {
+    flex: 1,
+    fontSize: 17,
+    color: 'black',
+  },
+  viewContainer: {
+    flex: 1
+  },
+  inputIOSContainer: {
+     flex: 1,
+    margin: 5,
+    padding: 10,
+    flexDirection: 'row',
+    backgroundColor: '#bbb',
+  },
+  icon: {
+    flexDirection: 'column',
+    position: 'relative',
+    top: 0,
+    right: 5,
+    flexGrow: 0,
+    width: 6,
+    alignSelf: 'center',
+    borderTopWidth: 6,
+    borderTopColor: '#212733',
+    borderRightWidth: 6,
+    borderLeftWidth: 6,
+  },
+  done: {
+    color: '#212733'
+  },
+});
+

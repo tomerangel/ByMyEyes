@@ -16,7 +16,7 @@ export default class HomeScree extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: "",
+      allergy: "",
       email: "",
       switch1Value: false,
     }
@@ -30,8 +30,9 @@ export default class HomeScree extends React.Component {
         if (this._isMounted) {
           this.setState({
             email: authenticate.email,
-            name: authenticate.displayName
+            allergy: authenticate.displayName,
           })
+          console.log(this.state.allergy)
         }
       } else {
         this.props.navigation.replace("SignIn")
@@ -60,6 +61,7 @@ export default class HomeScree extends React.Component {
 
 
   render() {
+   
     return (
       <View style={styles.container}>
         <View style={styles.materialButtonVioletStack}>
@@ -71,7 +73,7 @@ export default class HomeScree extends React.Component {
 
             <View style={styles.container1}>
               <View style={styles.materialButtonPink1}>
-
+                <Text>Hey {this.state.allergy}</Text>
                 <TouchableOpacity style={styles.container2}
                   onPress={() => {
                     Speech.stop()

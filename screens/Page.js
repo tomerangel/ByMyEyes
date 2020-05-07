@@ -5,6 +5,7 @@ import * as Speech from 'expo-speech';
 import * as firebase from 'firebase'
 import { Form, Item, Input, Label, Button, Card, CardItem } from 'native-base'
 export default class Page extends React.Component {
+  
   static navigationOption = {
     title: "תוצאה"
   }
@@ -18,13 +19,14 @@ export default class Page extends React.Component {
       mark: null,
       allergy: null,
       isLod: false,
+      allergy_user:"",
       barcode: "",
       barcodeData: "",
-      Calories:null,
-      Sodium :null,
-      Proteins:null,
-      Carbohydrates:null,
-      Fats:null,
+      Calories: null,
+      Sodium: null,
+      Proteins: null,
+      Carbohydrates: null,
+      Fats: null,
       len: "empty",
       image: "empty",
       isLoading: true,
@@ -43,12 +45,28 @@ export default class Page extends React.Component {
     let thingToSay = 'המוצר לא קיים. אתה יכול להוסיף אותו. עם לחיצה על הוספת מוצר'
     Speech.speak(thingToSay, { language: "he-IW" });
   }
-  componentDidMount() {
+   componentDidMount() {
+  
+    firebase.auth().onAuthStateChanged(authenticate => {
+      if (authenticate) {
+          this.setState({
+            email: authenticate.email,
+            allergy_user: authenticate.displayName,
+          })
+         
+        
+      } else {
+        this.props.navigation.replace("SignIn")
+      }
+    })
+  
     let key = this.props.navigation.getParam("key", "");
     this.getContact(key);
     this.nameOfFunc();
+ 
   }
-
+ 
+ 
   getContact = async key => {
     let self = this
     let barCodeData2 = this.props.navigation.state.params.barcodeData
@@ -63,13 +81,13 @@ export default class Page extends React.Component {
         const n = a.phone;
         const n2 = a.barcode;
         const n3 = a.key;
-        const n4=a.mark;
-        const n5=a.allergy;
-        const n6=a.Calories;
-        const n7=a.Sodium;
-        const n8= a.Carbohydrates;
-        const n9=a.Fats;
-        const n10=a.Proteins
+        const n4 = a.mark;
+        const n5 = a.allergy;
+        const n6 = a.Calories;
+        const n7 = a.Sodium;
+        const n8 = a.Carbohydrates;
+        const n9 = a.Fats;
+        const n10 = a.Proteins
 
         if (nameA == nameB) {
           self.setState({
@@ -81,16 +99,18 @@ export default class Page extends React.Component {
             key: n3,
             mark: n4,
             allergy: n5,
-            Calories:n6,
-            Sodium:n7,
-            Carbohydrates:n8,
-            Fats:n9,
-            Proteins:n10,
+            Calories: n6,
+            Sodium: n7,
+            Carbohydrates: n8,
+            Fats: n9,
+            Proteins: n10,
           })
-          console.log(`${name} ${n} ${n2}  this is from Camera`)
-          console.log(`${name} ${n5} ${n4}  this is from Camera`)
+       
+
         }
+
       })
+      
     })
   };
   nameOfFunc = () => {
@@ -103,6 +123,7 @@ export default class Page extends React.Component {
         let nameA = a.barcode
         const nameB = barCodeData2
         const name = a.fname
+        
         console.log(`${nameA} this is from database`)
         console.log(`${nameB} this is from Camera`)
         //console.log(`${nameA} What numers issssssss`);
@@ -116,8 +137,13 @@ export default class Page extends React.Component {
 
 
       })
+     
       this.setState({ isLoading: false })
     })
+    // console.log(this.state.allergy)
+    // console.log("the diff")
+    // console.log(this.state.allergy_user)
+    
   }
   editContact = key => {
     //navigate to edit screen with passing key
@@ -130,116 +156,131 @@ export default class Page extends React.Component {
     this.props.navigation.replace("Add", { barcodeData: d2 })
 
   }
+  CheckSpeicalAllregy=(allergy ,allergy_user) => {
+    if((allergy)!=(allergy_user)){
+      console.log("is not same")
+    }
+    else{
+      alert("תזהר המוצר הזה מכיל את האלרגיה שאתה רגיש עליה.")
+      let thingToSay ='תזהר המוצר הזה מכיל את האלרגיה שאתה רגיש'
+      Speech.speak(thingToSay, { language: "he-IW" });
+    }
+
+  }
 
   render() {
+   
+    console.log(this.state.allergy_user)
+    console.log(this.state.allergy)
     let d = this.props.navigation.state.params.barcodeData
-    // console.log(`${d}`)
-    if(this.state.mark=='תקין-ירוק'){
-    if (this.state.isLoading) {
-      return (
-        <View
-          style={{
-            flex: 1,
-            alignContent: "center",
-            justifyContent: "center"
-          }}
-        >
-          <ActivityIndicator size="large" color="#B83227" />
-          <Text style={{ textAlign: "center" }}>
-            loading please wait..
+  
+    if (this.state.mark == 'תקין-ירוק') {
+      if (this.state.isLoading) {
+        return (
+          <View
+            style={{
+              flex: 1,
+              alignContent: "center",
+              justifyContent: "center"
+            }}
+          >
+            <ActivityIndicator size="large" color="#B83227" />
+            <Text style={{ textAlign: "center" }}>
+              loading please wait..
           </Text>
-        </View>
-      );
-    }
-    if (this.state.len == 'empty') {
-      return (
-        <View style={styles.containe}>
-          <View style={styles.cardTitle}>
           </View>
-          <Card style={styles.listItem}>
-            <Text style={styles.b}></Text>
+        );
+      }
+      if (this.state.len == 'empty') {
+        return (
+          <View style={styles.containe}>
             <View style={styles.cardTitle}>
-              <Text style={styles.button}>{this.speak2()} המוצר לא קיים. אתה יכול להוסיף אותו. עם לחיצה על הוספת מוצר {this.state.len} </Text>
             </View>
-          </Card>
-          <View style={styles.container4}>
-        
-            <TouchableOpacity style={[styles.container3]}
-              onPress={() => {
-                this.props.navigation.navigate("Barcode")
-              }}
-            >
-              <Text style={styles.caption2}>Scan Again</Text>
-            </TouchableOpacity>
+            <Card style={styles.listItem}>
+              <Text style={styles.b}></Text>
+              <View style={styles.cardTitle}>
+                <Text style={styles.button}>{this.speak2()} המוצר לא קיים. אתה יכול להוסיף אותו. עם לחיצה על הוספת מוצר {this.state.len} </Text>
+              </View>
+            </Card>
+            <View style={styles.container4}>
+
+              <TouchableOpacity style={[styles.container3]}
+                onPress={() => {
+                  this.props.navigation.navigate("Barcode")
+                }}
+              >
+                <Text style={styles.caption2}>Scan Again</Text>
+              </TouchableOpacity>
+            </View>
+
           </View>
 
-        </View>
-
-      )
-    }
-    else {
-      
-      return (
-        <View style={styles.containe}>
-          <View style={styles.cardTitle}>
-            <Text
-              full
-      style={styles.title}>המוצר:{this.state.fname}{this.speak(this.state.len)} </Text>
-          </View>
-          <Card style={styles.listItem2}>
+        )
+      }
+      else {
+        this.CheckSpeicalAllregy(this.state.allergy,this.state.allergy_user)
+        return (
+          <View style={styles.containe}>
             <View style={styles.cardTitle}>
-              <CardItem bordered>
-                <Text style={styles.button3}>המוצר מכיל אלרגיות מיוחדות:
-                </Text>
-              </CardItem>
-              <CardItem bordered>
-                <Text style={styles.button}>{this.state.allergy}
-                   </Text>
-              </CardItem>
+              <Text
+                full
+                style={styles.title}>המוצר:{this.state.fname}{this.speak(this.state.len)} </Text>
             </View>
-            <View style={styles.cardTitle}>
-              <CardItem bordered>
-                <Text style={styles.button3}>סימון משרד הבריאות:
+            <Card style={styles.listItem2}>
+              <View style={styles.cardTitle}>
+                <CardItem bordered>
+                  <Text style={styles.button3}>המוצר מכיל אלרגיות מיוחדות:
                 </Text>
-              </CardItem>
-              <CardItem bordered  style={styles.button}>
-                <Text style={styles.button}>{this.state.mark}
-                   </Text>
-              </CardItem>
-            </View>
-            <View style={styles.cardTitle}>
-              <CardItem bordered>
-                <CardItem style={styles.button3}>
-                  <Text style={styles.button}>קלוריות:{this.state.Calories} </Text>
                 </CardItem>
-              </CardItem>
-              <CardItem bordered  style={styles.button}>
-                <Text style={styles.button}>
-                   </Text>
-              </CardItem>
-            </View>
-          </Card>
-          <View style={{ flex: 1, justifyContent: 'flex-end' }}>
-            
-            <TouchableOpacity style={{
+                <CardItem bordered>
+                  <Text style={styles.button}>{this.state.allergy}
+                  </Text>
+                </CardItem>
+              </View>
+              <View style={styles.cardTitle}>
+                <CardItem bordered>
+                  <Text style={styles.button3}>סימון משרד הבריאות:
+                </Text>
+                </CardItem>
+                <CardItem bordered style={styles.button4}>
+                  <Text style={styles.button}>{this.state.mark}
+                  </Text>
+                </CardItem>
+              </View>
+              <View style={styles.cardTitle}>
+                <CardItem bordered>
+                  <CardItem style={styles.button3}>
+                  <Text style={styles.button}>קלוריות:{this.state.Calories},נתרן:{this.state.Sodium},פחמימות:{this.state.Carbohydrates},שומן:{this.state.Fats},חלבונים:{this.state.Carbohydrates}
+ </Text>
+                  </CardItem>
+                </CardItem>
+                <CardItem bordered style={styles.button}>
+                  <Text style={styles.button}>
+                  </Text>
+                </CardItem>
+              </View>
+            </Card>
+            <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+
+              <TouchableOpacity style={{
                 width: '100%', height: 150, backgroundColor: 'blue',
                 alignItems: 'center', justifyContent: 'center'
               }}
-              
-              onPress={() => {
-                this.props.navigation.navigate("Barcode")
-              }}
-            >
-              <Text style={{ color: 'white', fontSize: 16 }}>לסרוק שוב</Text>
-            </TouchableOpacity>
+
+                onPress={() => {
+                  this.props.navigation.navigate("Barcode")
+                }}
+              >
+                <Text style={{ color: 'white', fontSize: 16 }}>לסרוק שוב</Text>
+              </TouchableOpacity>
+            </View>
+
+
           </View>
-        
-         
-        </View>
-      );
+        );
+      }
     }
-    }
-    else{
+    else {
       if (this.state.isLoading) {
         return (
           <View
@@ -268,7 +309,7 @@ export default class Page extends React.Component {
               </View>
             </Card>
             <View style={styles.container4}>
-          
+
               <TouchableOpacity style={[styles.container3]}
                 onPress={() => {
                   this.props.navigation.navigate("Barcode")
@@ -277,30 +318,30 @@ export default class Page extends React.Component {
                 <Text style={styles.caption2}>Scan Again</Text>
               </TouchableOpacity>
             </View>
-  
+
           </View>
-  
+
         )
       }
       else {
-        
+        this.CheckSpeicalAllregy(this.state.allergy,this.state.allergy_user)
         return (
           <View style={styles.containe}>
             <View style={styles.cardTitle}>
-            <Text
-              
-      style={styles.button5}>המוצר:{this.state.fname}{this.speak(this.state.len)} </Text>
+              <Text
+
+                style={styles.button5}>המוצר:{this.state.fname}{this.speak(this.state.len)} </Text>
             </View>
 
             <Card style={styles.listItem2}>
-            <View style={styles.cardTitle}>
+              <View style={styles.cardTitle}>
                 <CardItem bordered>
                   <Text style={styles.button3}>סימון תזונתי ל100 גרם:
                   </Text>
                 </CardItem>
                 <CardItem bordered style={styles.button}>
                   <Text style={styles.button}>קלוריות:{this.state.Calories},נתרן:{this.state.Sodium},פחמימות:{this.state.Carbohydrates},שומן:{this.state.Fats},חלבונים:{this.state.Carbohydrates}
-                     </Text>
+                  </Text>
                 </CardItem>
               </View>
               <View style={styles.cardTitle}>
@@ -310,7 +351,7 @@ export default class Page extends React.Component {
                 </CardItem>
                 <CardItem bordered>
                   <Text style={styles.button}>{this.state.allergy}
-                     </Text>
+                  </Text>
                 </CardItem>
               </View>
               <View style={styles.cardTitle}>
@@ -320,19 +361,19 @@ export default class Page extends React.Component {
                 </CardItem>
                 <CardItem bordered style={styles.button6}>
                   <Text style={styles.button}>{this.state.mark}
-                     </Text>
+                  </Text>
                 </CardItem>
               </View>
-             
-            
+
+
             </Card>
             <View style={{ flex: 1, justifyContent: 'flex-end' }}>
-              
+
               <TouchableOpacity style={{
-                  width: '100%', height: 150, backgroundColor: 'blue',
-                  alignItems: 'center', justifyContent: 'center'
-                }}
-                
+                width: '100%', height: 150, backgroundColor: 'blue',
+                alignItems: 'center', justifyContent: 'center'
+              }}
+
                 onPress={() => {
                   this.props.navigation.navigate("Barcode")
                 }}
@@ -442,16 +483,16 @@ const styles = StyleSheet.create({
     position: "absolute",
     marginTop: 272
   },
-  button4:{
-    backgroundColor:"green"
+  button4: {
+    backgroundColor: "green"
 
   },
-  button5:{
+  button5: {
     fontWeight: 'bold',
     fontSize: 25
   },
-  button6:{
-    backgroundColor:'red'
+  button6: {
+    backgroundColor: 'red'
   },
   container2: {
     backgroundColor: "#6685e0",
