@@ -9,6 +9,7 @@ import {
   Image,
   Keyboard,
   TextInput,
+  ImageBackground,
   ActivityIndicator
 } from "react-native";
 // install native-base and import card from it
@@ -32,7 +33,7 @@ import * as Animate from 'react-native-animatable'
     this.state = {
       search: '',
       data: [],
-      searchBarFocused: false,
+     
       isLoading: true,
       isListEmpty: false
     };
@@ -55,20 +56,7 @@ import * as Animate from 'react-native-animatable'
    // Speech.speak(thing)
     Speech.speak('יש לך 2 אפשרויות,לצפות במוצר או להוסיף מוצר חדש ', { language: "he-IW" })
   }
-  updateSearch = search => {
-    this.setState({ search });
-  };
-  keyboardDidShow = () => {
-    this.setState({ searchBarFocused: true })
-  }
 
-  keyboardWillShow = () => {
-    this.setState({ searchBarFocused: true })
-  }
-
-  keyboardWillHide = () => {
-    this.setState({ searchBarFocused: false })
-  }
   // getAllContact method
   getAllContact = () => {
     let self = this;
@@ -141,59 +129,55 @@ import * as Animate from 'react-native-animatable'
     }
     // return list of contacts
     return (
-
-      <View style={styles.container}>
+    
+      
       
       <View style={styles.container}>
-      {/* <SearchBar
-      round
-      searchIcon={{ size: 24 }}
-      
-      placeholder="Search Here"
-      //onChangeText={this.getAllContact()}
-      value={this.state.search}
-    /> */}
-        <FlatList
-          style={{ backgroundColor: this.state.searchBarFocused ? 'rgba(0,0,0,0.3)' : 'white' }}
-          data={this.state.data}
-          renderItem={({ item }) => {
-            return (
-              <TouchableOpacity
-                onPress={() => {
-                  Speech.stop()
-                  //navigate to view contact screen with passing key
-                  this.props.navigation.navigate("View", {
-                    key: item.key
-                  });
-                }}
+        
+          <ImageBackground
+                source={require("../assets/images/-247289715.jpg")}
+                resizeMode="stretch"
+                style={styles.image}
+                imageStyle={styles.image_imageStyle}
               >
-                <Card style={styles.listItem}>
-                  <View style={styles.infoContainer}>
-                    <Text style={styles.infoText}>
-                      {item.fname}
-                    </Text>
-                    {/* <Text style={styles.infoText}></Text> */}
-                  </View>
-                </Card>
-              </TouchableOpacity>
-            );
-          }}
-          
-        />
-        <TouchableOpacity
-          onPress={() => {
-            // add icon
-            //navigate to Add Contact screen
-            //this.props.navigation.navigate("View")
-            Speech.stop()
-            this.props.navigation.navigate("barcodeProduct")
-          }}
-          style={styles.floatButton}
-        >
-          <Entypo name="plus" size={30} color="#fff" />
-        </TouchableOpacity>
-      </View>
-      </View>
+            <FlatList
+              data={this.state.data}
+              renderItem={({ item }) => {
+                return (
+                  <TouchableOpacity
+                    onPress={() => {
+                      Speech.stop()
+                      //navigate to view contact screen with passing key
+                      this.props.navigation.navigate("View", {
+                        key: item.key
+                      });
+                    }}
+                  >
+                    <Card style={styles.listItem}>
+                        <Text style={styles.infoText}>
+                          {item.fname}
+                        </Text>
+                    </Card>
+                  </TouchableOpacity>
+                );
+              }}
+
+            />
+            <TouchableOpacity
+              onPress={() => {
+                // add icon
+                //navigate to Add Contact screen
+                //this.props.navigation.navigate("View")
+                Speech.stop()
+                this.props.navigation.navigate("barcodeProduct")
+              }}
+              style={styles.floatButton}
+            >
+              <Entypo name="plus" size={30} color="#fff" />
+            </TouchableOpacity>
+          </ImageBackground>
+        </View>
+    
     );
   }
 }
@@ -202,30 +186,30 @@ export default HomeScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff"
+    
   },
   listItem: {
+    
     textAlign: 'right', 
-    alignSelf: 'stretch',
+    //alignSelf: 'stretch',
     flexDirection: "row",
-    padding: 20
+    padding: 15
   },
   contactIcon: {
     width: 60,
     height: 60,
     borderRadius: 100
   },
-  infoContainer: {
-    textAlign:'center',
-    //flexDirection: "column"
-  },
+
   infoText: {
-    textAlign:"center",
+    
+    textAlign:'right',
     fontSize: 20,
+    
     fontWeight: "bold",
     //paddingLeft: 10,
-    paddingTop: 2
-  },
+    
+  },  image_imageStyle: {},
   floatButton: {
     borderWidth: 1,
     borderColor: "rgba(0,0,0,0.2)",
@@ -238,5 +222,17 @@ const styles = StyleSheet.create({
     height: 60,
     backgroundColor: "#0000FF",
     borderRadius: 100
-  }
+  },
+  image: {
+    top: 0,
+    left: 0,
+    width: 420,
+    height: 670,
+    position: "absolute"
+  },
+  imageStack: {
+    //width: 400,
+    //height: 350,
+    //marginTop:5
+  },
 });

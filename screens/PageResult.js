@@ -1,18 +1,23 @@
 import React from "react";
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator,ScrollView } from "react-native";
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, ScrollView } from "react-native";
 import Constants from 'expo-constants';
 import * as Speech from 'expo-speech';
 import * as firebase from 'firebase'
 import { Form, Item, Input, Label, Button, Card, CardItem } from 'native-base'
 import Barcode from 'react-native-barcode-builder';
+import MainService from './MainService'
 import { Entypo } from "@expo/vector-icons";
-export default class Page extends React.Component {
-  
+
+export default class PageResult extends React.Component {
+  state={
+    loaded:false
+  }
   static navigationOption = {
     title: "תוצאה"
   }
   constructor(props) {
     super(props)
+    MainService.load(v=>this.setState({loaded:true}))
     this.state = {
       fname: "",
       phone: "",
@@ -20,122 +25,136 @@ export default class Page extends React.Component {
       mark: null,
       allergy: null,
       isLod: false,
-      allergy_user:"",
+      allergy_user: "",
       barcode: "",
       barcodeData: "",
       Calories: null,
       Sodium: null,
       Proteins: null,
+      
       Carbohydrates: null,
       Fats: null,
-      len: "empty",
+      ifProductNotempty: "empty",
       image: "empty",
       isLoading: true,
       key: null,
-      boolspeak:true,
+      boolspeak: true,
       isUploading: false,
+      isListEmpty: false
       //thingToSay:"empty"
     }
-    
+
   }
-  speak = len => {
-    let thingToSay = len
+  speak = ifProductNotempty => {
+    let thingToSay = ifProductNotempty
     Speech.speak(thingToSay, { language: "he-IW" });
   }
   speak2() {
-    let thingToSay = 'המוצר לא קיים. אתה יכול להוסיף אותו. עם לחיצה על הוספת מוצר'
+    let thingToSay = 'המוצר לא קיים. אתה יכול להוסיף אותו. בעמוד המוצרים '
     Speech.speak(thingToSay, { language: "he-IW" });
   }
-   componentDidMount() {
+  async componentDidMount() {
+    let key = this.props.navigation.getParam("key", "");
+    this.getContact(key);
+    // this.nameOfFunc();
+  }
+  getContact = async key => {
     firebase.auth().onAuthStateChanged(authenticate => {
       if (authenticate) {
-          this.setState({
-            email: authenticate.email,
-            allergy_user: authenticate.displayName,
-          })
+        this.setState({
+          email: authenticate.email,
+          allergy_user: authenticate.displayName,
+        })
       } else {
         this.props.navigation.replace("SignIn")
       }
-    })
-    let key = this.props.navigation.getParam("key", "");
-    this.getContact(key);
-  }
-  getContact = async key => {
-    let self = this
-    let barCodeData2 = this.props.navigation.state.params.barcodeData
-    let ref = firebase.database().ref()
-    ref.on("value", dataSnapsot => {
-      let contactResult = Object.values(dataSnapsot.val())
-      //contactValue = dataSnapsot.val();
-      contactResult.forEach((a) => {
-        let nameA = a.barcode
-        const nameB = barCodeData2
-        const name = a.fname;
-        const n = a.phone;
-        const n2 = a.barcode;
-        const n3 = a.key;
-        const n4 = a.mark;
-        const n5 = a.allergy;
-        const n6 = a.Calories;
-        const n7 = a.Sodium;
-        const n8 = a.Carbohydrates;
-        const n9 = a.Fats;
-        const n10 = a.Proteins
+      let self = this;
+      let barCodeData2 = this.props.navigation.state.params.barcodeData
+      let ref = firebase.database().ref()  
+      ref.on("value", dataSnapsot => {
+        if (dataSnapsot.val()) {
+        let contactResult = Object.values(dataSnapsot.val())
+        //contactValue = dataSnapsot.val();
+        contactResult.forEach((a) => {
+          let nameA = a.barcode
+          const nameB = barCodeData2
+          const name = a.fname;
+          const n = a.phone;
+          const n2 = a.barcode;
+          const n3 = a.key;
+          const n4 = a.mark;
+          const n5 = a.allergy;
+          const n6 = a.Calories;
+          const n7 = a.Sodium;
+          const n8 = a.Carbohydrates;
+          const n9 = a.Fats;
+          const n10 = a.Proteins
+          if(nameA==nameB){
+            self.setState({
+              boolspeak: false,
+              fname: name,
+              //  lname:contactValue.lname,
+              phone: n,
+              //  email:contactValue.email,
+              barcode: n2,
+              key: n3,
+              mark: n4,
+              allergy: n5,
+              Calories: n6,
+              Sodium: n7,
+              Carbohydrates: n8,
+              Fats: n9,
+              Proteins: n10,
+              ifProductNotempty: name,
+              isLoading: false,
+              isListEmpty: false
+              
+            })
+            return 1;
+          }
+        })
+      }
 
-        if (nameA == nameB) {
-          self.setState({
-            boolspeak:false,
-            fname: name,
-            //  lname:contactValue.lname,
-            phone: n,
-            //  email:contactValue.email,
-            barcode: n2,
-            key: n3,
-            mark: n4,
-            allergy: n5,
-            Calories: n6,
-            Sodium: n7,
-            Carbohydrates: n8,
-            Fats: n9,
-            Proteins: n10,
-            len:name
-          })
-        }
       })
+      
     })
   };
-  nameOfFunc = () => {
-    let ref = firebase.database().ref()
-    let barCodeData2 = this.props.navigation.state.params.barcodeData
-    ref.on("value", dataSnapsot => {
-      let contactResult = Object.values(dataSnapsot.val())
-      //fname: contactResult,
-      contactResult.forEach((a) => {
-        let nameA = a.barcode
-        const nameB = barCodeData2
-        const name = a.fname
-        
-        console.log(`${nameA} this is from database`)
-        console.log(`${nameB} this is from Camera`)
-        //console.log(`${nameA} What numers issssssss`);
-        if (nameA == nameB) {
-          this.state.boolspeak=false;
-          this.setState({ len: name, isLoading: false });
-          return name
-        }
-      })
-      this.setState({ isLoading: false })
-    })
+  // nameOfFunc = async => {
+  //   let ref = firebase.database().ref()
+  //   let barCodeData2 = this.props.navigation.state.params.barcodeData
+  //   ref.on("value", dataSnapsot => {
+  //     let contactResult = Object.values(dataSnapsot.val())
+  //     //fname: contactResult,
+  //     contactResult.forEach((a) => {
+  //       let nameA = a.barcode
+  //       const nameB = barCodeData2
+  //       const name = a.fname
+
+  //       console.log(`${nameA} this is from database`)
+  //       console.log(`${nameB} this is from Camera`)
+  //       //console.log(`${nameA} What numers issssssss`);
+  //       if (nameA == nameB) {
+  //         this.state.boolspeak=false;
+  //         this.setState({ len: name, isLoading: false });
+  //         return name
+  //       }
+  //     })
+
+  //   })
+  // }
+  ExitTohomepage =()=>{
+    this.speak2()
+        alert("המוצר לא קיים במערכת,תוכלו להוסיף אותו :)")
+        return this.props.navigation.replace("Hom");
   }
-  
-  
-  CheckSpeicalAllregy=(allergy ,allergy_user) => {
-    if((allergy)!=(allergy_user)){
+
+  CheckSpeicalAllregy = (allergy, allergy_user) => {
+    if ((allergy) != (allergy_user)) {
       console.log("is not same")
     }
-    else{
+    else {
       alert("תזהר המוצר הזה מכיל את האלרגיה שאתה רגיש עליה.")
-      let thingToSay ='תזהר המוצר הזה מכיל את האלרגיה שאתה רגיש'
+      let thingToSay = 'תזהר המוצר הזה מכיל את האלרגיה שאתה רגיש'
       Speech.speak(thingToSay, { language: "he-IW" });
     }
   }
@@ -143,60 +162,64 @@ export default class Page extends React.Component {
     console.log(this.state.allergy_user)
     console.log(this.state.allergy)
     let d = this.props.navigation.state.params.barcodeData
-      if (this.state.isLoading) {
-        return (
-          <View
-            style={{
-              flex: 1,
-              alignContent: "center",
-              justifyContent: "center"
-            }}
-          >
-            <ActivityIndicator size="large" color="#B83227" />
-            <Text style={{ textAlign: "center" }}>
-              loading please wait..
+    if (!this.state.loaded) {
+      return (
+        <View
+          style={{
+            flex: 1,
+            alignContent: "center",
+            justifyContent: "center",
+            
+            
+          }}
+        >
+          <ActivityIndicator size="large" color="#B83227" />
+          <Text style={{ textAlign: "center" }}>
+            loading please wait..
           </Text>
-          </View>
-        );
+        </View>
+      );
+    }
+    //else if (this.state.isListEmpty) {
+      if (this.state.ifProductNotempty == 'empty') {
+        this.ExitTohomepage()
+        
+      //if(!(this.state.isListEmpty)){
+      // return (
+        
+      //   <View style={styles.containe}>
+      //     <View style={styles.cardTitle}>
+      //     </View>
+      //     <Card style={styles.listItem}>
+      //       <Text style={styles.b}></Text>
+      //       <View style={styles.cardTitle}>
+      //         <Text style={styles.button}> המוצר לא קיים. אתה יכול להוסיף אותו. עם לחיצה על הוספת מוצר {this.state.ifProductNotempty} </Text>
+      //       </View>
+      //     </Card>
+      //     <View style={styles.container4}>
+      //       <TouchableOpacity style={[styles.container3]}
+      //         onPress={() => {
+      //           this.props.navigation.navigate("Barcode")
+      //         }}
+      //       >
+      //         <Text style={styles.caption2}>Scan Again</Text>
+      //       </TouchableOpacity>
+      //     </View>
+      //   </View>
+      // )
       }
-      if (this.state.len == 'empty') {
-        return (
-          <View style={styles.containe}>
-            <View style={styles.cardTitle}>
-            </View>
-            <Card style={styles.listItem}>
-              <Text style={styles.b}></Text>
-              <View style={styles.cardTitle}>
-                <Text style={styles.button}>{this.speak2()} המוצר לא קיים. אתה יכול להוסיף אותו. עם לחיצה על הוספת מוצר {this.state.len} </Text>
-              </View>
-            </Card>
-            <View style={styles.container4}>
-
-              <TouchableOpacity style={[styles.container3]}
-                onPress={() => {
-                  this.props.navigation.navigate("Barcode")
-                }}
-              >
-                <Text style={styles.caption2}>Scan Again</Text>
-              </TouchableOpacity>
-            </View>
-
-          </View>
-
-        )
-      }
-      else {
-        this.CheckSpeicalAllregy(this.state.allergy,this.state.allergy_user)
-        return (
-          <ScrollView style={styles.container}>
-          <View style={styles.contactIconContainer}> 
-              <Text style={styles.name}>
-                {this.state.fname}{this.speak(this.state.len)} 
-              </Text>
+    else {
+      this.CheckSpeicalAllregy(this.state.allergy, this.state.allergy_user)
+      return (
+        <ScrollView style={styles.container}>
+          <View style={styles.contactIconContainer}>
+            <Text style={styles.name}>
+              {this.state.fname}{this.speak(this.state.ifProductNotempty)}
+            </Text>
           </View>
           <View style={styles.infoContainer}>
             <Card>
-            <CardItem bordered>
+              <CardItem bordered>
                 <Text style={styles.infoText}> קלוריות |</Text>
                 <Text style={styles.infoText}> שומנים |</Text>
                 <Text style={styles.infoText}> פחמימות |</Text>
@@ -224,7 +247,7 @@ export default class Page extends React.Component {
               <CardItem bordered>
                 <Text style={styles.infoText}>סימון משרד הבריאות</Text>
               </CardItem>
-              <CardItem bordered style={(this.state.mark=="תקין-ירוק") ? styles.infoText3 : styles.infoText4}>
+              <CardItem bordered style={(this.state.mark == "תקין-ירוק") ? styles.infoText3 : styles.infoText4}>
                 <Text style={styles.infoText}>{this.state.mark}</Text>
               </CardItem>
             </Card>
@@ -237,12 +260,13 @@ export default class Page extends React.Component {
               </CardItem>
             </Card>
           </View>
-        
+
         </ScrollView>
-        );
-      }
+      );
     }
   }
+  }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -282,13 +306,13 @@ const styles = StyleSheet.create({
     fontWeight: "300"
   },
   infoText3: {
-    backgroundColor:"green",
+    backgroundColor: "green",
   },
   infoText4: {
-    backgroundColor:"red",
+    backgroundColor: "red",
   },
   infoText2: {
-    backgroundColor:"green",
+    backgroundColor: "green",
   },
   actionContainer: {
     textAlign: "center",

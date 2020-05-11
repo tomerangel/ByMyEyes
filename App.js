@@ -1,7 +1,7 @@
 // install react-navigation
 
 //TODO: import four screens
-import HomeScreen from './screens/HomeScreen'
+import ProductScreen from './screens/ProductScreen'
 import AddNewContact from './screens/AddNewProduct'
 import EditContact from './screens/EditProduct'
 import ViewContact from './screens/ViewProduct'
@@ -16,7 +16,7 @@ import Button2 from './src/components/MaterialButtonViolet'
 import Button3 from './src/components/MaterialButtonPink'
 //import Button4 from './src/components/MaterialButtonViolet1'
 //import Unti from './screens/Untitled'
-import Page from './screens/Page'
+import Page from './screens/PageResult'
 
 //TODO: import firebase
 import * as firebase from 'firebase'
@@ -34,7 +34,7 @@ const MainNavigator = createStackNavigator(
     SignUp:{screen:SignupScreen},
     Hom:{screen:HomeScree},
     Barcode:{screen:Barcode},
-    Home: { screen: HomeScreen },
+    Home: { screen: ProductScreen},
     Add: { screen: AddNewContact },
     Page: { screen: Page },
     View: { screen: ViewContact },
@@ -47,12 +47,12 @@ const MainNavigator = createStackNavigator(
   {
    
     defaultNavigationOptions: {
-      headerTintColor: "#fff",
+      headerTintColor: "#007AFF",
       headerStyle: {
-        backgroundColor: "#4169E1"
+        backgroundColor: "#fff"
       },
       headerTitleStyle: {
-        color: "#fff"
+        color: "#007AFF"
       }
     }
   }

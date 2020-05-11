@@ -27,7 +27,9 @@ import * as firebase from 'firebase'
 
 export default class AddNewProduct extends Component {
   _isMounted = false;
-
+  state={
+    loaded:false
+  }
   static navigationOptions = {
     // set screen header title
     title: "הוספת מוצר"
@@ -35,6 +37,7 @@ export default class AddNewProduct extends Component {
   //TODO: create constructor with state: fname, lname, phone, email, address, image, imageDownloadUrl, isUploading
   constructor(props) {
     super(props)
+    MainService.load(v=>this.setState({loaded:true}))
     this.state = {
       mark: "",
       items: [
@@ -201,7 +204,7 @@ getContact = async () => {
       const name = a.fname;
       if (nameA == nameB) {
         this.state.boolspeak = false;
-        return this.props.navigation.replace("Home");
+        return this.props.navigation.replace("Hom");
       }
     })
   })
@@ -260,14 +263,14 @@ getContact = async () => {
     // if (this.state.tomer){
     let d = this.props.navigation.state.params.barcodeData
     
-    if (this.state.isUploading) {
+    if (!this.state.loaded) {
       return (
         <View
           style={{ flex: 1, alignContent: "center", justifyContent: "center" }}
         >
           <ActivityIndicator size="large" color="#B83227" />
           <Text style={{ textAlign: "center" }}>
-            Contact Uploading please wait..
+          .....בטעינה אנא המתן
           </Text>
         </View>
       );
