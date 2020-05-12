@@ -141,7 +141,7 @@ export default class ViewProduct extends Component {
               .child(key)
             await contactRef.remove(error => {
               if (!error) {
-                return this.props.navigation.replace("Home");
+                return this.props.navigation.replace("Hom");
               }
             })
           }

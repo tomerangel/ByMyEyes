@@ -55,10 +55,6 @@ export default class PageResult extends React.Component {
   }
   async componentDidMount() {
     let key = this.props.navigation.getParam("key", "");
-    this.getContact(key);
-    // this.nameOfFunc();
-  }
-  getContact = async key => {
     firebase.auth().onAuthStateChanged(authenticate => {
       if (authenticate) {
         this.setState({
@@ -108,16 +104,22 @@ export default class PageResult extends React.Component {
               ifProductNotempty: name,
               isLoading: false,
               isListEmpty: false
-              
             })
-            return 1;
           }
         })
+        // if(this.state.ifProductNotempty=="empty"){
+        //   this.ExitTohomepage();
+        // }
       }
 
       })
       
     })
+    // this.nameOfFunc();
+    
+  }
+  getContact = async key => {
+    
   };
   // nameOfFunc = async => {
   //   let ref = firebase.database().ref()
@@ -183,7 +185,8 @@ export default class PageResult extends React.Component {
     //else if (this.state.isListEmpty) {
       if (this.state.ifProductNotempty == 'empty') {
         this.ExitTohomepage()
-        
+        return null
+      
       //if(!(this.state.isListEmpty)){
       // return (
         
@@ -208,23 +211,33 @@ export default class PageResult extends React.Component {
       //   </View>
       // )
       }
-    else {
-      this.CheckSpeicalAllregy(this.state.allergy, this.state.allergy_user)
+      else  {
+    
       return (
         <ScrollView style={styles.container}>
           <View style={styles.contactIconContainer}>
+            <TouchableOpacity
+             onPress={() => {
+              Speech.stop()
+              let thingToSay = 'שם המוצר:'
+              Speech.speak(thingToSay, { language: "he-IW" });
+              let thingToSay2 = this.state.ifProductNotempty
+              Speech.speak(thingToSay2, { language: "he-IW" });
+            }}>
+            
             <Text style={styles.name}>
               {this.state.fname}{this.speak(this.state.ifProductNotempty)}
             </Text>
+            </TouchableOpacity>
           </View>
           <View style={styles.infoContainer}>
             <Card>
               <CardItem bordered>
-                <Text style={styles.infoText}> קלוריות |</Text>
-                <Text style={styles.infoText}> שומנים |</Text>
-                <Text style={styles.infoText}> פחמימות |</Text>
-                <Text style={styles.infoText}> חלבונים |</Text>
-                <Text style={styles.infoText}>| נתרן |</Text>
+              <Text style={styles.infoText}> קלוריות |</Text> 
+               <Text style={styles.infoText}> שומנים |</Text> 
+                <Text style={styles.infoText}> פחמימות |</Text> 
+                 <Text style={styles.infoText}> חלבונים |</Text> 
+              <Text style={styles.infoText}>| נתרן |</Text> 
               </CardItem>
               <CardItem bordered>
                 <Text style={styles.infoText}>|    {this.state.Calories}    |</Text>
@@ -236,17 +249,37 @@ export default class PageResult extends React.Component {
 
             </Card>
             <Card>
+            <TouchableOpacity
+              onPress={() => {
+                Speech.stop()
+                let thingToSay = 'האלרגיה שהמוצר מכיל היא:'
+                Speech.speak(thingToSay, { language: "he-IW" });
+                let thingToSay2 = this.state.allergy
+                Speech.speak(thingToSay2, { language: "he-IW" });
+              }}
+            >
               <CardItem bordered>
                 <Text style={styles.infoText}>אלרגיה מסוימת</Text>
               </CardItem>
+              </TouchableOpacity>
               <CardItem bordered>
                 <Text style={styles.infoText}>{this.state.allergy}</Text>
               </CardItem>
             </Card>
             <Card>
+            <TouchableOpacity
+              onPress={() => {
+                Speech.stop()
+                let thingToSay = 'סימון משרד הבריאות:'
+                Speech.speak(thingToSay, { language: "he-IW" });
+                let thingToSay2 = this.state.mark
+                Speech.speak(thingToSay2, { language: "he-IW" });
+              }}
+            >
               <CardItem bordered>
                 <Text style={styles.infoText}>סימון משרד הבריאות</Text>
               </CardItem>
+              </TouchableOpacity>
               <CardItem bordered style={(this.state.mark == "תקין-ירוק") ? styles.infoText3 : styles.infoText4}>
                 <Text style={styles.infoText}>{this.state.mark}</Text>
               </CardItem>
@@ -260,12 +293,12 @@ export default class PageResult extends React.Component {
               </CardItem>
             </Card>
           </View>
-
+          { this.CheckSpeicalAllregy(this.state.allergy, this.state.allergy_user)}
         </ScrollView>
       );
     }
   }
-  }
+}
 
 
 const styles = StyleSheet.create({

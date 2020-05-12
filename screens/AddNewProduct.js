@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import { FontAwesome, Entypo } from "@expo/vector-icons"
 import RNPickerSelect from 'react-native-picker-select';
-
+import MainService from './MainService'
 //TODO: Read about UUID
 import uuid from 'uuid'
 import { Form, Item, Input, Label, Button } from "native-base";
@@ -175,7 +175,21 @@ export default class AddNewProduct extends Component {
     this.setState({
         barcode: d
       })
-      this.getContact();
+      let self = this
+      let barCodeData2 = this.props.navigation.state.params.barcodeData
+      let ref = firebase.database().ref()
+      ref.on("value", dataSnapsot => {
+        let contactResult = Object.values(dataSnapsot.val())
+        //contactValue = dataSnapsot.val();
+        contactResult.forEach((a) => {
+          let nameA = a.barcode
+          const nameB = barCodeData2
+          if (nameA == nameB) {
+            this.state.boolspeak = false;
+            return this.props.navigation.replace("Hom");
+          }
+        })
+      })
     }
     if (this.state.boolspeak) {
       this.speak()
@@ -188,30 +202,7 @@ export default class AddNewProduct extends Component {
   }
   componentWillUnmount(){
   this._isMounted = false;
-  
 }
-
-getContact = async () => {
-  let self = this
-  let barCodeData2 = this.props.navigation.state.params.barcodeData
-  let ref = firebase.database().ref()
-  ref.on("value", dataSnapsot => {
-    let contactResult = Object.values(dataSnapsot.val())
-    //contactValue = dataSnapsot.val();
-    contactResult.forEach((a) => {
-      let nameA = a.barcode
-      const nameB = barCodeData2
-      const name = a.fname;
-      if (nameA == nameB) {
-        this.state.boolspeak = false;
-        return this.props.navigation.replace("Hom");
-      }
-    })
-  })
-};
-
-
-
 
   // nameOfFunc = (key) => {
   //   let ref = firebase.database().ref()
@@ -248,6 +239,7 @@ getContact = async () => {
   
 
   // }
+  
   speak2() {
     // var thing='this is NewProduct Page Welcome.'
     // Speech.speak(thing)

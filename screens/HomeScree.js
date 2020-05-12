@@ -6,15 +6,20 @@ import { FontAwesome, Entypo } from "@expo/vector-icons"
 import * as firebase from 'firebase';
 import Constants from 'expo-constants';
 import * as Speech from 'expo-speech';
+import MainService from './MainService'
 export default class HomeScree extends React.Component {
   static navigationOptions = {
     title: "עמוד הבית",
     header: null
   }
+  state={
+    loaded:false
+  }
   // s={isSwitchOn:true}
   _isMounted = false;
   constructor(props) {
     super(props);
+    MainService.load2(v=>this.setState({loaded:true}))
     this.state = {
       allergy: "",
       isLoading: true,
@@ -74,7 +79,7 @@ export default class HomeScree extends React.Component {
   }
 
   render() {
-    if (this.state.isLoading) {
+    if (!this.state.loaded) {
       return (
         <View
           style={{
