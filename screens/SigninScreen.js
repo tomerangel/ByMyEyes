@@ -51,7 +51,7 @@ export default class SigninScreen extends React.Component {
         </View>
         <Form style={styles.form}>
           <Item floatingLabel>
-            <Label>Email</Label>
+            <Label style={{textAlign: 'right'}}>אימייל</Label>
             <Input
               autoCorrect={false}
               autoCapitalize="none"
@@ -60,7 +60,7 @@ export default class SigninScreen extends React.Component {
             />
           </Item>
           <Item floatingLabel>
-            <Label>Password</Label>
+            <Label style={{textAlign: 'right'}}>סיסמה</Label>
             <Input
 
               secureTextEntry={true}

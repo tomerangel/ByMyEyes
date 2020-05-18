@@ -1,20 +1,22 @@
 import React from "react";
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, ScrollView } from "react-native";
-import Constants from 'expo-constants';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, ScrollView,ImageBackground,Slider } from "react-native";
 import * as Speech from 'expo-speech';
 import * as firebase from 'firebase'
+import Constants from "expo-constants";
+
 import { Form, Item, Input, Label, Button, Card, CardItem } from 'native-base'
 import Barcode from 'react-native-barcode-builder';
 import MainService from './MainService'
-import { Entypo } from "@expo/vector-icons";
+import Icon from "react-native-vector-icons/FontAwesome";
+
 
 export default class PageResult extends React.Component {
+  
   state={
     loaded:false
+    
   }
-  static navigationOption = {
-    title: "תוצאה"
-  }
+  
   constructor(props) {
     super(props)
     MainService.load(v=>this.setState({loaded:true}))
@@ -31,7 +33,7 @@ export default class PageResult extends React.Component {
       Calories: null,
       Sodium: null,
       Proteins: null,
-      
+      fontSize: 45,
       Carbohydrates: null,
       Fats: null,
       ifProductNotempty: "empty",
@@ -55,6 +57,7 @@ export default class PageResult extends React.Component {
   }
   async componentDidMount() {
     let key = this.props.navigation.getParam("key", "");
+    
     firebase.auth().onAuthStateChanged(authenticate => {
       if (authenticate) {
         this.setState({
@@ -64,6 +67,7 @@ export default class PageResult extends React.Component {
       } else {
         this.props.navigation.replace("SignIn")
       }
+      
       let self = this;
       let barCodeData2 = this.props.navigation.state.params.barcodeData
       let ref = firebase.database().ref()  
@@ -144,11 +148,22 @@ export default class PageResult extends React.Component {
 
   //   })
   // }
-  ExitTohomepage =()=>{
+  navigateBecauseEmpty = () => {
+    const { navigation } = this.props
+    
     this.speak2()
-        alert("המוצר לא קיים במערכת,תוכלו להוסיף אותו :)")
-        return this.props.navigation.replace("Hom");
-  }
+    alert("המוצר לא קיים במערכת,תוכלו להוסיף אותו :)")
+    setTimeout(() => {
+        navigation.navigate('Hom')
+    }, 800);
+}
+change(fontSize) {
+  this.setState(() => {
+    return {
+      fontSize: parseFloat(fontSize)
+    };
+  });
+}
 
   CheckSpeicalAllregy = (allergy, allergy_user) => {
     if ((allergy) != (allergy_user)) {
@@ -161,6 +176,7 @@ export default class PageResult extends React.Component {
     }
   }
   render() {
+    const { fontSize } = this.state;
     console.log(this.state.allergy_user)
     console.log(this.state.allergy)
     let d = this.props.navigation.state.params.barcodeData
@@ -184,9 +200,11 @@ export default class PageResult extends React.Component {
     }
     //else if (this.state.isListEmpty) {
       if (this.state.ifProductNotempty == 'empty') {
-        this.ExitTohomepage()
-        return null
-      
+        return (
+          <View>
+            {this.navigateBecauseEmpty()}
+          </View>
+        );
       //if(!(this.state.isListEmpty)){
       // return (
         
@@ -215,6 +233,12 @@ export default class PageResult extends React.Component {
     
       return (
         <ScrollView style={styles.container}>
+             <ImageBackground
+                source={require("../assets/images/-247289715.jpg")}
+                resizeMode="stretch"
+                style={styles.image}
+                imageStyle={styles.image_imageStyle}
+              >
           <View style={styles.contactIconContainer}>
             <TouchableOpacity
              onPress={() => {
@@ -225,13 +249,13 @@ export default class PageResult extends React.Component {
               Speech.speak(thingToSay2, { language: "he-IW" });
             }}>
             
-            <Text style={styles.name}>
+            <Text style={[styles.name,{fontSize:this.state.fontSize}]}>
               {this.state.fname}{this.speak(this.state.ifProductNotempty)}
             </Text>
             </TouchableOpacity>
           </View>
           <View style={styles.infoContainer}>
-            <Card>
+            <Card style={{marginTop:50}}>
               <CardItem bordered>
               <Text style={styles.infoText}> קלוריות |</Text> 
                <Text style={styles.infoText}> שומנים |</Text> 
@@ -240,15 +264,15 @@ export default class PageResult extends React.Component {
               <Text style={styles.infoText}>| נתרן |</Text> 
               </CardItem>
               <CardItem bordered>
-                <Text style={styles.infoText}>|    {this.state.Calories}    |</Text>
-                <Text style={styles.infoText}>     {this.state.Fats}   |</Text>
-                <Text style={styles.infoText}>     {this.state.Carbohydrates}    |</Text>
-                <Text style={styles.infoText}>     {this.state.Proteins}   |</Text>
-                <Text style={styles.infoText}>     {this.state.Sodium}  |</Text>
+                <Text style={styles.infoText2}>|    {this.state.Calories}    |</Text>
+                <Text style={styles.infoText2}>     {this.state.Fats}   |</Text>
+                <Text style={styles.infoText2}>     {this.state.Carbohydrates}    |</Text>
+                <Text style={styles.infoText2}>     {this.state.Proteins}   |</Text>
+                <Text style={styles.infoText2}>     {this.state.Sodium}  |</Text>
               </CardItem>
 
             </Card>
-            <Card>
+            <Card style={{marginTop:10}}>
             <TouchableOpacity
               onPress={() => {
                 Speech.stop()
@@ -263,10 +287,10 @@ export default class PageResult extends React.Component {
               </CardItem>
               </TouchableOpacity>
               <CardItem bordered>
-                <Text style={styles.infoText}>{this.state.allergy}</Text>
+                <Text style={styles.infoText2}>{this.state.allergy}</Text>
               </CardItem>
             </Card>
-            <Card>
+            <Card style={{marginTop:10}}>
             <TouchableOpacity
               onPress={() => {
                 Speech.stop()
@@ -281,23 +305,68 @@ export default class PageResult extends React.Component {
               </CardItem>
               </TouchableOpacity>
               <CardItem bordered style={(this.state.mark == "תקין-ירוק") ? styles.infoText3 : styles.infoText4}>
-                <Text style={styles.infoText}>{this.state.mark}</Text>
+                <Text style={styles.infoText2}>{this.state.mark}</Text>
               </CardItem>
             </Card>
-            <Card>
+            <Card style={{marginTop:10}}>
               <CardItem bordered>
                 <Text style={styles.infoText}>ברקוד</Text>
               </CardItem>
               <CardItem bordered>
-                <Barcode value={this.state.barcode} format="CODE128" />
+                <Barcode  value={this.state.barcode} format="CODE128" />
               </CardItem>
             </Card>
+            {/* <Icon name="reply" style={styles.icon2}
+            onPress={() => {
+             this.props.navigation.navigate("Hom");
+
+            }}
+            ></Icon> */}
+              <View style={styles.wrapperHorizontal}>
+                <Slider
+                  thumbTintColor="#DAA520"
+                  minimumTrackTintColor="#DAA520"
+                  minimumValue={10}
+                  maximumValue={100}
+                  step={1}
+                  onValueChange={this.change.bind(this)}
+                  value={fontSize}
+                />
+              </View>
+            {/* <CustomSlider
+            label="Font Size"
+            value={15}
+            maximumValue={40}
+            handleValueChange={this.state.setFontSize}
+          /> */}
           </View>
           { this.CheckSpeicalAllregy(this.state.allergy, this.state.allergy_user)}
+          </ImageBackground>
         </ScrollView>
       );
     }
   }
+}
+
+function CustomSlider({label,handleValueChange,step = 1,minimumValue = 0,maximumValue = 10,value}) {
+  return (
+    <>
+      {label && (
+        <Text style={styles.title}>{`${label} (${value.toFixed(2)})`}</Text>
+      )}
+      <View style={styles.wrapperHorizontal}>
+        <Slider
+          thumbTintColor="#DAA520"
+          minimumTrackTintColor="#DAA520"
+          minimumValue={minimumValue}
+          maximumValue={maximumValue}
+          step={step}
+          onValueChange={(setFontSize)=>this.setState({setFontSize:setFontSize})}
+          value={value}
+        />
+      </View>
+    </>
+  );
 }
 
 
@@ -309,6 +378,17 @@ const styles = StyleSheet.create({
   },
   contactIconContainer: {
 
+    textAlign: "center",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  icon2: {
+    color: "black",
+    fontSize: 58,
+    height: 58,
+    width: 58,
+    marginTop: 18,
+    marginLeft: 180,
     textAlign: "center",
     alignItems: "center",
     justifyContent: "center"
@@ -333,10 +413,15 @@ const styles = StyleSheet.create({
     color: "#000",
     fontWeight: "900"
   },
+  infoText2: {
+    textAlign: 'right',
+    fontSize: 18,
+    
+  },
   infoText: {
     textAlign: 'right',
     fontSize: 18,
-    fontWeight: "300"
+    fontWeight: "bold"
   },
   infoText3: {
     backgroundColor: "green",
@@ -344,9 +429,7 @@ const styles = StyleSheet.create({
   infoText4: {
     backgroundColor: "red",
   },
-  infoText2: {
-    backgroundColor: "green",
-  },
+ 
   actionContainer: {
     textAlign: "center",
     flexDirection: "row"
@@ -384,6 +467,13 @@ const styles = StyleSheet.create({
     color: "red",
     fontWeight: 'bold',
     fontSize: 30
+  },
+  image: {
+    top: 0,
+    left: 0,
+    width: 420,
+    height: 670,
+    position: "absolute"
   },
   button3: {
     //marginRight: 30,
@@ -433,12 +523,7 @@ const styles = StyleSheet.create({
   infoContainer: {
     flexDirection: "column"
   },
-  infoText: {
-    fontSize: 16,
-    fontWeight: "400",
-    paddingLeft: 10,
-    paddingTop: 2
-  },
+  
   con: {
     width: 420,
     height: 250

@@ -12,14 +12,10 @@ import {
 
   Image
 } from "react-native";
-import { FontAwesome, Entypo } from "@expo/vector-icons"
 import RNPickerSelect from 'react-native-picker-select';
 import MainService from './MainService'
-//TODO: Read about UUID
-import uuid from 'uuid'
 import { Form, Item, Input, Label, Button } from "native-base";
 import * as Speech from 'expo-speech';
-import * as  ImagePicker from "expo-image-picker";
 //import { Header } from "react-navigation";
 
 //TODO: add firebase
@@ -27,8 +23,8 @@ import * as firebase from 'firebase'
 
 export default class AddNewProduct extends Component {
   _isMounted = false;
-  state={
-    loaded:false
+  state = {
+    loaded: false
   }
   static navigationOptions = {
     // set screen header title
@@ -37,7 +33,7 @@ export default class AddNewProduct extends Component {
   //TODO: create constructor with state: fname, lname, phone, email, address, image, imageDownloadUrl, isUploading
   constructor(props) {
     super(props)
-    MainService.load(v=>this.setState({loaded:true}))
+    MainService.load(v => this.setState({ loaded: true }))
     this.state = {
       mark: "",
       items: [
@@ -110,7 +106,7 @@ export default class AddNewProduct extends Component {
         },
       ],
       fname: "",
-      key:"",
+      key: "",
       barcode: "",
       barcodeData: "",
       Calories: "",
@@ -120,9 +116,9 @@ export default class AddNewProduct extends Component {
       Fats: "",
       isUploading: false,
       boolspeak: true,
-      booladdProduct:false,
+      booladdProduct: false,
     }
-    
+
   }
   //TODO: savecontact method
   saveContact = async () => {
@@ -170,9 +166,9 @@ export default class AddNewProduct extends Component {
   componentDidMount() {
     this._isMounted = true;
     let d = this.props.navigation.state.params.barcodeData
-    console.log(d)
+
     if (this._isMounted) {
-    this.setState({
+      this.setState({
         barcode: d
       })
       let self = this
@@ -186,23 +182,27 @@ export default class AddNewProduct extends Component {
           const nameB = barCodeData2
           if (nameA == nameB) {
             this.state.boolspeak = false;
-            return this.props.navigation.replace("Hom");
+            
           }
         })
       })
-    }
-    if (this.state.boolspeak) {
-      this.speak()
-    }
-    else{
-      alert("המוצר כבר קיים במערכת תוכלו לבדוק בצפייה במוצרים")
-      this.speak2();
+      if(this.state.boolspeak){
+        this.speak()
+      }
     }
 
   }
-  componentWillUnmount(){
-  this._isMounted = false;
-}
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+  navigateBecauseEmpty = () => {
+    const { navigation } = this.props
+    this.speak2()
+    alert("המוצר כבר קיים במערכת תוכלו לבדוק בצפייה במוצרים")
+    setTimeout(() => {
+      navigation.navigate('Hom')
+    }, 800);
+  }
 
   // nameOfFunc = (key) => {
   //   let ref = firebase.database().ref()
@@ -210,7 +210,7 @@ export default class AddNewProduct extends Component {
   //   ref.on("value", dataSnapsot => {
   //     let contactResult = Object.values(dataSnapsot.val())
   //     //fname: contactResult,
-      
+
   //     contactResult.forEach((a) => {
   //       let nameA = a.barcode
   //       const nameB = barCodeData2
@@ -223,7 +223,7 @@ export default class AddNewProduct extends Component {
   //         return this.props.navigation.replace("Home");
   //       }
   //     })
-    
+
   //   if (this.state.boolspeak) {
   //     this.speak()
   //   }
@@ -232,14 +232,14 @@ export default class AddNewProduct extends Component {
   //     this.speak2();
   //   }
   //   })
-  
-  
-       
-    
-  
+
+
+
+
+
 
   // }
-  
+
   speak2() {
     // var thing='this is NewProduct Page Welcome.'
     // Speech.speak(thing)
@@ -251,10 +251,11 @@ export default class AddNewProduct extends Component {
     Speech.speak(' .בעמוד זה תצטרך למלא. את הפרטי המוצר', { language: "he-IW" })
   }
   //render method
+
   render() {
     // if (this.state.tomer){
     let d = this.props.navigation.state.params.barcodeData
-    
+
     if (!this.state.loaded) {
       return (
         <View
@@ -262,8 +263,16 @@ export default class AddNewProduct extends Component {
         >
           <ActivityIndicator size="large" color="#B83227" />
           <Text style={{ textAlign: "center" }}>
-          .....בטעינה אנא המתן
+          
+            .....בטעינה אנא המתן
           </Text>
+        </View>
+      );
+    }
+    if (!this.state.boolspeak) {
+      return (
+        <View>
+          {this.navigateBecauseEmpty()}
         </View>
       );
     }

@@ -149,11 +149,12 @@ export default class SignupScreen extends React.Component {
                 onChangeText={password => this.setState({ password })}
               />
             </Item>
+            <View paddingVertical={5} />
             <Text style={{textAlign: 'right'}}>אם יש לך רגישות לאלרגיה מסוימת תבחר כאן.</Text>
             <View style={styles.formItemInput}>
             <RNPickerSelect
                     placeholder={{
-                        label: 'אם המוצר מכיל משהו מכאן תבחר.',
+                        label: 'אם יש לך אלרגייה מסוימת תסמן אותה כאן.',
                         value: null,
                     }}
                     items={this.state.items}
@@ -162,10 +163,17 @@ export default class SignupScreen extends React.Component {
                             allergy: value,
                         });
                     }}
+                    // onUpArrow={() => {
+                    //   this.state.f.focus();
+                    // }}
+                    onDownArrow={() => {
+                      this.state.allergy.togglePicker();
+                    }}
                     style={{ ...pickerStyles }}
                     value={this.state.allergy}
                     />
                 </View>
+                <View paddingVertical={5} />
             <Button
               style={styles.button}
               full
@@ -224,38 +232,59 @@ const styles = StyleSheet.create({
   footer: {
     alignItems: "center"
   },
+   scrollContainer: {
+     flex: 1,
+     paddingHorizontal: 15,
+   },
+   scrollContentContainer: {
+     paddingTop: 40,
+     paddingBottom: 10,
+   },
   
 });
 const pickerStyles = StyleSheet.create({
   inputIOS: {
-    flex: 1,
-    fontSize: 17,
+    fontSize: 19,
+    textAlign:"right",
+    paddingVertical: 12,
+    paddingHorizontal: 30,
+    borderWidth: 1,
+    borderColor: 'purple',
+    borderRadius: 10,
+    width:380,
     color: 'black',
+    paddingLeft: 30, // to ensure the text is never behind the icon
   },
-  viewContainer: {
-    flex: 1
+  inputAndroid: {
+    fontSize: 16,
+    textAlign:"right",
+    width:300,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderWidth: 0.5,
+    borderColor: 'purple',
+    borderRadius: 8,
+    color: 'black',
+    paddingRight: 30, // to ensure the text is never behind the icon
   },
-  inputIOSContainer: {
-     flex: 1,
-    margin: 5,
-    padding: 10,
-    flexDirection: 'row',
-    backgroundColor: '#969796',
-  },
-  icon: {
-    flexDirection: 'column',
-    position: 'relative',
-    top: 0,
-    right: 5,
-    flexGrow: 0,
-    width: 6,
-    alignSelf: 'center',
-    borderTopWidth: 6,
-    borderTopColor: '#212733',
-    borderRightWidth: 6,
-    borderLeftWidth: 6,
-  },
-  done: {
-    color: '#212733'
-  },
+  // viewContainer: {
+  //   flex: 1
+  // },
+ 
+  // icon: {
+  //   flexDirection: 'column',
+  //   position: 'relative',
+  //   top: 0,
+  //   right: 5,
+  //   flexGrow: 0,
+  //   width: 6,
+  //   alignSelf: 'center',
+  //   borderTopWidth: 6,
+  //   borderTopColor: '#212733',
+  //   borderRightWidth: 6,
+  //   borderLeftWidth: 6,
+  // },
+  // done: {
+  //   color: '#212733'
+  // },
 });

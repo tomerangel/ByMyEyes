@@ -49,18 +49,32 @@ export default class HomeScree extends React.Component {
   componentWillUnmount() {
     this._isMounted = false;
   }
+  navigateBecauseEmpty = () => {
+    const { navigation } = this.props
+    this.speak2()
+    setTimeout(() => {
+        navigation.navigate('SignIn')
+    }, 800);
+}
   signOuUser = () => {
     firebase
       .auth()
       .signOut()
-      .then(() => console.log("SignOut"))
+      .then(() => this.navigateBecauseEmpty())
       .catch(error => {
         alert(error.message)
       })
   }
   speak() {
-    var thing = 'welcome to scanner application'
-    Speech.speak(thing)
+    var thing ='ברוך הבא.'
+    Speech.speak(thing,{ language: "he-IW" })
+    // var thing2 = 'לַסְּרִיקָה לָחַץ עַל הַכַּפְתּוֹר הָאֶמְצָעִי'
+    // Speech.speak(thing2, { language: "he-IW" })
+    //Speech.speak('you have 3 choose, left Camera,Right Products,and down SignOut ',{ language: "pt-BR" })
+  }
+  speak2() {
+    var thing = 'התנתקת מהמשתמש .'
+    Speech.speak(thing,{ language: "he-IW" })
     // var thing2 = 'לַסְּרִיקָה לָחַץ עַל הַכַּפְתּוֹר הָאֶמְצָעִי'
     // Speech.speak(thing2, { language: "he-IW" })
     //Speech.speak('you have 3 choose, left Camera,Right Products,and down SignOut ',{ language: "pt-BR" })
