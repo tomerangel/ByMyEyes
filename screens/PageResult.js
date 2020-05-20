@@ -27,6 +27,7 @@ export default class PageResult extends React.Component {
       mark: null,
       allergy: null,
       isLod: false,
+      Category:"",
       allergy_user: "",
       barcode: "",
       barcodeData: "",
@@ -57,7 +58,6 @@ export default class PageResult extends React.Component {
   }
   async componentDidMount() {
     let key = this.props.navigation.getParam("key", "");
-    
     firebase.auth().onAuthStateChanged(authenticate => {
       if (authenticate) {
         this.setState({
@@ -79,6 +79,7 @@ export default class PageResult extends React.Component {
           let nameA = a.barcode
           const nameB = barCodeData2
           const name = a.fname;
+          const t= a.Category;
           const n = a.phone;
           const n2 = a.barcode;
           const n3 = a.key;
@@ -99,6 +100,7 @@ export default class PageResult extends React.Component {
               barcode: n2,
               key: n3,
               mark: n4,
+              Category:t,
               allergy: n5,
               Calories: n6,
               Sodium: n7,
@@ -109,6 +111,8 @@ export default class PageResult extends React.Component {
               isLoading: false,
               isListEmpty: false
             })
+            this.CheckSpeicalAllregy(this.state.allergy, this.state.allergy_user)
+            this.speak(this.state.ifProductNotempty)
           }
         })
         // if(this.state.ifProductNotempty=="empty"){
@@ -250,7 +254,7 @@ change(fontSize) {
             }}>
             
             <Text style={[styles.name,{fontSize:this.state.fontSize}]}>
-              {this.state.fname}{this.speak(this.state.ifProductNotempty)}
+              {this.state.fname}
             </Text>
             </TouchableOpacity>
           </View>
@@ -276,6 +280,22 @@ change(fontSize) {
             <TouchableOpacity
               onPress={() => {
                 Speech.stop()
+                let thingToSay = 'הקטגוריה של המוצר:'
+                Speech.speak(thingToSay, { language: "he-IW" });
+                let thingToSay2 = this.state.Category
+                Speech.speak(thingToSay2, { language: "he-IW" });
+              }}
+            >
+              <CardItem bordered>
+                <Text style={styles.infoText}>קטגוריה</Text>
+              </CardItem>
+              </TouchableOpacity>
+              <CardItem bordered>
+                <Text style={styles.infoText2}>{this.state.Category}</Text>
+              </CardItem>
+            <TouchableOpacity
+              onPress={() => {
+                Speech.stop()
                 let thingToSay = 'האלרגיה שהמוצר מכיל היא:'
                 Speech.speak(thingToSay, { language: "he-IW" });
                 let thingToSay2 = this.state.allergy
@@ -286,9 +306,11 @@ change(fontSize) {
                 <Text style={styles.infoText}>אלרגיה מסוימת</Text>
               </CardItem>
               </TouchableOpacity>
+            
               <CardItem bordered>
                 <Text style={styles.infoText2}>{this.state.allergy}</Text>
               </CardItem>
+            
             </Card>
             <Card style={{marginTop:10}}>
             <TouchableOpacity
@@ -340,7 +362,7 @@ change(fontSize) {
             handleValueChange={this.state.setFontSize}
           /> */}
           </View>
-          { this.CheckSpeicalAllregy(this.state.allergy, this.state.allergy_user)}
+          
           </ImageBackground>
         </ScrollView>
       );

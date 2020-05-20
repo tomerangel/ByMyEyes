@@ -111,6 +111,7 @@ export default class AddNewProduct extends Component {
       barcodeData: "",
       Calories: "",
       Sodium: "",
+      Category:"",
       Proteins: "",
       Carbohydrates: "",
       Fats: "",
@@ -126,6 +127,7 @@ export default class AddNewProduct extends Component {
     // create and save contact to firebase
     if (
       this.state.fname !== "" &&
+      this.state.Category !==""&&
       this.state.Calories !== "" &&
       this.state.Sodium !== "" &&
       this.state.Proteins !== "" &&
@@ -136,13 +138,11 @@ export default class AddNewProduct extends Component {
       this.state.barcode !== ""
 
     ) {
-      this.setState({ isUploading: true });
       const dbRefexrence = firebase.database().ref();
       const storageRef = firebase.storage().ref();
-
       var contact = {
-
         fname: this.state.fname,
+        Category:this.state.Category,
         Calories: this.state.Calories,
         Proteins: this.state.Proteins,
         Carbohydrates: this.state.Carbohydrates,
@@ -156,13 +156,20 @@ export default class AddNewProduct extends Component {
       await dbRefexrence.push(contact, error => {
         if (!error) {
           //this.state.booladdProduct=true;
-          return this.props.navigation.replace("Home");
+          return this.navigatebackHomepage()
         }
       })
     } else {
       alert("שכחת למלא אחד מהמוצרים.")
     }
   };
+  navigatebackHomepage = () => {
+    const { navigation } = this.props
+    Speech.speak('המוצר התווסף למערכת.', { language: "he-IW" })
+    setTimeout(() => {
+        navigation.navigate('Home')
+    }, 2000);
+}
   componentDidMount() {
     this._isMounted = true;
     let d = this.props.navigation.state.params.barcodeData
@@ -203,42 +210,6 @@ export default class AddNewProduct extends Component {
       navigation.navigate('Hom')
     }, 800);
   }
-
-  // nameOfFunc = (key) => {
-  //   let ref = firebase.database().ref()
-  //   let barCodeData2 = this.props.navigation.state.params.barcodeData
-  //   ref.on("value", dataSnapsot => {
-  //     let contactResult = Object.values(dataSnapsot.val())
-  //     //fname: contactResult,
-
-  //     contactResult.forEach((a) => {
-  //       let nameA = a.barcode
-  //       const nameB = barCodeData2
-  //       const name = a.fname
-  //       console.log(`${nameA} this is from database`)
-  //       console.log(`${nameB} this is from Camera`)
-  //       if (nameA == nameB) {
-  //         this.state.boolspeak = false;
-  //         //this.state.booladdProduct= true;
-  //         return this.props.navigation.replace("Home");
-  //       }
-  //     })
-
-  //   if (this.state.boolspeak) {
-  //     this.speak()
-  //   }
-  //   else{
-  //     alert("המוצר כבר קיים במערכת תוכלו לבדוק בצפייה במוצרים")
-  //     this.speak2();
-  //   }
-  //   })
-
-
-
-
-
-
-  // }
 
   speak2() {
     // var thing='this is NewProduct Page Welcome.'
@@ -293,10 +264,20 @@ export default class AddNewProduct extends Component {
               <Item style={styles.inputItem} floatingLabel>
                 <Label style={{ textAlign: 'right' }}>תיאור המוצר</Label>
                 <Input
+                  textAlign="right"
                   autoCorrect={false}
                   autoCapitalize="none"
                   keyboardType="default"
                   onChangeText={fname => this.setState({ fname })}
+                />
+              </Item>
+              <Item style={styles.inputItem} floatingLabel>
+                <Label style={{ textAlign: 'right' }}>קטגוריה</Label>
+                <Input
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  keyboardType="default"
+                  onChangeText={ Category=> this.setState({ Category })}
                 />
               </Item>
               <Item style={styles.inputItem} floatingLabel>

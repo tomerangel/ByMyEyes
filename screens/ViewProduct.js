@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  SafeAreaView,
   Linking,
   Alert,
   Platform,
@@ -39,6 +40,7 @@ export default class ViewProduct extends Component {
       Fats:null,
       email: null,
       barcode: null,
+      Category:null,
       imageUrl: null,
       key: null,
       isLoading: true,
@@ -61,6 +63,7 @@ export default class ViewProduct extends Component {
           fname: contactValue.fname,
           //  lname:contactValue.lname,
           Calories: contactValue.Calories,
+          Category:contactValue.Category,
           Sodium: contactValue.Sodium,
           Proteins: contactValue.Proteins,
           Carbohydrates: contactValue.Carbohydrates,
@@ -69,7 +72,7 @@ export default class ViewProduct extends Component {
           barcode: contactValue.barcode,
           mark: contactValue.mark,
           allergy: contactValue.allergy,
-          imageUrl: contactValue.imageUrl,
+       
           key: key,
           isLoading: false
         })
@@ -181,6 +184,7 @@ export default class ViewProduct extends Component {
       }
       // else show contact details
       return (
+   
         <ScrollView style={styles.container}>
           <View style={styles.contactIconContainer}> 
               <Text style={styles.name}>
@@ -205,7 +209,15 @@ export default class ViewProduct extends Component {
               </CardItem>
 
             </Card>
-            <Card>
+            <Card >
+            <CardItem bordered>
+              <View style={{textAlign:"right"}}>
+                <Text style={{textAlign:"right"}}>קטגוריה</Text>
+                </View>
+              </CardItem>
+              <CardItem bordered>
+                <Text style={styles.infoText}>{this.state.Category}</Text>
+              </CardItem>
               <CardItem bordered>
                 <Text style={styles.infoText}>אלרגיה מסוימת</Text>
               </CardItem>
@@ -255,6 +267,7 @@ export default class ViewProduct extends Component {
             </CardItem>
           </Card>
         </ScrollView>
+
       );
     } 
 }

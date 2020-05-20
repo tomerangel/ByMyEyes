@@ -104,6 +104,7 @@ export default class EditContact extends Component {
       Calories:"",
       Sodium :"",
       Proteins:"",
+      Category:"",
       Carbohydrates:"",
       Fats:"",
       isUploading: false,
@@ -131,6 +132,7 @@ export default class EditContact extends Component {
         contactValue = dataSnapsot.val();
         self.setState({
           fname: contactValue.fname,
+          Category:contactValue.Category,
           Calories:contactValue.Calories,
           Sodium:contactValue.Sodium,
           Proteins:contactValue.Proteins,
@@ -149,6 +151,7 @@ export default class EditContact extends Component {
   //TODO: update contact method
   updateContact = async key => {
     if (this.state.fname !== "" &&
+      this.state.Category !== ""&&
       this.state.Calories!== ""&&
       this.state.Sodium!== ""&&
       this.state.Proteins!== ""&&
@@ -164,6 +167,7 @@ export default class EditContact extends Component {
     
       var contact = {
         fname: this.state.fname,
+        Category:this.state.Category,
         Calories: this.state.Calories,
         Sodium: this.state.Sodium,
         Proteins: this.state.Proteins,
@@ -176,11 +180,17 @@ export default class EditContact extends Component {
       }
       await dbRefernce.child(key).set(contact, error => {
         if (!error) {
-          return this.props.navigation.goBack();
+          return this.navigatebackHomepage()
         }
       })
     }
   };
+  navigatebackHomepage = () => {
+    const { navigation } = this.props
+    setTimeout(() => {
+        navigation.navigate('Home')
+    }, 2000);
+}
   // render method
   render() {
     if (this.state.isUploading) {
@@ -235,6 +245,19 @@ export default class EditContact extends Component {
                   value={
                     // set current contact value to input box
                     this.state.fname
+                  }
+                />
+              </Item>
+              <Item style={styles.inputItem} floatingLabel>
+                <Label>קטגוריה</Label>
+                <Input
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  keyboardType="default"
+                  onChangeText={Category => this.setState({ Category })}
+                  value={
+                    // set current contact value to input box
+                    this.state.Category
                   }
                 />
               </Item>
