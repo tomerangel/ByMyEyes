@@ -6,10 +6,6 @@ import RNPickerSelect from 'react-native-picker-select';
 
 import { Form, Input, Label, Button, Item } from 'native-base'
 
-
-
-
-
 export default class SignupScreen extends React.Component {
   static navigationOptions = {
     title: "הרשמה",
@@ -76,14 +72,14 @@ export default class SignupScreen extends React.Component {
     this.speak();
   }
   speak(){
-    var thing='ברוך הבא להרשמה יש להזין שם פרטי. איימיל. וסיסמה.'
+    var thing='ברוך הבא יש להאזין פרטים.'
     Speech.speak(thing, { language: "he-IW" })
     //Speech.speak('you have 3 choose, left Camera,Right Products,and down SignOut ',{ language: "pt-BR" })
   }
   CheckingDetails = (email ,password,allergy) => {
     if( email == ''|| password ==''||allergy=='' )
     {
-        alert("Missing Details")
+        alert("חסר פרטים")
     }
     else{
           this.signupUser(this.state.email, this.state.password);

@@ -28,7 +28,7 @@ export default class Barcode extends React.Component {
     scanned: false,
   };
   speak() {
-    var thing = 'פתחת מצלמת ברקוד'
+    var thing = 'מַצְלֵמַת בַּרְקוֹד נִפְתַּחַת'
     Speech.speak(thing, { language: "he-IW" })
     Speech.speak('אתה יכול לסרוק עכשיו.', { language: "he-IW" })
   }

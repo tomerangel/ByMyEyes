@@ -42,16 +42,16 @@ export default class AddNewProduct extends Component {
           value: 'תקין-ירוק',
         },
         {
-          label: 'סוכר ברמה גוובה',
-          value: 'סוכר ברמה גוובה',
+          label: 'סוכר ברמה גבווה',
+          value: 'סוכר ברמה גבווה',
         },
         {
-          label: 'נתרן ברמה גוובה',
-          value: 'נתרן ברמה גוובה',
+          label: 'נתרן ברמה גבווה',
+          value: 'נתרן ברמה גבווה',
         },
         {
-          label: 'שומן רווי ברמה גוובה',
-          value: 'שומן רווי ברמה גוובה',
+          label: 'שומן רווי ברמה גבווה',
+          value: 'שומן רווי ברמה גבווה',
         },
       ],
       allergy: "",
@@ -219,7 +219,9 @@ export default class AddNewProduct extends Component {
   speak() {
     // var thing='this is NewProduct Page Welcome.'
     // Speech.speak(thing)
-    Speech.speak(' .בעמוד זה תצטרך למלא. את הפרטי המוצר', { language: "he-IW" })
+    setTimeout(() => {
+    Speech.speak(' .בְּעַמּוּד זֶה יֵשׁ לְמַלֵּא אֶת פְּרָטֵי הַמּוּצָר', { language: "he-IW" })
+    },2000)
   }
   //render method
 

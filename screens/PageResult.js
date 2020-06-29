@@ -50,7 +50,9 @@ export default class PageResult extends React.Component {
   }
   speak = ifProductNotempty => {
     let thingToSay = ifProductNotempty
-    Speech.speak(thingToSay, { language: "he-IW" });
+    setTimeout(() => {
+      Speech.speak(thingToSay, { language: "he-IW" });
+  }, 2700); 
   }
   speak2() {
     let thingToSay = 'המוצר לא קיים. אתה יכול להוסיף אותו. בעמוד המוצרים '
@@ -174,9 +176,11 @@ change(fontSize) {
       console.log("is not same")
     }
     else {
-      alert("תזהר המוצר הזה מכיל את האלרגיה שאתה רגיש עליה.")
-      let thingToSay = 'תזהר המוצר הזה מכיל את האלרגיה שאתה רגיש'
+      setTimeout(() => {
+        alert("תִּזָּהֵר! הַמּוּצָר מֵכִיל אֶת הָאָלֶרְגִּיָּה אֵלֶיהָ אַתָּה רָגִישׁ")
+      let thingToSay = 'תִּזָּהֵר! הַמּוּצָר מֵכִיל אֶת הָאָלֶרְגִּיָּה אֵלֶיהָ אַתָּה רָגִישׁ'
       Speech.speak(thingToSay, { language: "he-IW" });
+    }, 3500); 
     }
   }
   render() {
@@ -197,7 +201,7 @@ change(fontSize) {
         >
           <ActivityIndicator size="large" color="#B83227" />
           <Text style={{ textAlign: "center" }}>
-            loading please wait..
+            אנא המתן....
           </Text>
         </View>
       );
@@ -259,8 +263,9 @@ change(fontSize) {
             </TouchableOpacity>
           </View>
           <View style={styles.infoContainer}>
-            <Card style={{marginTop:50}}>
+            <Card style={{marginTop:25}}>
               <CardItem bordered>
+                
               <Text style={styles.infoText}> קלוריות |</Text> 
                <Text style={styles.infoText}> שומנים |</Text> 
                 <Text style={styles.infoText}> פחמימות |</Text> 
@@ -276,7 +281,7 @@ change(fontSize) {
               </CardItem>
 
             </Card>
-            <Card style={{marginTop:10}}>
+            <Card style={{marginTop:5}}>
             <TouchableOpacity
               onPress={() => {
                 Speech.stop()
@@ -286,13 +291,19 @@ change(fontSize) {
                 Speech.speak(thingToSay2, { language: "he-IW" });
               }}
             >
+             
               <CardItem bordered>
-                <Text style={styles.infoText}>קטגוריה</Text>
+             
+                <Text style={styles.infoText6}>קטגוריה</Text>
+             
               </CardItem>
+           
               </TouchableOpacity>
               <CardItem bordered>
-                <Text style={styles.infoText2}>{this.state.Category}</Text>
+                <Text style={styles.infoText5}>{this.state.Category}</Text>
               </CardItem>
+              </Card>
+              <Card style={{marginTop:5}}>
             <TouchableOpacity
               onPress={() => {
                 Speech.stop()
@@ -303,16 +314,16 @@ change(fontSize) {
               }}
             >
               <CardItem bordered>
-                <Text style={styles.infoText}>אלרגיה מסוימת</Text>
+                <Text style={styles.infoText7}>אלרגיה מסוימת</Text>
               </CardItem>
               </TouchableOpacity>
             
               <CardItem bordered>
-                <Text style={styles.infoText2}>{this.state.allergy}</Text>
+                <Text style={styles.infoText8}>{this.state.allergy}</Text>
               </CardItem>
             
             </Card>
-            <Card style={{marginTop:10}}>
+            <Card style={{marginTop:5}}>
             <TouchableOpacity
               onPress={() => {
                 Speech.stop()
@@ -323,16 +334,16 @@ change(fontSize) {
               }}
             >
               <CardItem bordered>
-                <Text style={styles.infoText}>סימון משרד הבריאות</Text>
+                <Text style={styles.infoText9}>סימון משרד הבריאות</Text>
               </CardItem>
               </TouchableOpacity>
               <CardItem bordered style={(this.state.mark == "תקין-ירוק") ? styles.infoText3 : styles.infoText4}>
-                <Text style={styles.infoText2}>{this.state.mark}</Text>
+                <Text style={styles.infoText10}>{this.state.mark}</Text>
               </CardItem>
             </Card>
-            <Card style={{marginTop:10}}>
+            <Card style={{marginTop:5}}>
               <CardItem bordered>
-                <Text style={styles.infoText}>ברקוד</Text>
+                <Text style={styles.infoText11}>ברקוד</Text>
               </CardItem>
               <CardItem bordered>
                 <Barcode  value={this.state.barcode} format="CODE128" />
@@ -369,28 +380,6 @@ change(fontSize) {
     }
   }
 }
-
-function CustomSlider({label,handleValueChange,step = 1,minimumValue = 0,maximumValue = 10,value}) {
-  return (
-    <>
-      {label && (
-        <Text style={styles.title}>{`${label} (${value.toFixed(2)})`}</Text>
-      )}
-      <View style={styles.wrapperHorizontal}>
-        <Slider
-          thumbTintColor="#DAA520"
-          minimumTrackTintColor="#DAA520"
-          minimumValue={minimumValue}
-          maximumValue={maximumValue}
-          step={step}
-          onValueChange={(setFontSize)=>this.setState({setFontSize:setFontSize})}
-          value={value}
-        />
-      </View>
-    </>
-  );
-}
-
 
 const styles = StyleSheet.create({
   container: {
@@ -436,13 +425,51 @@ const styles = StyleSheet.create({
     fontWeight: "900"
   },
   infoText2: {
+    left:155,
+    textAlign: 'right',
+    fontSize: 18,
+    
+  },
+  infoText10: {
+    left:290,
+    textAlign: 'right',
+    fontSize: 18,
+    
+  },
+  infoText8: {
+    left:355,
     textAlign: 'right',
     fontSize: 18,
     
   },
   infoText: {
+    left:0,
     textAlign: 'right',
-    fontSize: 18,
+    fontSize: 24,
+    fontWeight: "bold"
+  },
+  infoText11: {
+    left:330,
+    textAlign: 'right',
+    fontSize: 20,
+    fontWeight: "bold"
+  },
+  infoText9: {
+    left:220,
+    textAlign: 'right',
+    fontSize: 24,
+    fontWeight: "bold"
+  },
+  infoText6: {
+    left:320,
+    textAlign: 'right',
+    fontSize: 25,
+    fontWeight: "bold"
+  },
+  infoText7: {
+    left:260,
+    textAlign: 'right',
+    fontSize: 25,
     fontWeight: "bold"
   },
   infoText3: {
@@ -451,7 +478,12 @@ const styles = StyleSheet.create({
   infoText4: {
     backgroundColor: "red",
   },
- 
+  infoText5: {
+    left:330,
+    textAlign: 'right',
+    fontSize: 18,
+    
+  },
   actionContainer: {
     textAlign: "center",
     flexDirection: "row"
@@ -600,6 +632,7 @@ const styles = StyleSheet.create({
     borderRadius: 2,
 
   },
+  
   caption: {
     color: "#fff",
     fontSize: 50,

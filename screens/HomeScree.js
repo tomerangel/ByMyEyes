@@ -66,7 +66,7 @@ export default class HomeScree extends React.Component {
       })
   }
   speak() {
-    var thing ='ברוך הבא.'
+    var thing ='בָּרוּךְ הַבָּא! לִסְרִיקַת מוּצָר לַחַץ עַל הַכַּפְתּוֹר הָאֶמְצָעִי'
     Speech.speak(thing,{ language: "he-IW" })
     // var thing2 = 'לַסְּרִיקָה לָחַץ עַל הַכַּפְתּוֹר הָאֶמְצָעִי'
     // Speech.speak(thing2, { language: "he-IW" })
@@ -112,13 +112,7 @@ export default class HomeScree extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.imageStack}>
-          <ImageBackground
-            source={require("../assets/images/-247289715.jpg")}
-            resizeMode="stretch"
-            style={styles.image}
-            imageStyle={styles.image_imageStyle}
-          >
-          </ImageBackground>
+        
 
           <FeatherIcon name="log-out" style={styles.icon2}
             onPress={() => {
@@ -126,7 +120,7 @@ export default class HomeScree extends React.Component {
               this.signOuUser()
 
             }}>
-            ></FeatherIcon>
+            </FeatherIcon>
           <View style={styles.icon3Stack}>
             <FeatherIcon name="eye" style={styles.icon3}
               onPress={() => {
@@ -135,9 +129,9 @@ export default class HomeScree extends React.Component {
                 this.props.navigation.navigate("Barcode")
 
               }}>
-              >
+          
             </FeatherIcon>
-            <Text style={styles.beYourEye}>be your eye</Text>
+            <Text style={styles.beYourEye}>be your eyes</Text>
           </View>
 
           <View style={[styles.cupertinoButtonBlueTextColor]}>
@@ -150,6 +144,18 @@ export default class HomeScree extends React.Component {
 
               
             <Text style={styles.caption}>לצפייה ברשימת המוצרים</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={[styles.cupertinoButtonBlueTextColor2,marginTop=5]}>
+            <TouchableOpacity style={styles.container5}
+              onPress={() => {
+                Speech.stop()
+                this.props.navigation.navigate("Home")
+
+              }}>
+
+              
+            <Text style={styles.caption10}>להוספת מוצר לחץ כאן</Text>
             </TouchableOpacity>
           </View>
 
@@ -168,7 +174,8 @@ export default class HomeScree extends React.Component {
 
           <View style={styles.materialButtonPrimary4} >
             <TouchableOpacity style={[styles.container3]}
-            
+            full
+            rounded
             onPress={() => {
               Speech.stop()
               this.speak4()
@@ -181,7 +188,8 @@ export default class HomeScree extends React.Component {
 
           <View style={styles.materialButtonPrimary5} >
             <TouchableOpacity style={[styles.container6]}
-            
+            full
+            rounded
             onPress={() => {
               Speech.stop()
               this.speak5()
@@ -202,43 +210,46 @@ export default class HomeScree extends React.Component {
 }
 const styles = StyleSheet.create({
   container: {
+    backgroundColor:"#0200ff",
     flex: 1,
     
   },
   caption6: {
-    color: "#fff",
-    fontSize: 20,
+    color: "#0000fe",
+    fontSize: 25,
+    right:22,
+ 
     //fontFamily: "assistant-regular",
-    textAlign: "right"
+  
+    fontWeight: "bold"
   },
 
   caption3: {
-    color: "#fff",
-    fontSize: 20,
+    color: "#0000fe",
+    fontSize: 25,
+    right:22,
+    alignItems: "center",
+    textAlign: "center",
+    justifyContent: "center",
+    fontWeight: "bold"
     //fontFamily: "assistant-regular"
   },
   container6: {
-    backgroundColor: "rgba(110,171,219,1)",
+    backgroundColor: "#fff",
     flexDirection: "row",
     alignItems: "center",
     opacity: 0.61,
     justifyContent: "center",
-    paddingRight: 16,
-    paddingLeft: 16,
+    //paddingRight: 16,
+    //paddingLeft: 16,
     elevation: 2,
     minWidth: 88,
-    borderRadius: 2,
-    shadowOffset: {
-      height: 1,
-      width: 0
-    },
-    shadowColor: "#000",
-    shadowOpacity: 0.35,
-    shadowRadius: 5
+    //borderRadius: 2,
+   
   },
 
   container3: {
-    backgroundColor: "#2196F3",
+    backgroundColor: "#FFF",
     flexDirection: "row",
     alignItems: "center",
     opacity: 0.62,
@@ -248,16 +259,10 @@ const styles = StyleSheet.create({
     elevation: 2,
     minWidth: 88,
     borderRadius: 2,
-    shadowOffset: {
-      height: 5,
-      width: 5
-    },
-    shadowColor: "#000",
-    shadowOpacity: 0.35,
-    shadowRadius: 5
+   
   },
   container1: {
-    //backgroundColor: "#2196F3",
+    backgroundColor: "#FFF",
     flexDirection: "row",
     alignItems: "center",
     opacity: 0.53,
@@ -267,13 +272,7 @@ const styles = StyleSheet.create({
     elevation: 2,
     minWidth: 88,
     borderRadius: 2,
-    shadowOffset: {
-      height: 1,
-      width: 0
-    },
-    shadowColor: "#000",
-    shadowOpacity: 0.35,
-    shadowRadius: 5
+    
   },
   container5: {
     backgroundColor: "transparent",
@@ -283,8 +282,17 @@ const styles = StyleSheet.create({
     borderRadius: 5
   },
   caption1: {
+    color: "#0000fe",
+    fontSize: 25,
+    right:22,
+    fontWeight: "bold"
+    // fontFamily: "assistant-regular"
+  },
+  caption10: {
     color: "#fff",
-    fontSize: 20,
+    fontSize: 25,
+    right:22,
+    fontWeight: "bold"
     // fontFamily: "assistant-regular"
   },
   cupertinoButtonBlueTextColor: {
@@ -293,15 +301,23 @@ const styles = StyleSheet.create({
     marginTop: 110,
     marginLeft: 85
   },
+  cupertinoButtonBlueTextColor2: {
+    width: 244,
+    height: 61,
+    marginTop: 100,
+    marginLeft: 95
+  },
   caption: {
-    color: "#007AFF",
+    color: "#FFF",
     fontSize: 20,
     //fontFamily: "assistant-regular",
     textAlign: "center"
   },
   imageStack: {
+    
     width: 400,
     height: 350,
+    
     //marginTop:5
   },
    icon3Stack: {
@@ -315,7 +331,7 @@ const styles = StyleSheet.create({
     left: 118,
     width: 106,
     height: 40,
-    color: "rgba(82,115,153,1)",
+    color: "#FFF",
     position: "absolute",
     fontSize: 20,
 
@@ -331,13 +347,13 @@ const styles = StyleSheet.create({
   icon3: {
     top: 0,
     position: "absolute",
-    color: "rgba(25,89,163,1)",
+    color: "#ffffff",
     fontSize: 171,
     left: 0,
     height: 171,
     width: 171
   }, icon2: {
-    color: "rgba(25,89,163,1)",
+    color: "#fff",
     fontSize: 30,
     height: 30,
     width: 30,
@@ -345,35 +361,30 @@ const styles = StyleSheet.create({
     marginLeft: 14
   },
   materialButtonPrimary3: {
-    top: 105,
-    left: 199,
-    width: 236,
-    height: 20,
-    backgroundColor: "rgba(100,126,181,1)",
+    top: 120,
+    
+    width: 500,
+    height: 30,
+    backgroundColor: "#FFF",
     position: "absolute",
-    shadowOffset: {
-      width: 5,
-      height: 5
-    },
-    shadowColor: "rgba(52,86,126,1)"
+  
+    
   },
   materialButtonPrimary4: {
-    top: 140,
-    left: 147,
-    width: 270,
-    height: 36,
+    top: 170,
+    left:0,
+    width: 500,
+    height: 30,
+    backgroundColor: "#FFF",
     position: "absolute",
-    shadowOffset: {
-      width: 5,
-      height: 5
-    },
-    shadowColor: "rgba(52,86,126,1)"
+   
   },
   materialButtonPrimary5: {
     top: 70,
-    left: 230,
-    width: 187,
-    height: 36,
+    
+    width: 500,
+    backgroundColor: "#FFF",
+    height: 30,
     position: "absolute"
   },
 

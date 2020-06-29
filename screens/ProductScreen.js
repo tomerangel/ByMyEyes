@@ -54,7 +54,7 @@ import * as Animate from 'react-native-animatable'
   speak() {
     var thing = 'this is Products Page Welcome.'
    // Speech.speak(thing)
-    Speech.speak('יש לך 2 אפשרויות,לצפות במוצר או להוסיף מוצר חדש ', { language: "he-IW" })
+    Speech.speak('יֵשׁ לְךָ שְׁתֵּי אֶפְשָׁרוּיוֹת- לִצְפּוֹת בְּמוּצָרִים קַיָּמִים אוֹ לְהוֹסִיף מוּצָר חָדָשׁ ', { language: "he-IW" })
   }
 
   // getAllContact method
